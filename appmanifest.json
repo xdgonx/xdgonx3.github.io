@@ -1,6 +1,6 @@
 {
-	"name": "UniqueUnitsBattle",
-	"short_name": "UniqueUnitsBattle",
+	"name": "MultiplauyerTest",
+	"short_name": "MultiplauyerTest",
 	"description": "",
 	"start_url": "index.html",
 	"display": "fullscreen",

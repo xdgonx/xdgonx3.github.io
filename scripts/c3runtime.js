@@ -3905,8 +3905,8 @@ frameTiming)}GetGPUUtilisation(){return this._gpuLastUtilisation}SnapshotCanvas(
 0,canvas.width);const y=C3.clamp(Math.floor(snapArea.getTop()),0,canvas.height);let w=snapArea.width();if(w===0)w=canvas.width-x;else w=C3.clamp(Math.floor(w),0,canvas.width-x);let h=snapArea.height();if(h===0)h=canvas.height-y;else h=C3.clamp(Math.floor(h),0,canvas.height-y);if((x!==0||y!==0||w!==canvas.width||h!==canvas.height)&&(w>0&&h>0)){const cropCanvas=C3.CreateCanvas(w,h);const ctx=cropCanvas.getContext("2d");ctx.drawImage(canvas,x,y,w,h,0,0,w,h);canvas=cropCanvas}C3.CanvasToBlob(canvas,this._snapshotFormat,
 this._snapshotQuality).then(blob=>{if(this._snapshotUrl)URL.revokeObjectURL(this._snapshotUrl);this._snapshotUrl=URL.createObjectURL(blob);this._snapshotPromise=null;this._snapshotResolve(this._snapshotUrl)});this._snapshotFormat="";this._snapshotQuality=1}GetCanvasSnapshotUrl(){return this._snapshotUrl}SetIsPastingToDrawingCanvas(p){if(p)this._isPastingToDrawingCanvas++;else this._isPastingToDrawingCanvas--}IsPastingToDrawingCanvas(){return this._isPastingToDrawingCanvas>0}InitLoadingScreen(loaderStyle){const renderer=
 this.GetRenderer();if(loaderStyle===2){this._percentText=C3.New(C3.Gfx.RendererText,this.GetRenderer());this._percentText.SetFontName("Arial");this._percentText.SetFontSize(16);this._percentText.SetHorizontalAlignment("center");this._percentText.SetVerticalAlignment("center");this._percentText.SetSize(PERCENTTEXT_WIDTH,PERCENTTEXT_HEIGHT)}else if(loaderStyle===0){const loadingLogoAsset=this._runtime.GetLoadingLogoAsset();if(loadingLogoAsset)loadingLogoAsset.LoadStaticTexture(renderer).catch(err=>
-console.warn(`[C3 runtime] Failed to create texture for loading logo: `,err))}else if(loaderStyle===4){this._LoadSvgSplashImage("splash-images/splash-logo.svg").then(tex=>{if(this._splashState==="done")renderer.DeleteTexture(tex);else this._splashTextures.logo=tex}).catch(err=>console.warn("Failed to load splash image: ",err));this._LoadBitmapSplashImage("splash-images/splash-poweredby-512.png").then(tex=>{if(this._splashState==="done")renderer.DeleteTexture(tex);else this._splashTextures.powered=
-tex}).catch(err=>console.warn("Failed to load splash image: ",err));this._LoadBitmapSplashImage("splash-images/splash-website-512.png").then(tex=>{if(this._splashState==="done")renderer.DeleteTexture(tex);else this._splashTextures.website=tex}).catch(err=>console.warn("Failed to load splash image: ",err))}}async _LoadSvgSplashImage(url){url=(new URL(url,this._runtime.GetRuntimeBaseURL())).toString();const blob=await C3.FetchBlob(url);const drawable=await this._runtime.RasterSvgImage(blob,2048,2048);
+console.warn(`[C3 runtime] Failed to create texture for loading logo: `,err))}else if(loaderStyle===4){this._LoadSvgSplashImage("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHdpZHRoPSIxNzAwLjc5MDA0cHgiIGhlaWdodD0iMTcwMC43OTAwNHB4IiB2aWV3Qm94PSIyODcgMzE3IDExMjUgMTEyNSINCgkgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTcwMC43OTAwNCAxNzAwLjc5MDA0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnIGlkPSJsb2dvIj4NCgk8Zz4NCgkJPGc+DQoJCQk8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI0ZGRkZGRiIgZD0iTTM1NC45Nzc1NCwxMTk1LjYyMzA1DQoJCQkJYzExLjM4NDc3LDAsMjIuMDEyNywzLjIzNzMsMzEuMDE3NTgsOC44Mzc4OWMxLjk0NjI5LDEuMjEwOTQsMi41ODQ5NiwzLjc0OTAyLDEuNDM4NDgsNS43MzQzOGwtNC45MzI2Miw4LjU0MTk5DQoJCQkJYy0zLjI3ODMyLDUuNjc5NjktMTAuMDMzMiw4LjM3Njk1LTE2LjMxNzM4LDYuNTAwOThjLTIuNzY0NjUtMC44MjUyLTUuNjkzMzYtMS4yNjg1NS04LjcyNjU2LTEuMjY4NTUNCgkJCQljLTE2LjgyOTEsMC0zMC40NzI2NiwxMy42NDM1NS0zMC40NzI2NiwzMC40NzI2NmMwLDE2LjgyODEzLDEzLjY0MzU1LDMwLjQ3MjY2LDMwLjQ3MjY2LDMwLjQ3MjY2DQoJCQkJYzMuMDMzMiwwLDUuOTYxOTEtMC40NDMzNiw4LjcyNjU2LTEuMjY4NTVjNi4yOTQ5Mi0xLjg3OTg4LDEzLjAzMzIsMC44MTE1MiwxNi4zMTczOCw2LjUwMDk4bDQuOTMxNjQsOC41NDE5OQ0KCQkJCWMxLjE0NzQ2LDEuOTg4MjgsMC41MTA3NCw0LjUyMzQ0LTEuNDM4NDgsNS43MzQzOGMtOS4wMDM5MSw1LjYwMTU2LTE5LjYzMTg0LDguODM3ODktMzEuMDE2Niw4LjgzNzg5DQoJCQkJYy0zMi40ODUzNSwwLTU4LjgxOTM0LTI2LjMzNDk2LTU4LjgxOTM0LTU4LjgxOTM0QzI5Ni4xNTgyLDEyMjEuOTU3MDMsMzIyLjQ5MjE5LDExOTUuNjIzMDUsMzU0Ljk3NzU0LDExOTUuNjIzMDUNCgkJCQlMMzU0Ljk3NzU0LDExOTUuNjIzMDV6IE03MDMuMjE0ODQsMTI1OS4xNzU3OGMtMTQuNTU5NTctOS44MTczOC0yMC4yMDMxMy0yMC4wMzIyMy0yMC4yMDMxMy0zMy4wODAwOA0KCQkJCWMwLTE4LjQ4OTI2LDE1LjcxNDg0LTI5Ljc2MzY3LDM4LjI2NjYtMjkuNzYzNjdjOS42NTcyMywwLDE4LjcyMTY4LDIuNTQyOTcsMjYuNTU5NTcsNi45OTQxNA0KCQkJCWMyLjA0OTgsMS4xNjQwNiwyLjc2MTcyLDMuNzgzMiwxLjU4MzAxLDUuODI0MjJsLTMuNDE3OTcsNS45MTk5MmMtMy4yNDcwNyw1LjYyNDAyLTkuOTA4Miw4LjMzMTA1LTE2LjE1MzMyLDYuNTQ4ODMNCgkJCQljLTIuNzIzNjMtMC43NzYzNy01LjU5ODYzLTEuMTkyMzgtOC41NzEyOS0xLjE5MjM4Yy0xMC40OTAyMywwLTExLjU5ODYzLDkuNTc2MTctNC44NTc0MiwxNC4xMjMwNWwyMy42ODY1MiwxNS45NzY1Ng0KCQkJCWM5Ljk5MDIzLDYuNzM4MjgsMTUuODk1NTEsMTcuMDY2NDEsMTUuODk1NTEsMjguNzE4NzVjMCwxOC43ODYxMy0xNS4wMDY4NCwzMy4zMDc2Mi0zOC4yNjc1OCwzMy4zMDc2Mg0KCQkJCWMtOS41MjI0NiwwLTE4LjU4Nzg5LTEuOTU3MDMtMjYuODE1NDMtNS40OTAyM2MtNy43ODEyNS0zLjMzOTg0LTEwLjkzMzU5LTEyLjc4MjIzLTYuNjk3MjctMjAuMTE4MTZsMy40ODczLTYuMDQxOTkNCgkJCQljMS4yMTM4Ny0yLjA5OTYxLDMuOTMxNjQtMi43NTk3Nyw1Ljk3NDYxLTEuNDU2MDVjNi44NTkzOCw0LjM4MjgxLDE2LjQ5MDIzLDcuNTk0NzMsMjQuNzU4NzksNy41OTQ3Mw0KCQkJCWMxMC41NDU5LDAsMTEuMzI4MTMtOS45NTg5OCwzLjc2NzU4LTE1LjA1NzYyTDcwMy4yMTQ4NCwxMjU5LjE3NTc4TDcwMy4yMTQ4NCwxMjU5LjE3NTc4eiBNOTg0LjYzMDg2LDEyMDIuMDAwOTgNCgkJCQljMC0yLjM0NzY2LDEuOTAzMzItNC4yNTE5NSw0LjI1MTk1LTQuMjUxOTVoOS45MjE4OGM3LjgyNzE1LDAsMTQuMTcyODUsNi4zNDU3LDE0LjE3Mjg1LDE0LjE3MzgzdjU3LjQwMTM3DQoJCQkJYzAsOC42MTAzNSw2Ljk4MDQ3LDE1LjU5MDgyLDE1LjU5MDgyLDE1LjU5MDgyczE1LjU5MDgyLTYuOTgwNDcsMTUuNTkwODItMTUuNTkwODJ2LTU3LjQwMTM3DQoJCQkJYzAtNy44MjgxMyw2LjM0NTctMTQuMTczODMsMTQuMTcyODUtMTQuMTczODNoOS45MjA5YzIuMzQ4NjMsMCw0LjI1MTk1LDEuOTA0Myw0LjI1MTk1LDQuMjUxOTV2NjcuMzIzMjQNCgkJCQljMCwyNC4yNjU2My0xOS42NzA5LDQzLjkzNzUtNDMuOTM2NTIsNDMuOTM3NXMtNDMuOTM3NS0xOS42NzE4OC00My45Mzc1LTQzLjkzNzVWMTIwMi4wMDA5OEw5ODQuNjMwODYsMTIwMi4wMDA5OHoNCgkJCQkgTTQ2Ni44NjkxNCwxMTk1LjYyMzA1YzMyLjQ4NDM4LDAsNTguODE4MzYsMjYuMzMzOTgsNTguODE4MzYsNTguODE5MzRjMCwzMi40ODQzOC0yNi4zMzM5OCw1OC44MTkzNC01OC44MTgzNiw1OC44MTkzNA0KCQkJCWMtMzIuNDg2MzMsMC01OC44MTkzNC0yNi4zMzQ5Ni01OC44MTkzNC01OC44MTkzNEM0MDguMDQ5OCwxMjIxLjk1NzAzLDQzNC4zODI4MSwxMTk1LjYyMzA1LDQ2Ni44NjkxNCwxMTk1LjYyMzA1DQoJCQkJTDQ2Ni44NjkxNCwxMTk1LjYyMzA1eiBNNDY2Ljg2OTE0LDEyMjUuMDMzMmMtMTYuMjQzMTYsMC0yOS40MTAxNiwxMy4xNjY5OS0yOS40MTAxNiwyOS40MDkxOA0KCQkJCXMxMy4xNjY5OSwyOS40MDgyLDI5LjQxMDE2LDI5LjQwODJjMTYuMjQxMjEsMCwyOS40MDgyLTEzLjE2NjAyLDI5LjQwODItMjkuNDA4MlM0ODMuMTEwMzUsMTIyNS4wMzMyLDQ2Ni44NjkxNCwxMjI1LjAzMzINCgkJCQlMNDY2Ljg2OTE0LDEyMjUuMDMzMnogTTU1Ni43MzI0MiwxMzExLjEzNDc3Yy0yLjM0NzY2LDAtNC4yNTE5NS0xLjkwMjM0LTQuMjUxOTUtNC4yNXYtOTQuOTYxOTENCgkJCQljMC03LjgyODEzLDYuMzQ1Ny0xNC4xNzM4MywxNC4xNzM4My0xNC4xNzM4M2gzLjk1ODk4YzQuNjI1LDAsOC45NTg5OCwyLjI1Njg0LDExLjYxMTMzLDYuMDQ1OWw0MS4xMjIwNyw1OC43NDcwN3YtNTAuNjE5MTQNCgkJCQljMC03LjgyODEzLDYuMzQ1Ny0xNC4xNzM4MywxNC4xNzI4NS0xNC4xNzM4M2g5LjkyMTg4YzIuMzQ3NjYsMCw0LjI1MTk1LDEuOTA0Myw0LjI1MTk1LDQuMjUxOTV2OTQuOTYwOTQNCgkJCQljMCw3LjgyOTEtNi4zNDU3LDE0LjE3Mjg1LTE0LjE3MzgzLDE0LjE3Mjg1aC0zLjk1ODk4Yy00LjYyNSwwLTguOTU4OTgtMi4yNTU4Ni0xMS42MTEzMy02LjA0NDkybC00MS4xMjIwNy01OC43NDYwOXY1MC42MTgxNg0KCQkJCWMwLDcuODI5MS02LjM0NTcsMTQuMTcyODUtMTQuMTcyODUsMTQuMTcyODVINTU2LjczMjQyTDU1Ni43MzI0MiwxMzExLjEzNDc3eiBNMTIxNS4wMjA1MSwxMjExLjkyMjg1DQoJCQkJYzAtNy44MjgxMyw2LjM0NTctMTQuMTczODMsMTQuMTcyODUtMTQuMTczODNoNTAuMzE1NDNjMi4zNDg2MywwLDQuMjUxOTUsMS45MDQzLDQuMjUxOTUsNC4yNTE5NXY1LjY2OTkyDQoJCQkJYzAsNy44MjcxNS02LjM0NTcsMTQuMTcyODUtMTQuMTcyODUsMTQuMTcyODVoLTYuMDI0NDF2NzUuMTE4MTZjMCw3LjgyOTEtNi4zNDU3LDE0LjE3Mjg1LTE0LjE3Mjg1LDE0LjE3Mjg1aC05LjkyMTg4DQoJCQkJYy0yLjM0ODYzLDAtNC4yNTE5NS0xLjkwMjM0LTQuMjUxOTUtNC4yNXYtODUuMDQxMDJoLTE1Ljk0NDM0Yy0yLjM0ODYzLDAtNC4yNTE5NS0xLjkwMzMyLTQuMjUxOTUtNC4yNTE5NVYxMjExLjkyMjg1DQoJCQkJTDEyMTUuMDIwNTEsMTIxMS45MjI4NXogTTc3Ni40NDkyMiwxMjExLjkyMjg1YzAtNy44MjgxMyw2LjM0NTctMTQuMTczODMsMTQuMTczODMtMTQuMTczODNoNTAuMzE0NDUNCgkJCQljMi4zNDk2MSwwLDQuMjUxOTUsMS45MDQzLDQuMjUxOTUsNC4yNTE5NXY1LjY2OTkyYzAsNy44MjcxNS02LjM0NTcsMTQuMTcyODUtMTQuMTcxODgsMTQuMTcyODVoLTYuMDI1Mzl2NzUuMTE4MTYNCgkJCQljMCw3LjgyOTEtNi4zNDU3LDE0LjE3Mjg1LTE0LjE3Mjg1LDE0LjE3Mjg1aC05LjkyMDljLTIuMzQ5NjEsMC00LjI1MTk1LTEuOTAyMzQtNC4yNTE5NS00LjI1di04NS4wNDEwMmgtMTUuOTQ1MzENCgkJCQljLTIuMzQ3NjYsMC00LjI1MTk1LTEuOTAzMzItNC4yNTE5NS00LjI1MTk1VjEyMTEuOTIyODVMNzc2LjQ0OTIyLDEyMTEuOTIyODV6IE05MjkuNjA0NDksMTI3Mi4wMjI0NmwyNi45NTgwMSwzMi4xMjc5Mw0KCQkJCWMyLjMxNDQ1LDIuNzU3ODEsMC4zNDM3NSw2Ljk4NDM4LTMuMjU2ODQsNi45ODQzOGgtMTkuNzA1MDhjLTQuMTg5NDUsMC04LjE2NTA0LTEuODUxNTYtMTAuODU3NDItNS4wNjA1NWwtMjIuNjgxNjQtMjcuMDMxMjUNCgkJCQl2MjcuODQxOGMwLDIuMzQ3NjYtMS45MDMzMiw0LjI1LTQuMjUxOTUsNC4yNWgtOS45MjA5Yy03LjgyNzE1LDAtMTQuMTcyODUtNi4zNDM3NS0xNC4xNzI4NS0xNC4xNzI4NXYtODUuMDM5MDYNCgkJCQljMC03LjgyODEzLDYuMzQ1Ny0xNC4xNzM4MywxNC4xNzI4NS0xNC4xNzM4M2gyOS43NjM2N2MyMi43MDAyLDAsNDEuMTAyNTQsMTcuMTMzNzksNDEuMTAyNTQsMzguMjY4NTUNCgkJCQlDOTU2Ljc1NDg4LDEyNTIuNTkwODIsOTQ1LjQzNjUyLDEyNjYuNzAyMTUsOTI5LjYwNDQ5LDEyNzIuMDIyNDZMOTI5LjYwNDQ5LDEyNzIuMDIyNDZ6IE05MDAuMDYxNTIsMTIyMS44NDM3NXYzMi41OTg2M2g4LjUwMzkxDQoJCQkJYzEwLjk1ODk4LDAsMTkuODQyNzctNy4yOTc4NSwxOS44NDI3Ny0xNi4yOTg4M2MwLTkuMDAxOTUtOC44ODM3OS0xNi4yOTk4LTE5Ljg0Mjc3LTE2LjI5OThIOTAwLjA2MTUyTDkwMC4wNjE1MiwxMjIxLjg0Mzc1eg0KCQkJCSBNMTE1OC4zNTkzOCwxMTk1LjYyMzA1YzExLjM4NDc3LDAsMjIuMDEyNywzLjIzNzMsMzEuMDE3NTgsOC44Mzc4OWMxLjk0NzI3LDEuMjEwOTQsMi41ODQ5NiwzLjc0OTAyLDEuNDM4NDgsNS43MzQzOA0KCQkJCWwtNC45MzI2Miw4LjU0MTk5Yy0zLjI3ODMyLDUuNjc5NjktMTAuMDMzMiw4LjM3Njk1LTE2LjMxNzM4LDYuNTAwOThjLTIuNzY0NjUtMC44MjUyLTUuNjkzMzYtMS4yNjg1NS04LjcyNTU5LTEuMjY4NTUNCgkJCQljLTE2LjgyOTEsMC0zMC40NzI2NiwxMy42NDM1NS0zMC40NzI2NiwzMC40NzI2NmMwLDE2LjgyODEzLDEzLjY0MzU1LDMwLjQ3MjY2LDMwLjQ3MjY2LDMwLjQ3MjY2DQoJCQkJYzMuMDMyMjMsMCw1Ljk2MDk0LTAuNDQzMzYsOC43MjU1OS0xLjI2ODU1YzYuMjk1OS0xLjg3OTg4LDEzLjAzMzIsMC44MTE1MiwxNi4zMTgzNiw2LjUwMDk4bDQuOTMwNjYsOC41NDE5OQ0KCQkJCWMxLjE0NzQ2LDEuOTg4MjgsMC41MTA3NCw0LjUyMzQ0LTEuNDM3NSw1LjczNDM4Yy05LjAwNDg4LDUuNjAxNTYtMTkuNjMyODEsOC44Mzc4OS0zMS4wMTc1OCw4LjgzNzg5DQoJCQkJYy0zMi40ODUzNSwwLTU4LjgxOTM0LTI2LjMzNDk2LTU4LjgxOTM0LTU4LjgxOTM0QzEwOTkuNTQwMDQsMTIyMS45NTcwMywxMTI1Ljg3NDAyLDExOTUuNjIzMDUsMTE1OC4zNTkzOCwxMTk1LjYyMzA1eiIvPg0KCQkJPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9IiMwMEZGREEiIGQ9Ik0xMzE4LjE5NzI3LDEyMDYuMDMyMjMNCgkJCQljMC03LjgyODEzLDYuMzQ1Ny0xNC4xNzM4MywxNC4xNzI4NS0xNC4xNzM4M2MyMC42NTYyNSwwLDQxLjMxMjUsMCw2MS45Njg3NSwwYzMuNDI5NjksMCw1LjQ1MDIsMy44ODA4NiwzLjQ4MzQsNi42OTA0Mw0KCQkJCWwtMTkuMjk2ODgsMjcuNTY3MzhjMTUuNTQyOTcsOC4zNzU5OCwyNi4xMDY0NSwyNC44MDA3OCwyNi4xMDY0NSw0My42OTUzMWMwLDI3LjM5NzQ2LTIyLjIwODk4LDQ5LjYwNjQ1LTQ5LjYwNjQ1LDQ5LjYwNjQ1DQoJCQkJYy0xNi42ODg0OCwwLTMxLjQ1MTE3LTguMjQwMjMtNDAuNDQzMzYtMjAuODc1OThjLTEuNDUwMi0yLjAzOTA2LTAuODMxMDUtNC44OTk0MSwxLjMzNTk0LTYuMTUyMzRsMTAuOTc3NTQtNi4zMzc4OQ0KCQkJCWM0Ljg4MTg0LTIuODE4MzYsMTAuOTc5NDktMi40NzU1OSwxNS41MTQ2NSwwLjg3MzA1YzMuNTI4MzIsMi42MDU0Nyw3Ljg5MTYsNC4xNDY0OCwxMi42MTUyMyw0LjE0NjQ4DQoJCQkJYzExLjc0MjE5LDAsMjEuMjU5NzctOS41MTg1NSwyMS4yNTk3Ny0yMS4yNTk3N3MtOS41MTc1OC0yMS4yNTk3Ny0yMS4yNTk3Ny0yMS4yNTk3N2gtMTUuMjE3NzcNCgkJCQljLTMuNDI5NjksMC01LjQ1MDItMy44ODA4Ni0zLjQ4NDM4LTYuNjkwNDNsMTguMTM1NzQtMjUuOTA4MmgtMzIuMDA5NzdjLTIuMzQ4NjMsMC00LjI1MTk1LTEuOTAzMzItNC4yNTE5NS00LjI1MTk1VjEyMDYuMDMyMjN6DQoJCQkJIi8+DQoJCTwvZz4NCgkJPGc+DQoJCQk8Zz4NCgkJCQk8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI0RBRThGNyIgZD0iTTg1MC4zOTU1MSw4NTcuNTkxOA0KCQkJCQljLTUwLjM1NjQ1LDAtOTQuMzI1Mi0yNy4zNTY0NS0xMTcuODUyNTQtNjguMDIwNTFsLTgwLjAzMDI3LDQ2LjIwNDFjLTQuNjU1MjcsMi42ODk0NS02LjEzMTg0LDguNzE4NzUtMy4yNDkwMiwxMy4yNTU4Ng0KCQkJCQljNDIuMjM3Myw2Ni40ODYzMywxMTYuNTMzMiwxMTAuNjA3NDIsMjAxLjEzMTg0LDExMC42MDc0MmM4OC4xMjU5OCwwLDE2NS4wNzEyOS00Ny44NzUsMjA2LjI0MzE2LTExOS4wMzYxM2wtODAuNDg3My00Ni40Njk3Mw0KCQkJCQljLTQuMzEzNDgtMi40OTAyMy05LjgwMTc2LTEuMjA1MDgtMTIuNTcwMzEsMi45MzU1NUM5MzkuMTc1NzgsODMzLjU2MjUsODk3LjU5MTgsODU3LjU5MTgsODUwLjM5NTUxLDg1Ny41OTE4DQoJCQkJCUw4NTAuMzk1NTEsODU3LjU5MTh6IE0xMTM2LjcyMTY4LDU1Ni4yMTc3N2M0LjYxNDI2LTIuNjYzMDksNi4xMTAzNS04LjYxOTE0LDMuMzEyNS0xMy4xNTEzNw0KCQkJCQljLTU5LjkxNTA0LTk3LjAzMDI3LTE2Ny4yMjQ2MS0xNjEuNjk0MzQtMjg5LjYzODY3LTE2MS42OTQzNGMtMTI1Ljg5MzU1LDAtMjM1LjgxMzQ4LDY4LjM5MjU4LTI5NC42MzM3OSwxNzAuMDQ5OA0KCQkJCQlsODAuMzc2OTUsNDYuNDA2MjVjNC4zOTc0NiwyLjUzOTA2LDEwLjAwMTk1LDEuMTQ5NDEsMTIuNzEwOTQtMy4xNDU1MQ0KCQkJCQljNDIuMTY0MDYtNjYuODUxNTYsMTE2LjY2ODk1LTExMS4yNjM2NywyMDEuNTQ1OS0xMTEuMjYzNjdjODguMTI1OTgsMCwxNjUuMDcxMjksNDcuODc1OTgsMjA2LjI0MzE2LDExOS4wMzYxMw0KCQkJCQlMMTEzNi43MjE2OCw1NTYuMjE3Nzd6Ii8+DQoJCQkJPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9IiNBNUJBQzgiIGQ9Ik04NTAuMzk1NTEsOTU5LjYzODY3DQoJCQkJCWMtODQuNTk4NjMsMC0xNTguODk0NTMtNDQuMTIxMDktMjAxLjEzMTg0LTExMC42MDc0MmMtMi44NzY5NS00LjUzMDI3LTEuMzk5NDEtMTAuNTcwMzEsMy4yNDkwMi0xMy4yNTU4Nmw4MC4wMzAyNy00Ni4yMDQxDQoJCQkJCWMtMTEuNTgxMDUtMjAuMDE2Ni0xOC4yMDk5Ni00My4yNTQ4OC0xOC4yMDk5Ni02OC4wNDE5OWMwLTc0Ljc4NTE2LDYwLjU1NzYyLTEzNi4wNjI1LDEzNi4wNjI1LTEzNi4wNjI1DQoJCQkJCWM0Ny4xOTYyOSwwLDg4Ljc4MDI3LDI0LjAyOTMsMTEzLjE4NTU1LDYwLjUyMjQ2YzIuNzY0NjUsNC4xMzM3OSw4LjI2MzY3LDUuNDIxODgsMTIuNTcwMzEsMi45MzU1NWw4MC40ODczLTQ2LjQ2OTczDQoJCQkJCWMtNDEuMTcxODgtNzEuMTYwMTYtMTE4LjExNzE5LTExOS4wMzYxMy0yMDYuMjQzMTYtMTE5LjAzNjEzYy04NC44NzY5NSwwLTE1OS4zODE4NCw0NC40MTIxMS0yMDEuNTQ1OSwxMTEuMjYzNjcNCgkJCQkJYy0yLjcwNjA1LDQuMjkxMDItOC4zMTgzNiw1LjY4MTY0LTEyLjcxMDk0LDMuMTQ1NTFsLTgwLjM3Njk1LTQ2LjQwNjI1DQoJCQkJCWMtMjguOTUyMTUsNTAuMDQwMDQtNDUuNTIzNDQsMTA4LjEzOTY1LTQ1LjUyMzQ0LDE3MC4xMDc0MmMwLDE4Ni45NjM4NywxNTEuMzk0NTMsMzQwLjE1NzIzLDM0MC4xNTcyMywzNDAuMTU3MjMNCgkJCQkJYzEyMi40MTQwNiwwLDIyOS43MjM2My02NC42NjQwNiwyODkuNjM4NjctMTYxLjY5NTMxYzIuNzk0OTItNC41MjYzNywxLjI5NDkyLTEwLjQ5MDIzLTMuMzEyNS0xMy4xNTEzN2wtODAuMDgzMDEtNDYuMjM3Mw0KCQkJCQlDMTAxNS40NjY4LDkxMS43NjM2Nyw5MzguNTIxNDgsOTU5LjYzODY3LDg1MC4zOTU1MSw5NTkuNjM4Njd6Ii8+DQoJCQk8L2c+DQoJCQk8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iIzAwRkZEQSIgZD0iTTExMzcuMTg1NTUsNzU4LjExMzI4di03My4xNjc5N2wtNjMuMzY1MjMsMzYuNTgzOTgNCgkJCQlMMTEzNy4xODU1NSw3NTguMTEzMjhMMTEzNy4xODU1NSw3NTguMTEzMjh6IE0xMDI2LjU3NjE3LDcwNS4xNjQwNmwxMjAuMDU4NTktNjkuMzE2NDENCgkJCQljMTIuNTY4MzYtNy4yNTU4NiwyOC4zNDQ3MywxLjg1MjU0LDI4LjM0NTcsMTYuMzY2MjF2MTM4LjYzMDg2Yy0wLjAwMDk4LDE0LjUxMjctMTUuNzc3MzQsMjMuNjIyMDctMjguMzQ1NywxNi4zNjYyMQ0KCQkJCWwtMTIwLjA1ODU5LTY5LjMxNjQxQzEwMTQuMDI4MzIsNzMwLjY0OTQxLDEwMTQuMDI4MzIsNzEyLjQwOTE4LDEwMjYuNTc2MTcsNzA1LjE2NDA2eiIvPg0KCQk8L2c+DQoJPC9nPg0KPC9nPg0KPC9zdmc+DQo=").then(tex=>{if(this._splashState==="done")renderer.DeleteTexture(tex);else this._splashTextures.logo=tex}).catch(err=>console.warn("Failed to load splash image: ",err));this._LoadBitmapSplashImage("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABABAMAAACekdKMAAAAMFBMVEUAAAByfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYYgo7vbAAAAD3RSTlMAmd137hFVqjO7zCKIRGZ881JRAAAFY0lEQVR42u2aPW/bVhSGn1iiPizZ8D+QgSJBNglFmiboQA0NUKAD1XotYA0BOspAkZnqx24vnTrIQNCpg4QkQMcYKDoW9j9w5y6qLNqWFDlvh3tJUa6ddHBhAuS7SKBIQffhuee851CQKVOmTJkyZcqUKXmqa8O+uyNlABKsFRmdP0o5AOle2gHoWdoBzFrpBHACwPeetJNmAFSlt6kGwGH0LqUAVqRuqgHkpEaqAVRkfvOWr+Dh9Rc4j6VvwnrhPNAbgK2ezj+yx7Z6GjUuASi4Ch4lHQAGwBeRK1rROQAdUx5K0hE4NUkaAdS02ZEuoms2wkCSgvYSgFJfkn6CobkSPG0mEcAOrHnGFOxAToHNjk/MygLgO/PxL0BN9yRdQKlufMQAoCdJGi8BOJYknXTJ269cu9HtdqNb4Ni6oimUbFb0dAZQ1DmULJ+TFtT0qQHwg73mLlCMfFUMQPR5VWrbmttNHICC1KDiSZ+w3pMOwFPDhP4IYFtv4ZX0nIorbUBNmjWAiqdZg5fmNFd6jvPhJQDjAV9LI0r28IpmycsBZalNWfoRWJcuoKY9c7cCkwpOwdcIqNT1BmrSgQkNbQAvpAGOF+aHOIBpCxhKR/TVBNjVOHkAOgrg2N6aoU7sklmVidtD7bNm/fIrjaBmk+Sxea142iBnTyguAfjZZscNXLOdXFM8EgVgXRpDz/6yonTEts6AXdV1APTVoKigFSXEmj3XN0kSV01WFQwAHC8O4Mhagye8NgHS137SALzsS3dxwhtXkQ4oaw64eqomOFKXbc2xJbFLTX8DOHYnsKsJu2Gdu8IIuTqjrMB8eyM5ACIFXQo2S5t7lNMM6AdFTaCgADqahHW8EQIohBk9rzEdE+JXAtjVmHWpDTmplUAA96Ea/bJDnVKSWjgaFTSHqubgmjVDXQchgFy4wBXNcXV6LYC8RjbEypomcCAyBopRShxqAn21yenM8WawqjOoKVbmLYBFndeImsnyVwJY1RR8NW1FTRiA6UNTCsP6fKwLONQBZTXx1WVbT0KbtwygvAxg81oAZU0xe2QYxkmyrDDx2DzWBXTUZFs7dNQwHUEMwN4VAKb47wOQ1wj8Gx0+/Y8A8powVJtt7XOoxn8A8N4IqCrA8cJUmzgAl3JAUWN8tSjqDX0NwI/XbwugGLe178oBK7bBaBesm0gggOUqwLrOHe8c1jV2NAMOw/XFAFRth2dr/burANS1cSc0C8kDsB7zAZvgKCjoLTiaFqwpmvwLQC7e2b3PB4CrZj48KXkAKktOEPr6VqeAr680udzEWACluK0LreJ1ThBe6+w4HkfJAhD1AtbAu3qgPcDVX2oCK9bqxwFQ1+fRsVW7va/uBZpAWaND652TCGBoM1rHHN6VmQlsq6cdE+4mC75oLAC49prKB1zTDd6NukHIKahbIkkEsGrmAQWZbZqXNLClrg04dTP4KnjnCwBfmgkZT7WD45k94C8BmA3MPGBgeqcbfQBxwwDsRMi3N7Iqc3dzsuVhV5ofkevpJOoGKUn6Ax5L92F49USoayZCls08uQDiM0ETCWPb8k7DMmH02SICGC7ayVhnsABwEpsZQkfxUpI4ALGpsFn4xCbHcVjnwgnvAkBh0U6CbzqrXgzA1E6FB9YOJGcacgUAfl36t0Ro/SIDUDEL/D1WBcJr5q0oRoJ2LQZgZJ4LPIu2RCPJAJafDLm2Yr2OHmQ4H0vzBksA2PKl38L3fY0aLAFYejK0ZpJhelVKzkj8dlRNzkj8dpRP0DTkVjTUXroB9PVnqtefS9I05BZU8NOdAyUl5q8RtwUg6KYcwP1Up8CanpMpU6ZMmTLdgP4BRYsi23xEdOAAAAAASUVORK5CYII=").then(tex=>{if(this._splashState==="done")renderer.DeleteTexture(tex);else this._splashTextures.powered=
+tex}).catch(err=>console.warn("Failed to load splash image: ",err));this._LoadBitmapSplashImage("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABABAMAAACekdKMAAAAMFBMVEUAAAByfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYZyfYYgo7vbAAAAD3RSTlMAdxHdu4hmVZnuRMwzqiLYE4y2AAAFw0lEQVR42u2Yy+9LQRTHp6Xq0VIkXkFvwkYslAWJiGJj2a6sJJe/oF3YWGElEQmxkYi4ErFWNpatWFmIx9Lm1sJCLKgqraqv82h726l6hOuRzDf53TtnOr+ZOZ+ZOffca5ycnJycnJycnJycnJycnJz+pi7g2G9osxjvzX8qB8ABcAAcgH8XwDa85dspNOiaRDuAR4U0PnHtDuyy7IJRJS6gvVmL6TywVkp4ZxIhulUxFvlaXQTrgEHbnMDH5XRjlXCdb+uAnc2ojWgFFTYBZ8e9tzcaswAk6v/3K4sPfPNRFj87IXj+KXQUS9m2jXoH1lMuLq2DtEcAtNMBT9PjanFq7ySAhbABVEAaeDaAwkk2D7GRqctAMQJIq2sBauLnB/VxCfqKpWrbRhSC1W5SMQ9RTgBUwKpF1ccmAIQ2gCxE+20Au9nSESvDgeIDkJSBMpA9vgyXdsj0H0GORL3n2fbwPOKoSQS4Q2cBOGzSJbQYAHDbZEI+rEuBcyZRlF71fIP/x0wBuIBOw6xH3xu2GQFAP2cegmvSwHkeqBZjECzB46UXD3bg8UKJCT6QYzgDY9uiU7hC11doERq6MAZ2CPJ7ipEulOrteDcB4KOZBpBG7zrV1JGzATzmIdnrl/go3bRiBJBHlZc+6ItjuQQ+yFLz8Gka2LZFRVTFGdoQJQ0LPodHnXkS8AjlRWkBLwKQswAs0PDzGpcsAAMNuG+5WgdqxwjgEcp8qcBjN5oZdPhEvOfhU/hsbJuVloWV6WWgp2IBLxXQNEwLDfKqoMXrEQBjATiFA3qePlgAZJRl+EStdaAQjfgALOC1zfeX8ALV+7S69JdALWjxHGqztmxyMnTD6OOBWvAdGDkn60c6vrI5H4CPnOJsWQDe8G0hIU0MB8ojFx+AFAeqeitLy5FkL3w0yNNcSOx3oDxjjxaH9XxldZluY5NBfwrAQvQbRjQXAO8UqVq5dh6A7HCgWzgdFwBdgOX4lMZbTndkWWkDN07Bk+zItllLdHm1+FkLwBSADNDf8B0AnGOp5gFYgJEexwcgGQx4iyeD9ybFkWsbDZbv0+2Y8XvGtqMpWsUimpMAzA1AUrj5ALjm2wCoONKB+ACYsEeDlU04MMs4imeJQqljslSuD4xl/zgAsx6ku/8DgDwaO9AwFU56qhzOPiXpKCzCpSSdb8v+CQDmXshb99cARAPFCOA1chWaFXlP55yn2FqEgiFvOSzYtmiJzisKB7MxQPS8iO63YsD3AHDv8QPgjR92eKuf9vts1wdZjvZhN4XajD35FNDiR7ln0LYBaILY+OZT4DsA+BkTP4AUrgXkxSJcDFps+72X7EGlx6mBbU/lAbdQjvKA7hSAlSuHxdw0gORsHrAUnXkAUuj+AQAZdHGRp9bShX2ECz1JRSk4zNhRJqj5SZQJfpgCUNS2eRsAP/usTDAxPxFKA834AZgAOM1z6qGgxxpdmUDQNjP25LtAsojxu0AehSkAF6RLXWR/EkAdVYEevQtswVtpMwuAB1JGh2jbxQcgBKrig/qSxTD6o2Nm7fttSY6uUnErV+jb4CJyaArAI5luJkCDOy5HAPISSB5A3wYbhJERahvtPALAAw2EI9Vzsh2TTuk23qEceN9d4vVVv227hNroe0CRi/o9IKTZTQFIAc/M8jwGEiouG2/042u8u25uAuPvAavRH7XhzqcBpICdRpssRa+aNLFoh2JeyBzU08fih/ht20WZXghW34s+/ZQnAKhzojsSH4CC/sjARPKamLXacOfTAIwfNSkCbROLluG9Tm2gdl3PY178tu2SBIpFQ6fHH//2GAvAogCkjtGDEAFQYPsu6DdBqw11bgFIF8dNHsQGIEFRSDOe0RS9YYJk23JMrw+/Cr9bFX0VXmNsACbhA088qXhBrMYAlq8Gjhh//FX4YNSGO7cASO9n9B99AuHk5OTk5OTk5OTk5OTk5OTk5OT0VX0B7+fX+9cwWYYAAAAASUVORK5CYII=").then(tex=>{if(this._splashState==="done")renderer.DeleteTexture(tex);else this._splashTextures.website=tex}).catch(err=>console.warn("Failed to load splash image: ",err))}}async _LoadSvgSplashImage(url){url=(new URL(url,this._runtime.GetRuntimeBaseURL())).toString();const blob=await C3.FetchBlob(url);const drawable=await this._runtime.RasterSvgImage(blob,2048,2048);
 return await this.GetRenderer().CreateStaticTextureAsync(drawable,{mipMapQuality:"high"})}async _LoadBitmapSplashImage(url){url=(new URL(url,this._runtime.GetRuntimeBaseURL())).toString();const blob=await C3.FetchBlob(url);return await this.GetRenderer().CreateStaticTextureAsync(blob,{mipMapQuality:"high"})}HideCordovaSplashScreen(){this._runtime.PostComponentMessageToDOM("runtime","hide-cordova-splash")}StartLoadingScreen(){this._loaderStartTime=Date.now();this._runtime.Dispatcher().addEventListener("loadingprogress",
 this._loadingprogress_handler);this._rafId=requestAnimationFrame(()=>this._DrawLoadingScreen());const loaderStyle=this._runtime.GetLoaderStyle();if(loaderStyle!==3)this.HideCordovaSplashScreen()}async EndLoadingScreen(){const renderer=this.GetRenderer();this._loadingProgress=1;const loaderStyle=this._runtime.GetLoaderStyle();if(loaderStyle===4)await this._splashDonePromise;this._splashDoneResolve=null;this._splashDonePromise=null;if(this._rafId!==-1){cancelAnimationFrame(this._rafId);this._rafId=
 -1}this._runtime.Dispatcher().removeEventListener("loadingprogress",this._loadingprogress_handler);this._loadingprogress_handler=null;if(this._percentText){this._percentText.Release();this._percentText=null}this._runtime.ReleaseLoadingLogoAsset();renderer.Start();if(this._splashTextures.logo){renderer.DeleteTexture(this._splashTextures.logo);this._splashTextures.logo=null}if(this._splashTextures.powered){renderer.DeleteTexture(this._splashTextures.powered);this._splashTextures.powered=null}if(this._splashTextures.website){renderer.DeleteTexture(this._splashTextures.website);
@@ -4091,51 +4091,6 @@ err)}}};
 
 {
 self["C3_Shaders"] = {};
-self["C3_Shaders"]["bulge"] = {
-	glsl: "varying mediump vec2 vTex;\nuniform lowp sampler2D samplerFront;\nuniform mediump vec2 srcOriginStart;\nuniform mediump vec2 srcOriginEnd;\nuniform mediump float radius;\nuniform mediump float scale;\nvoid main(void)\n{\nmediump vec2 srcOriginSize = srcOriginEnd - srcOriginStart;\nmediump vec2 tex = (vTex - srcOriginStart) / srcOriginSize;\nmediump float dist = distance(vec2(0.5, 0.5), tex);\ntex -= vec2(0.5, 0.5);\nif (dist < radius)\n{\nmediump float percent = 1.0 - ((radius - dist) / radius) * scale;\npercent = percent * percent;\ntex = tex * percent;\n}\ntex += vec2(0.5, 0.5);\ntex = clamp(tex, 0.0, 1.0);\t\t\t// ensure no sampling outside source rect\ntex = (tex * srcOriginSize) + srcOriginStart;\t// convert back relative to source rect\ngl_FragColor = texture2D(samplerFront, tex);\n}",
-	glslWebGL2: "",
-	wgsl: "%%SAMPLERFRONT_BINDING%% var samplerFront : sampler;\n%%TEXTUREFRONT_BINDING%% var textureFront : texture_2d<f32>;\nstruct ShaderParams {\nradius : f32,\nscale : f32\n};\n%%SHADERPARAMS_BINDING%% var<uniform> shaderParams : ShaderParams;\n%%C3PARAMS_STRUCT%%\n%%C3_UTILITY_FUNCTIONS%%\n%%FRAGMENTINPUT_STRUCT%%\n%%FRAGMENTOUTPUT_STRUCT%%\n@fragment\nfn main(input : FragmentInput) -> FragmentOutput\n{\nvar tex : vec2<f32> = c3_srcOriginToNorm(input.fragUV);\nvar dist : f32 = distance(vec2<f32>(0.5, 0.5), tex);\ntex = tex - 0.5;\nif (dist < shaderParams.radius)\n{\nvar percent : f32 = 1.0 - ((shaderParams.radius - dist) / shaderParams.radius) * shaderParams.scale;\npercent = percent * percent;\ntex = tex * percent;\n}\ntex = tex + 0.5;\ntex = c3_clamp2(tex, 0.0, 1.0);\t\t// ensure no sampling outside source rect\ntex = c3_normToSrcOrigin(tex);\t\t// convert back relative to source rect\nvar output : FragmentOutput;\noutput.color = textureSample(textureFront, samplerFront, tex);\nreturn output;\n}",
-	blendsBackground: false,
-	usesDepth: false,
-	extendBoxHorizontal: 0,
-	extendBoxVertical: 0,
-	crossSampling: false,
-	mustPreDraw: false,
-	preservesOpaqueness: false,
-	supports3dDirectRendering: false,
-	animated: false,
-	parameters: [["radius",0,"percent"],["scale",0,"percent"]]
-};
-self["C3_Shaders"]["blurhorizontal"] = {
-	glsl: "varying mediump vec2 vTex;\nuniform mediump sampler2D samplerFront;\nuniform mediump vec2 pixelSize;\nuniform mediump float intensity;\nvoid main(void)\n{\nmediump vec4 sum = vec4(0.0);\nmediump float pixelWidth = pixelSize.x;\nmediump float halfPixelWidth = pixelWidth / 2.0;\nsum += texture2D(samplerFront, vTex - vec2(pixelWidth * 7.0 + halfPixelWidth, 0.0)) * 0.06;\nsum += texture2D(samplerFront, vTex - vec2(pixelWidth * 5.0 + halfPixelWidth, 0.0)) * 0.10;\nsum += texture2D(samplerFront, vTex - vec2(pixelWidth * 3.0 + halfPixelWidth, 0.0)) * 0.13;\nsum += texture2D(samplerFront, vTex - vec2(pixelWidth * 1.0 + halfPixelWidth, 0.0)) * 0.16;\nmediump vec4 front = texture2D(samplerFront, vTex);\nsum += front * 0.10;\nsum += texture2D(samplerFront, vTex + vec2(pixelWidth * 1.0 + halfPixelWidth, 0.0)) * 0.16;\nsum += texture2D(samplerFront, vTex + vec2(pixelWidth * 3.0 + halfPixelWidth, 0.0)) * 0.13;\nsum += texture2D(samplerFront, vTex + vec2(pixelWidth * 5.0 + halfPixelWidth, 0.0)) * 0.10;\nsum += texture2D(samplerFront, vTex + vec2(pixelWidth * 7.0 + halfPixelWidth, 0.0)) * 0.06;\ngl_FragColor = mix(front, sum, intensity);\n}",
-	glslWebGL2: "",
-	wgsl: "%%SAMPLERFRONT_BINDING%% var samplerFront : sampler;\n%%TEXTUREFRONT_BINDING%% var textureFront : texture_2d<f32>;\nstruct ShaderParams {\nintensity : f32\n};\n%%SHADERPARAMS_BINDING%% var<uniform> shaderParams : ShaderParams;\n%%C3_UTILITY_FUNCTIONS%%\n%%FRAGMENTINPUT_STRUCT%%\n%%FRAGMENTOUTPUT_STRUCT%%\n@fragment\nfn main(input : FragmentInput) -> FragmentOutput\n{\nvar pixelWidth : f32 = c3_getPixelSize(textureFront).x;\nvar front : vec4<f32> = textureSample(textureFront, samplerFront, input.fragUV);\nvar sum : vec4<f32> =\ntextureSample(textureFront, samplerFront, input.fragUV - vec2<f32>(pixelWidth * 7.5, 0.0)) * 0.06 +\ntextureSample(textureFront, samplerFront, input.fragUV - vec2<f32>(pixelWidth * 5.5, 0.0)) * 0.10 +\ntextureSample(textureFront, samplerFront, input.fragUV - vec2<f32>(pixelWidth * 3.5, 0.0)) * 0.13 +\ntextureSample(textureFront, samplerFront, input.fragUV - vec2<f32>(pixelWidth * 1.5, 0.0)) * 0.16 +\nfront * 0.10 +\ntextureSample(textureFront, samplerFront, input.fragUV + vec2<f32>(pixelWidth * 1.5, 0.0)) * 0.16 +\ntextureSample(textureFront, samplerFront, input.fragUV + vec2<f32>(pixelWidth * 3.5, 0.0)) * 0.13 +\ntextureSample(textureFront, samplerFront, input.fragUV + vec2<f32>(pixelWidth * 5.5, 0.0)) * 0.10 +\ntextureSample(textureFront, samplerFront, input.fragUV + vec2<f32>(pixelWidth * 7.5, 0.0)) * 0.06;\nvar output : FragmentOutput;\noutput.color = mix(front, sum, shaderParams.intensity);\nreturn output;\n}",
-	blendsBackground: false,
-	usesDepth: false,
-	extendBoxHorizontal: 8,
-	extendBoxVertical: 0,
-	crossSampling: false,
-	mustPreDraw: false,
-	preservesOpaqueness: false,
-	supports3dDirectRendering: false,
-	animated: false,
-	parameters: [["intensity",0,"percent"]]
-};
-self["C3_Shaders"]["blurvertical"] = {
-	glsl: "varying mediump vec2 vTex;\nuniform mediump sampler2D samplerFront;\nuniform mediump vec2 pixelSize;\nuniform mediump float intensity;\nvoid main(void)\n{\nmediump vec4 sum = vec4(0.0);\nmediump float pixelHeight = pixelSize.y;\nmediump float halfPixelHeight = pixelHeight / 2.0;\nsum += texture2D(samplerFront, vTex - vec2(0.0, pixelHeight * 7.0 + halfPixelHeight)) * 0.06;\nsum += texture2D(samplerFront, vTex - vec2(0.0, pixelHeight * 5.0 + halfPixelHeight)) * 0.10;\nsum += texture2D(samplerFront, vTex - vec2(0.0, pixelHeight * 3.0 + halfPixelHeight)) * 0.13;\nsum += texture2D(samplerFront, vTex - vec2(0.0, pixelHeight * 1.0 + halfPixelHeight)) * 0.16;\nmediump vec4 front = texture2D(samplerFront, vTex);\nsum += front * 0.10;\nsum += texture2D(samplerFront, vTex + vec2(0.0, pixelHeight * 1.0 + halfPixelHeight)) * 0.16;\nsum += texture2D(samplerFront, vTex + vec2(0.0, pixelHeight * 3.0 + halfPixelHeight)) * 0.13;\nsum += texture2D(samplerFront, vTex + vec2(0.0, pixelHeight * 5.0 + halfPixelHeight)) * 0.10;\nsum += texture2D(samplerFront, vTex + vec2(0.0, pixelHeight * 7.0 + halfPixelHeight)) * 0.06;\ngl_FragColor = mix(front, sum, intensity);\n}",
-	glslWebGL2: "",
-	wgsl: "%%SAMPLERFRONT_BINDING%% var samplerFront : sampler;\n%%TEXTUREFRONT_BINDING%% var textureFront : texture_2d<f32>;\nstruct ShaderParams {\nintensity : f32\n};\n%%SHADERPARAMS_BINDING%% var<uniform> shaderParams : ShaderParams;\n%%C3_UTILITY_FUNCTIONS%%\n%%FRAGMENTINPUT_STRUCT%%\n%%FRAGMENTOUTPUT_STRUCT%%\n@fragment\nfn main(input : FragmentInput) -> FragmentOutput\n{\nvar pixelHeight : f32 = c3_getPixelSize(textureFront).y;\nvar front : vec4<f32> = textureSample(textureFront, samplerFront, input.fragUV);\nvar sum : vec4<f32> =\ntextureSample(textureFront, samplerFront, input.fragUV - vec2<f32>(0.0, pixelHeight * 7.5)) * 0.06 +\ntextureSample(textureFront, samplerFront, input.fragUV - vec2<f32>(0.0, pixelHeight * 5.5)) * 0.10 +\ntextureSample(textureFront, samplerFront, input.fragUV - vec2<f32>(0.0, pixelHeight * 3.5)) * 0.13 +\ntextureSample(textureFront, samplerFront, input.fragUV - vec2<f32>(0.0, pixelHeight * 1.5)) * 0.16 +\nfront * 0.10 +\ntextureSample(textureFront, samplerFront, input.fragUV + vec2<f32>(0.0, pixelHeight * 1.5)) * 0.16 +\ntextureSample(textureFront, samplerFront, input.fragUV + vec2<f32>(0.0, pixelHeight * 3.5)) * 0.13 +\ntextureSample(textureFront, samplerFront, input.fragUV + vec2<f32>(0.0, pixelHeight * 5.5)) * 0.10 +\ntextureSample(textureFront, samplerFront, input.fragUV + vec2<f32>(0.0, pixelHeight * 7.5)) * 0.06;\nvar output : FragmentOutput;\noutput.color = mix(front, sum, shaderParams.intensity);\nreturn output;\n}",
-	blendsBackground: false,
-	usesDepth: false,
-	extendBoxHorizontal: 0,
-	extendBoxVertical: 8,
-	crossSampling: false,
-	mustPreDraw: false,
-	preservesOpaqueness: false,
-	supports3dDirectRendering: false,
-	animated: false,
-	parameters: [["intensity",0,"percent"]]
-};
 
 }
 
@@ -4316,6 +4271,38 @@ index);return ret?ret.x:0},TagY(tag,index){const ret=this._GetTagPosition(tag,in
 }
 
 {
+'use strict';{const C3=self.C3;const DOM_COMPONENT_ID="button";C3.Plugins.Button=class ButtonPlugin extends C3.SDKDOMPluginBase{constructor(opts){super(opts,DOM_COMPONENT_ID);this.AddElementMessageHandler("click",(sdkInst,e)=>sdkInst._OnClick(e))}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.Button.Type=class ButtonType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const C3X=self.C3X;const TYPE=0;const TEXT=1;const TOOLTIP=2;const INITIALLY_VISIBLE=3;const ENABLE=4;const AUTO_FONT_SIZE=5;const CHECKED=6;const ID=7;const CLASS_NAME=8;const DOM_COMPONENT_ID="button";C3.Plugins.Button.Instance=class ButtonInstance extends C3.SDKDOMInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._text="OK";this._isCheckbox=false;this._isChecked=false;this._title="";this._id="";this._className="";this._isEnabled=true;this._autoFontSize=
+true;if(properties){this._isCheckbox=properties[TYPE]===1;this._text=properties[TEXT];this._title=properties[TOOLTIP];this.GetWorldInfo().SetVisible(properties[INITIALLY_VISIBLE]);this._isEnabled=properties[ENABLE];this._autoFontSize=properties[AUTO_FONT_SIZE];this._isChecked=properties[CHECKED];this._id=properties[ID];this._className=properties[CLASS_NAME]}this.CreateElement({"id":this._id,"className":this._className})}Release(){super.Release()}GetElementState(){return{"text":this._text,"isCheckbox":this._isCheckbox,
+"isChecked":this._isChecked,"title":this._title,"isVisible":this.GetWorldInfo().IsVisible(),"isEnabled":this._isEnabled}}async _OnClick(e){this._isChecked=e["isChecked"];this.DispatchScriptEvent("click",true);await this.TriggerAsync(C3.Plugins.Button.Cnds.OnClicked)}_SetText(text){if(this._text===text)return;this._text=text;this.UpdateElementState()}_GetText(){return this._text}_SetTooltip(title){if(this._title===title)return;this._title=title;this.UpdateElementState()}_GetTooltip(){return this._title}_SetEnabled(e){e=
+!!e;if(this._isEnabled===e)return;this._isEnabled=e;this.UpdateElementState()}_IsEnabled(){return this._isEnabled}_SetChecked(c){if(!this._isCheckbox)return;c=!!c;if(this._isChecked===c)return;this._isChecked=c;this.UpdateElementState()}_IsChecked(){return this._isChecked}Draw(renderer){}SaveToJson(){return{"text":this._text,"checked":this._isChecked,"title":this._title,"enabled":this._isEnabled}}LoadFromJson(o){this._text=o["text"];this._isChecked=o["checked"];this._title=o["title"];this._isEnabled=
+o["enabled"];this.UpdateElementState()}GetPropertyValueByIndex(index){switch(index){case TEXT:return this._GetText();case TOOLTIP:return this._GetTooltip();case ENABLE:return this._IsEnabled();case AUTO_FONT_SIZE:return this._autoFontSize;case CHECKED:return this._IsChecked()}}SetPropertyValueByIndex(index,value){switch(index){case TEXT:this._SetText(value);break;case TOOLTIP:this._SetTooltip(value);break;case ENABLE:this._SetEnabled(!!value);break;case AUTO_FONT_SIZE:this._autoFontSize=!!value;break;
+case CHECKED:this._SetChecked(!!value);break}}GetDebuggerProperties(){const prefix="plugins.button";return[{title:prefix+".name",properties:[{name:prefix+".properties.text.name",value:this._GetText(),onedit:v=>this._SetText(v)},{name:prefix+".properties.enabled.name",value:this._IsEnabled(),onedit:v=>this._SetEnabled(v)},{name:prefix+".properties.checked.name",value:this._IsChecked(),onedit:v=>this._SetChecked(v)}]}]}GetScriptInterfaceClass(){return self.IButtonInstance}};const map=new WeakMap;self.IButtonInstance=
+class IButtonInstance extends self.IDOMInstance{constructor(){super();map.set(this,self.IInstance._GetInitInst().GetSdkInstance())}set text(str){C3X.RequireString(str);map.get(this)._SetText(str)}get text(){return map.get(this)._GetText()}set tooltip(str){C3X.RequireString(str);map.get(this)._SetTooltip(str)}get tooltip(){return map.get(this)._GetTooltip()}set isEnabled(e){map.get(this)._SetEnabled(e)}get isEnabled(){return map.get(this)._IsEnabled()}set isChecked(c){map.get(this)._SetChecked(c)}get isChecked(){return map.get(this)._IsChecked()}}}
+{const C3=self.C3;C3.Plugins.Button.Cnds={OnClicked(){return true},IsChecked(){return this._isChecked},CompareText(str,caseSensitive){if(caseSensitive)return this._text===str;else return C3.equalsNoCase(this._text,str)}}}{const C3=self.C3;C3.Plugins.Button.Acts={SetText(text){this._SetText(text)},SetTooltip(title){this._SetTooltip(title)},SetChecked(c){this._SetChecked(c!==0)},ToggleChecked(){if(!this._isCheckbox)return;this._isChecked=!this._isChecked;this.UpdateElementState()}}}
+{const C3=self.C3;C3.Plugins.Button.Exps={Text(){return this._text}}};
+
+}
+
+{
+'use strict';{const C3=self.C3;const DOM_COMPONENT_ID="text-input";C3.Plugins.TextBox=class TextInputPlugin extends C3.SDKDOMPluginBase{constructor(opts){super(opts,DOM_COMPONENT_ID);this.AddElementMessageHandler("click",(sdkInst,e)=>sdkInst._OnClick(e));this.AddElementMessageHandler("dblclick",(sdkInst,e)=>sdkInst._OnDoubleClick(e));this.AddElementMessageHandler("change",(sdkInst,e)=>sdkInst._OnChange(e))}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.TextBox.Type=class TextInputType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const C3X=self.C3X;const TEXT=0;const PLACEHOLDER=1;const TOOLTIP=2;const INITIALLY_VISIBLE=3;const ENABLE=4;const READ_ONLY=5;const SPELL_CHECK=6;const TYPE=7;const AUTO_FONT_SIZE=8;const ID=9;const CLASS_NAME=10;const DOM_COMPONENT_ID="text-input";const elemTypes=["text","password","email","number","tel","url","textarea","search"];C3.Plugins.TextBox.Instance=class TextInputInstance extends C3.SDKDOMInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._text=
+"";this._placeholder="";this._title="";this._isEnabled=true;this._isReadOnly=false;this._spellCheck=false;this._type="text";this._autoFontSize=true;this._maxLength=-1;this._id="";this._className="";if(properties){this._text=properties[TEXT];this._placeholder=properties[PLACEHOLDER];this._title=properties[TOOLTIP];this.GetWorldInfo().SetVisible(properties[INITIALLY_VISIBLE]);this._isEnabled=properties[ENABLE];this._isReadOnly=properties[READ_ONLY];this._spellCheck=properties[SPELL_CHECK];this._type=
+elemTypes[properties[TYPE]];this._autoFontSize=properties[AUTO_FONT_SIZE];this._id=properties[ID];this._className=properties[CLASS_NAME]}this.CreateElement({"type":this._type,"id":this._id,"className":this._className})}Release(){super.Release()}GetElementState(){return{"text":this._text,"placeholder":this._placeholder,"title":this._title,"isEnabled":this._isEnabled,"isReadOnly":this._isReadOnly,"spellCheck":this._spellCheck,"maxLength":this._maxLength}}async _OnClick(e){this.DispatchScriptEvent("click",
+true);await this.TriggerAsync(C3.Plugins.TextBox.Cnds.OnClicked)}async _OnDoubleClick(e){this.DispatchScriptEvent("dblclick",true);await this.TriggerAsync(C3.Plugins.TextBox.Cnds.OnDoubleClicked)}async _OnChange(e){this._text=e["text"];this.DispatchScriptEvent("change",true);await this.TriggerAsync(C3.Plugins.TextBox.Cnds.OnTextChanged)}_SetText(text){if(this._text===text)return;this._text=text;this.UpdateElementState()}_GetText(){return this._text}_SetPlaceholder(placeholder){if(this._placeholder===
+placeholder)return;this._placeholder=placeholder;this.UpdateElementState()}_GetPlaceholder(){return this._placeholder}_SetTooltip(title){if(this._title===title)return;this._title=title;this.UpdateElementState()}_GetTooltip(){return this._title}_SetEnabled(e){e=!!e;if(this._isEnabled===e)return;this._isEnabled=e;this.UpdateElementState()}_IsEnabled(){return this._isEnabled}_SetReadOnly(r){r=!!r;if(this._isReadOnly===r)return;this._isReadOnly=r;this.UpdateElementState()}_IsReadOnly(){return this._isReadOnly}_SetMaxLength(l){l=
+Math.max(+l,-1);if(this._maxLength===l)return;this._maxLength=l;this.UpdateElementState()}_GetMaxLength(){return this._maxLength}_ScrollToBottom(){Promise.resolve().then(()=>this.PostToDOMElement("scroll-to-bottom"))}Draw(renderer){}SaveToJson(){return{"t":this._text,"p":this._placeholder,"ti":this._title,"e":this._isEnabled,"r":this._isReadOnly,"sp":this._spellCheck,"ml":this._maxLength,"type":this._type,"id":this._id}}LoadFromJson(o){this._text=o["t"];this._placeholder=o["p"];this._title=o["ti"];
+this._isEnabled=o["e"];this._isReadOnly=o["r"];this._spellCheck=o["sp"];this._maxLength=o.hasOwnProperty("ml")?o["ml"]:-1;this._type=o["type"];this._id=o["id"];this.UpdateElementState()}GetPropertyValueByIndex(index){switch(index){case TEXT:return this._text;case PLACEHOLDER:return this._placeholder;case TOOLTIP:return this._title;case ENABLE:return this._isEnabled;case READ_ONLY:return this._isReadOnly;case SPELL_CHECK:return this._spellCheck;case AUTO_FONT_SIZE:return this._autoFontSize}}SetPropertyValueByIndex(index,
+value){switch(index){case TEXT:if(this._text===value)return;this._text=value;this.UpdateElementState();break;case PLACEHOLDER:if(this._placeholder===value)return;this._placeholder=value;this.UpdateElementState();break;case TOOLTIP:if(this._title===value)return;this._title=value;this.UpdateElementState();break;case ENABLE:if(this._isEnabled===!!value)return;this._isEnabled=!!value;this.UpdateElementState();break;case READ_ONLY:if(this._isReadOnly===!!value)return;this._isReadOnly=!!value;this.UpdateElementState();
+break;case SPELL_CHECK:if(this._spellCheck===!!value)return;this._spellCheck=!!value;this.UpdateElementState();break;case AUTO_FONT_SIZE:this._autoFontSize=!!value;break}}GetDebuggerProperties(){const Acts=C3.Plugins.TextBox.Acts;const prefix="plugins.textbox";return[{title:prefix+".name",properties:[{name:prefix+".properties.text.name",value:this._text,onedit:v=>this.CallAction(Acts.SetText,v)},{name:prefix+".properties.enabled.name",value:this._isEnabled,onedit:v=>this.CallAction(Acts.SetEnabled,
+v)},{name:prefix+".properties.read-only.name",value:this._isReadOnly,onedit:v=>this.CallAction(Acts.SetReadOnly,v)}]}]}GetScriptInterfaceClass(){return self.ITextInputInstance}};const map=new WeakMap;self.ITextInputInstance=class ITextInputInstance extends self.IDOMInstance{constructor(){super();map.set(this,self.IInstance._GetInitInst().GetSdkInstance())}set text(str){C3X.RequireString(str);map.get(this)._SetText(str)}get text(){return map.get(this)._GetText()}set placeholder(str){C3X.RequireString(str);
+map.get(this)._SetPlaceholder(str)}get placeholder(){return map.get(this)._GetPlaceholder()}set tooltip(str){C3X.RequireString(str);map.get(this)._SetTooltip(str)}get tooltip(){return map.get(this)._GetTooltip()}set isEnabled(e){map.get(this)._SetEnabled(e)}get isEnabled(){return map.get(this)._IsEnabled()}set isReadOnly(r){map.get(this)._SetReadOnly(r)}get isReadOnly(){return map.get(this)._IsReadOnly()}set maxLength(l){C3X.RequireFiniteNumber(l);map.get(this)._SetMaxLength(l)}get maxLength(){return map.get(this)._GetMaxLength()}scrollToBottom(){map.get(this)._ScrollToBottom()}}}
+{const C3=self.C3;C3.Plugins.TextBox.Cnds={CompareText(text,case_){if(case_===0)return C3.equalsNoCase(this._text,text);else return this._text===text},OnTextChanged(){return true},OnClicked(){return true},OnDoubleClicked(){return true}}}
+{const C3=self.C3;C3.Plugins.TextBox.Acts={SetText(param){this._SetText(param.toString())},AppendText(param){if(param==="")return;this._SetText(this._GetText()+param)},SetPlaceholder(placeholder){this._SetPlaceholder(placeholder)},SetTooltip(title){this._SetTooltip(title)},SetReadOnly(r){this._SetReadOnly(r===0)},ScrollToBottom(){this._ScrollToBottom()},SetMaxLength(l){this._SetMaxLength(l)}}}{const C3=self.C3;C3.Plugins.TextBox.Exps={Text(){return this._GetText()},MaxLength(){return this._GetMaxLength()}}};
+
+}
+
+{
 'use strict';{const C3=self.C3;C3.Plugins.Sprite=class SpritePlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}
 {const C3=self.C3;const C3X=self.C3X;const spawnPickStack=[];C3.Plugins.Sprite.Type=class SpriteType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass);this._animations=objectClass.GetAnimations()}Release(){C3.clearArray(this._animations);super.Release()}OnCreate(){for(const a of this._animations)a.LoadAllAssets(this._runtime)}LoadTextures(renderer){const opts={sampling:this._runtime.GetSampling()};return Promise.all(this._animations.map(a=>a.LoadAllTextures(renderer,opts)))}ReleaseTextures(){for(const a of this._animations)a.ReleaseAllTextures()}OnDynamicTextureLoadComplete(){this._UpdateAllCurrentTexture()}_UpdateAllCurrentTexture(){for(const inst of this._objectClass.instancesIncludingPendingCreate())inst.GetSdkInstance()._UpdateCurrentTexture()}FinishCondition(doPick){C3.Plugins.Sprite.FinishCollisionCondition(this,
 doPick)}BeforeRunAction(method){spawnPickStack.push({objectClass:null,createHierarchy:false,instances:[]})}_SpawnPickInstance(objectClass,inst,createHierarchy){const entry=spawnPickStack.at(-1);entry.objectClass=objectClass;entry.createHierarchy=createHierarchy;entry.instances.push(inst)}AfterRunAction(method){const entry=spawnPickStack.pop();const objectClass=entry.objectClass;const createHierarchy=entry.createHierarchy;if(!objectClass)return;const pickMap=new Map;for(const inst of entry.instances)inst.CollectInstancesToPick(pickMap,
@@ -4379,91 +4366,163 @@ ImagePointCount(){return this.GetImagePointCount()},ImageWidth(){return this.Get
 }
 
 {
-'use strict';{const C3=self.C3;C3.Plugins.Touch=class TouchPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}
-{const C3=self.C3;const C3X=self.C3X;C3.Plugins.Touch.Type=class TouchType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}GetScriptInterfaceClass(){return self.ITouchObjectType}};let touchObjectType=null;function GetTouchSdkInstance(){return touchObjectType.GetSingleGlobalInstance().GetSdkInstance()}self.ITouchObjectType=class ITouchObjectType extends self.IObjectClass{constructor(objectType){super(objectType);touchObjectType=objectType;objectType.GetRuntime()._GetCommonScriptInterfaces().touch=
-this}requestPermission(type){C3X.RequireString(type);const touchInst=GetTouchSdkInstance();if(type==="orientation")return touchInst._RequestPermission(0);else if(type==="motion")return touchInst._RequestPermission(1);else throw new Error("invalid type");}}}
-{const C3=self.C3;const DOM_COMPONENT_ID="touch";C3.Plugins.Touch.Instance=class TouchInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._touches=new Map;this._useMouseInput=false;this._isMouseDown=false;this._orientCompassHeading=0;this._orientAlpha=0;this._orientBeta=0;this._orientGamma=0;this._accX=0;this._accY=0;this._accZ=0;this._accWithGX=0;this._accWithGY=0;this._accWithGZ=0;this._triggerIndex=0;this._triggerId=0;this._triggerPermission=0;this._curTouchX=
-0;this._curTouchY=0;this._getTouchIndex=0;this._triggerType=0;this._permissionPromises=[];if(properties)this._useMouseInput=properties[0];this.AddDOMMessageHandler("permission-result",e=>this._OnPermissionResult(e));const rt=this.GetRuntime().Dispatcher();this._disposables=new C3.CompositeDisposable(C3.Disposable.From(rt,"pointerdown",e=>this._OnPointerDown(e.data)),C3.Disposable.From(rt,"pointermove",e=>this._OnPointerMove(e.data)),C3.Disposable.From(rt,"pointerup",e=>this._OnPointerUp(e.data,false)),
-C3.Disposable.From(rt,"pointercancel",e=>this._OnPointerUp(e.data,true)),C3.Disposable.From(rt,"deviceorientation",e=>this._OnDeviceOrientation(e.data)),C3.Disposable.From(rt,"deviceorientationabsolute",e=>this._OnDeviceOrientationAbsolute(e.data)),C3.Disposable.From(rt,"devicemotion",e=>this._OnDeviceMotion(e.data)),C3.Disposable.From(rt,"tick2",e=>this._OnTick2()))}Release(){this._touches.clear();super.Release()}_OnPointerDown(e){if(e["pointerType"]==="mouse")if(this._useMouseInput)this._isMouseDown=
-true;else return;const pointerId=e["pointerId"];if(this._touches.has(pointerId))return;const x=e["pageX"]-this._runtime.GetCanvasClientX();const y=e["pageY"]-this._runtime.GetCanvasClientY();const nowTime=performance.now();const index=this._touches.size;this._triggerIndex=index;this._triggerId=pointerId;const touchInfo=C3.New(C3.Plugins.Touch.TouchInfo);touchInfo.Init(nowTime,x,y,pointerId,index);this._touches.set(pointerId,touchInfo);this.Trigger(C3.Plugins.Touch.Cnds.OnNthTouchStart);this.Trigger(C3.Plugins.Touch.Cnds.OnTouchStart);
-this._curTouchX=x;this._curTouchY=y;this._triggerType=0;this.Trigger(C3.Plugins.Touch.Cnds.OnTouchObject)}_OnPointerMove(e){if(e["pointerType"]==="mouse"&&!this._isMouseDown)return;const touchInfo=this._touches.get(e["pointerId"]);if(!touchInfo)return;const nowTime=performance.now();if(nowTime-touchInfo.GetTime()<2)return;const x=e["pageX"]-this._runtime.GetCanvasClientX();const y=e["pageY"]-this._runtime.GetCanvasClientY();touchInfo.Update(nowTime,x,y,e["width"],e["height"],e["pressure"])}_OnPointerUp(e,
-isCancel){if(e["pointerType"]==="mouse")if(this._isMouseDown)this._isMouseDown=false;else return;const nowTime=performance.now();const pointerId=e["pointerId"];const touchInfo=this._touches.get(pointerId);if(!touchInfo)return;this._triggerIndex=touchInfo.GetStartIndex();this._triggerId=touchInfo.GetId();if(!isCancel){const x=e["pageX"]-this._runtime.GetCanvasClientX();const y=e["pageY"]-this._runtime.GetCanvasClientY();this._curTouchX=x;this._curTouchY=y;this._triggerType=1;this.Trigger(C3.Plugins.Touch.Cnds.OnTouchObject)}this.Trigger(C3.Plugins.Touch.Cnds.OnNthTouchEnd);
-this.Trigger(C3.Plugins.Touch.Cnds.OnTouchEnd);if(!isCancel){const tap=touchInfo.ShouldTriggerTap(nowTime);if(tap==="single-tap"){this.Trigger(C3.Plugins.Touch.Cnds.OnTapGesture);this._curTouchX=touchInfo.GetX();this._curTouchY=touchInfo.GetY();this.Trigger(C3.Plugins.Touch.Cnds.OnTapGestureObject)}else if(tap==="double-tap"){this.Trigger(C3.Plugins.Touch.Cnds.OnDoubleTapGesture);this._curTouchX=touchInfo.GetX();this._curTouchY=touchInfo.GetY();this.Trigger(C3.Plugins.Touch.Cnds.OnDoubleTapGestureObject)}}touchInfo.Release();
-this._touches.delete(pointerId)}_RequestPermission(type){this._PostToDOMMaybeSync("request-permission",{"type":type});return new Promise((resolve,reject)=>{this._permissionPromises.push({type,resolve,reject})})}_OnPermissionResult(e){const isGranted=e["result"];const type=e["type"];this._triggerPermission=type;const toResolve=this._permissionPromises.filter(o=>o.type===type);for(const o of toResolve)o.resolve(isGranted?"granted":"denied");this._permissionPromises=this._permissionPromises.filter(o=>
-o.type!==type);if(isGranted){this.Trigger(C3.Plugins.Touch.Cnds.OnPermissionGranted);if(type===0)this._runtime.RequestDeviceOrientationEvent();else this._runtime.RequestDeviceMotionEvent()}else this.Trigger(C3.Plugins.Touch.Cnds.OnPermissionDenied)}_OnDeviceOrientation(e){if(typeof e["webkitCompassHeading"]==="number")this._orientCompassHeading=e["webkitCompassHeading"];else if(e["absolute"])this._orientCompassHeading=e["alpha"];this._orientAlpha=e["alpha"];this._orientBeta=e["beta"];this._orientGamma=
-e["gamma"]}_OnDeviceOrientationAbsolute(e){this._orientCompassHeading=e["alpha"]}_OnDeviceMotion(e){const acc=e["acceleration"];if(acc){this._accX=acc["x"];this._accY=acc["y"];this._accZ=acc["z"]}const withG=e["accelerationIncludingGravity"];if(withG){this._accWithGX=withG["x"];this._accWithGY=withG["y"];this._accWithGZ=withG["z"]}}_OnTick2(){const nowTime=performance.now();let index=0;for(const touchInfo of this._touches.values()){if(touchInfo.GetTime()<=nowTime-50)touchInfo._SetLastTime(nowTime);
-if(touchInfo.ShouldTriggerHold(nowTime)){this._triggerIndex=touchInfo.GetStartIndex();this._triggerId=touchInfo.GetId();this._getTouchIndex=index;this.Trigger(C3.Plugins.Touch.Cnds.OnHoldGesture);this._curTouchX=touchInfo.GetX();this._curTouchY=touchInfo.GetY();this.Trigger(C3.Plugins.Touch.Cnds.OnHoldGestureObject);this._getTouchIndex=0}++index}}_GetTouchByIndex(index){index=Math.floor(index);for(const touchInfo of this._touches.values()){if(index===0)return touchInfo;--index}return null}_IsClientPosOnCanvas(touchX,
-touchY){return touchX>=0&&touchY>=0&&touchX<this._runtime.GetCanvasCssWidth()&&touchY<this._runtime.GetCanvasCssHeight()}GetDebuggerProperties(){const prefix="plugins.touch.debugger";return[{title:prefix+".touches",properties:[...this._touches.values()].map(ti=>({name:"$"+ti.GetId(),value:ti.GetX()+", "+ti.GetY()}))}]}}}
-{const C3=self.C3;const tempArr=[];C3.Plugins.Touch.Cnds={OnTouchStart(){return true},OnTouchEnd(){return true},IsInTouch(){return this._touches.size>0},OnTouchObject(objectClass,type){if(!objectClass)return false;if(type!==this._triggerType)return false;if(!this._IsClientPosOnCanvas(this._curTouchX,this._curTouchY))return false;return this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(objectClass,[[this._curTouchX,this._curTouchY]],false)},IsTouchingObject(objectClass){if(!objectClass)return false;
-const cnd=this._runtime.GetCurrentCondition();const isInverted=cnd.IsInverted();const ptsArr=[...this._touches.values()].filter(ti=>this._IsClientPosOnCanvas(ti.GetX(),ti.GetY())).map(ti=>[ti.GetX(),ti.GetY()]);return C3.xor(this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(objectClass,ptsArr,isInverted),isInverted)},CompareTouchSpeed(index,cmp,s){const touchInfo=this._GetTouchByIndex(index);if(!touchInfo)return false;return C3.compare(touchInfo.GetSpeed(),cmp,s)},OrientationSupported(){return true},
-MotionSupported(){return true},CompareOrientation(orientation,cmp,a){this._runtime.RequestDeviceOrientationEvent();let v=0;if(orientation===0)v=this._orientAlpha;else if(orientation===1)v=this._orientBeta;else v=this._orientGamma;return C3.compare(v,cmp,a)},CompareAcceleration(a,cmp,x){this._runtime.RequestDeviceMotionEvent();let v=0;if(a===0)v=this._accWithGX;else if(a===1)v=this._accWithGY;else if(a===2)v=this._accWithGZ;else if(a===3)v=this._accX;else if(a===4)v=this._accY;else v=this._accZ;return C3.compare(v,
-cmp,x)},OnNthTouchStart(index){index=Math.floor(index);return index===this._triggerIndex},OnNthTouchEnd(index){index=Math.floor(index);return index===this._triggerIndex},HasNthTouch(index){index=Math.floor(index);return this._touches.size>=index+1},OnHoldGesture(){return true},OnTapGesture(){return true},OnDoubleTapGesture(){return true},OnHoldGestureObject(objectClass){if(!objectClass)return false;if(!this._IsClientPosOnCanvas(this._curTouchX,this._curTouchY))return false;return this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(objectClass,
-[[this._curTouchX,this._curTouchY]],false)},OnTapGestureObject(objectClass){if(!objectClass)return false;if(!this._IsClientPosOnCanvas(this._curTouchX,this._curTouchY))return false;return this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(objectClass,[[this._curTouchX,this._curTouchY]],false)},OnDoubleTapGestureObject(objectClass){if(!objectClass)return false;if(!this._IsClientPosOnCanvas(this._curTouchX,this._curTouchY))return false;return this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(objectClass,
-[[this._curTouchX,this._curTouchY]],false)},OnPermissionGranted(type){return this._triggerPermission===type},OnPermissionDenied(type){return this._triggerPermission===type}}}{const C3=self.C3;C3.Plugins.Touch.Acts={RequestPermission(type){this._RequestPermission(type)}}}
-{const C3=self.C3;C3.Plugins.Touch.Exps={TouchCount(){return this._touches.size},X(layerParam){const touchInfo=this._GetTouchByIndex(this._getTouchIndex);if(!touchInfo)return 0;return touchInfo.GetPositionForLayer(this._runtime.GetCurrentLayout(),layerParam,true)},Y(layerParam){const touchInfo=this._GetTouchByIndex(this._getTouchIndex);if(!touchInfo)return 0;return touchInfo.GetPositionForLayer(this._runtime.GetCurrentLayout(),layerParam,false)},XAt(index,layerParam){const touchInfo=this._GetTouchByIndex(index);
-if(!touchInfo)return 0;return touchInfo.GetPositionForLayer(this._runtime.GetCurrentLayout(),layerParam,true)},YAt(index,layerParam){const touchInfo=this._GetTouchByIndex(index);if(!touchInfo)return 0;return touchInfo.GetPositionForLayer(this._runtime.GetCurrentLayout(),layerParam,false)},XForID(id,layerParam){const touchInfo=this._touches.get(id);if(!touchInfo)return 0;return touchInfo.GetPositionForLayer(this._runtime.GetCurrentLayout(),layerParam,true)},YForID(id,layerParam){const touchInfo=this._touches.get(id);
-if(!touchInfo)return 0;return touchInfo.GetPositionForLayer(this._runtime.GetCurrentLayout(),layerParam,false)},AbsoluteX(){const touchInfo=this._GetTouchByIndex(0);if(touchInfo)return touchInfo.GetX();else return 0},AbsoluteY(){const touchInfo=this._GetTouchByIndex(0);if(touchInfo)return touchInfo.GetY();else return 0},AbsoluteXAt(index){const touchInfo=this._GetTouchByIndex(index);if(touchInfo)return touchInfo.GetX();else return 0},AbsoluteYAt(index){const touchInfo=this._GetTouchByIndex(index);
-if(touchInfo)return touchInfo.GetY();else return 0},AbsoluteXForID(id){const touchInfo=this._touches.get(id);if(touchInfo)return touchInfo.GetX();else return 0},AbsoluteYForID(id){const touchInfo=this._touches.get(id);if(touchInfo)return touchInfo.GetY();else return 0},SpeedAt(index){const touchInfo=this._GetTouchByIndex(index);if(touchInfo)return touchInfo.GetSpeed();else return 0},SpeedForID(id){const touchInfo=this._touches.get(id);if(touchInfo)return touchInfo.GetSpeed();else return 0},AngleAt(index){const touchInfo=
-this._GetTouchByIndex(index);if(touchInfo)return C3.toDegrees(touchInfo.GetAngle());else return 0},AngleForID(id){const touchInfo=this._touches.get(id);if(touchInfo)return C3.toDegrees(touchInfo.GetAngle());else return 0},CompassHeading(){this._runtime.RequestDeviceOrientationEvent();return this._orientCompassHeading},Alpha(){this._runtime.RequestDeviceOrientationEvent();return this._orientAlpha},Beta(){this._runtime.RequestDeviceOrientationEvent();return this._orientBeta},Gamma(){this._runtime.RequestDeviceOrientationEvent();
-return this._orientGamma},AccelerationXWithG(){this._runtime.RequestDeviceMotionEvent();return this._accWithGX},AccelerationYWithG(){this._runtime.RequestDeviceMotionEvent();return this._accWithGY},AccelerationZWithG(){this._runtime.RequestDeviceMotionEvent();return this._accWithGZ},AccelerationX(){this._runtime.RequestDeviceMotionEvent();return this._accX},AccelerationY(){this._runtime.RequestDeviceMotionEvent();return this._accY},AccelerationZ(){this._runtime.RequestDeviceMotionEvent();return this._accZ},
-TouchIndex(){return this._triggerIndex},TouchID(){return this._triggerId},WidthForID(id){const touchInfo=this._touches.get(id);if(touchInfo)return touchInfo.GetWidth();else return 0},HeightForID(id){const touchInfo=this._touches.get(id);if(touchInfo)return touchInfo.GetHeight();else return 0},PressureForID(id){const touchInfo=this._touches.get(id);if(touchInfo)return touchInfo.GetPressure();else return 0}}};
+'use strict';{const C3=self.C3;C3.Plugins.Mouse=class MousePlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}
+{const C3=self.C3;const C3X=self.C3X;C3.Plugins.Mouse.Type=class MouseType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}GetScriptInterfaceClass(){return self.IMouseObjectType}};let mouseObjectType=null;function GetMouseSdkInstance(){return mouseObjectType.GetSingleGlobalInstance().GetSdkInstance()}self.IMouseObjectType=class IMouseObjectType extends self.IObjectClass{constructor(objectType){super(objectType);mouseObjectType=objectType;objectType.GetRuntime()._GetCommonScriptInterfaces().mouse=
+this}getMouseX(layerNameOrNumber){return GetMouseSdkInstance().GetMousePositionForLayer(layerNameOrNumber)[0]}getMouseY(layerNameOrNumber){return GetMouseSdkInstance().GetMousePositionForLayer(layerNameOrNumber)[1]}getMousePosition(layerNameOrNumber){return GetMouseSdkInstance().GetMousePositionForLayer(layerNameOrNumber)}isMouseButtonDown(button){return GetMouseSdkInstance().IsMouseButtonDown(button)}setCursorStyle(cursorStyle){C3X.RequireString(cursorStyle);GetMouseSdkInstance().SetCursorStyle(cursorStyle)}setCursorObjectClass(iObjectClass){const sdkInst=
+GetMouseSdkInstance();const runtime=sdkInst.GetRuntime();const objectClass=runtime._UnwrapIObjectClass(iObjectClass);sdkInst.SetCursorObjectClass(objectClass)}}}
+{const C3=self.C3;const DOM_COMPONENT_ID="mouse";let lastSetCursor=null;C3.Plugins.Mouse.Instance=class MouseInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._buttonMap=[false,false,false,false,false];this._mouseXcanvas=0;this._mouseYcanvas=0;this._triggerButton=0;this._triggerType=0;this._triggerDir=0;this._wheelDeltaX=0;this._wheelDeltaY=0;this._wheelDeltaZ=0;this._hasPointerLock=false;this._movementX=0;this._movementY=0;this.AddDOMMessageHandlers([["pointer-lock-change",
+e=>this._OnPointerLockChange(e)],["pointer-lock-error",e=>this._OnPointerLockError(e)]]);const rt=this.GetRuntime().Dispatcher();this._disposables=new C3.CompositeDisposable(C3.Disposable.From(rt,"pointermove",e=>this._OnPointerMove(e.data)),C3.Disposable.From(rt,"pointerdown",e=>this._OnPointerDown(e.data)),C3.Disposable.From(rt,"pointerup",e=>this._OnPointerUp(e.data)),C3.Disposable.From(rt,"dblclick",e=>this._OnDoubleClick(e.data)),C3.Disposable.From(rt,"wheel",e=>this._OnMouseWheel(e.data)),C3.Disposable.From(rt,
+"window-blur",()=>this._OnWindowBlur()))}Release(){super.Release()}_OnPointerDown(e){if(e["pointerType"]!=="mouse")return;this._mouseXcanvas=e["pageX"]-this._runtime.GetCanvasClientX();this._mouseYcanvas=e["pageY"]-this._runtime.GetCanvasClientY();this._CheckButtonChanges(e["lastButtons"],e["buttons"])}_OnPointerMove(e){this._movementX=e["movementX"];this._movementY=e["movementY"];this.Trigger(C3.Plugins.Mouse.Cnds.OnMovement);this._movementX=0;this._movementY=0;if(e["pointerType"]!=="mouse")return;
+this._mouseXcanvas=e["pageX"]-this._runtime.GetCanvasClientX();this._mouseYcanvas=e["pageY"]-this._runtime.GetCanvasClientY();this._CheckButtonChanges(e["lastButtons"],e["buttons"])}_OnPointerUp(e){if(e["pointerType"]!=="mouse")return;this._CheckButtonChanges(e["lastButtons"],e["buttons"])}_CheckButtonChanges(lastButtons,buttons){this._CheckButtonChange(lastButtons,buttons,1,0);this._CheckButtonChange(lastButtons,buttons,4,1);this._CheckButtonChange(lastButtons,buttons,2,2);this._CheckButtonChange(lastButtons,
+buttons,8,3);this._CheckButtonChange(lastButtons,buttons,16,4)}_CheckButtonChange(lastButtons,buttons,checkButtonFlag,resultButton){if(!(lastButtons&checkButtonFlag)&&buttons&checkButtonFlag)this._OnMouseDown(resultButton);else if(lastButtons&checkButtonFlag&&!(buttons&checkButtonFlag))this._OnMouseUp(resultButton)}_OnMouseDown(button){this._buttonMap[button]=true;this.Trigger(C3.Plugins.Mouse.Cnds.OnAnyClick);this._triggerButton=button;this._triggerType=0;this.Trigger(C3.Plugins.Mouse.Cnds.OnClick);
+this.Trigger(C3.Plugins.Mouse.Cnds.OnObjectClicked)}_OnMouseUp(button){if(!this._buttonMap[button])return;this._buttonMap[button]=false;this._triggerButton=button;this.Trigger(C3.Plugins.Mouse.Cnds.OnRelease)}_OnDoubleClick(e){this._triggerButton=e["button"];this._triggerType=1;this.Trigger(C3.Plugins.Mouse.Cnds.OnClick);this.Trigger(C3.Plugins.Mouse.Cnds.OnObjectClicked)}_OnMouseWheel(e){this._triggerDir=e["deltaY"]<0?1:0;this._wheelDeltaX=e["deltaX"];this._wheelDeltaY=e["deltaY"];this._wheelDeltaZ=
+e["deltaZ"];this.Trigger(C3.Plugins.Mouse.Cnds.OnWheel)}_OnWindowBlur(){for(let i=0,len=this._buttonMap.length;i<len;++i){if(!this._buttonMap[i])return;this._buttonMap[i]=false;this._triggerButton=i;this.Trigger(C3.Plugins.Mouse.Cnds.OnRelease)}}GetMousePositionForLayer(layerNameOrNumber){const layout=this._runtime.GetMainRunningLayout();const x=this._mouseXcanvas;const y=this._mouseYcanvas;if(typeof layerNameOrNumber==="undefined"){const layer=layout.GetLayerByIndex(0);return layer.CanvasCssToLayer_DefaultTransform(x,
+y)}else{const layer=layout.GetLayer(layerNameOrNumber);if(layer)return layer.CanvasCssToLayer(x,y);else return[0,0]}}IsMouseButtonDown(button){button=Math.floor(button);return!!this._buttonMap[button]}_IsMouseOverCanvas(){return this._mouseXcanvas>=0&&this._mouseYcanvas>=0&&this._mouseXcanvas<this._runtime.GetCanvasCssWidth()&&this._mouseYcanvas<this._runtime.GetCanvasCssHeight()}SetCursorStyle(cursorStyle){if(lastSetCursor===cursorStyle)return;lastSetCursor=cursorStyle;this.PostToDOM("cursor",cursorStyle)}async SetCursorObjectClass(objectClass){if(C3.Platform.IsMobile||
+!objectClass)return;const inst=objectClass.GetFirstPicked();if(!inst)return;const wi=inst.GetWorldInfo();const imageInfo=inst.GetCurrentImageInfo();if(!wi||!imageInfo)return;if(lastSetCursor===imageInfo)return;lastSetCursor=imageInfo;const blobUrl=await imageInfo.ExtractImageToBlobURL();const cursorStyle=`url(${blobUrl}) ${Math.round(wi.GetOriginX()*imageInfo.GetWidth())} ${Math.round(wi.GetOriginY()*imageInfo.GetHeight())}, auto`;this.PostToDOM("cursor",cursorStyle)}_OnPointerLockChange(e){this._UpdatePointerLockState(e["has-pointer-lock"])}_OnPointerLockError(e){this._UpdatePointerLockState(e["has-pointer-lock"]);
+this.Trigger(C3.Plugins.Mouse.Cnds.OnPointerLockError)}_UpdatePointerLockState(hasPointerLock){if(this._hasPointerLock===hasPointerLock)return;this._hasPointerLock=hasPointerLock;if(this._hasPointerLock)this.Trigger(C3.Plugins.Mouse.Cnds.OnPointerLocked);else this.Trigger(C3.Plugins.Mouse.Cnds.OnPointerUnlocked)}GetDebuggerProperties(){const prefix="plugins.mouse";return[{title:prefix+".name",properties:[{name:prefix+".debugger.absolute-position",value:this._mouseXcanvas+","+this._mouseYcanvas},{name:prefix+
+".debugger.left-button",value:this._buttonMap[0]},{name:prefix+".debugger.middle-button",value:this._buttonMap[1]},{name:prefix+".debugger.right-button",value:this._buttonMap[2]},{name:prefix+".debugger.button-4",value:this._buttonMap[3]},{name:prefix+".debugger.button-5",value:this._buttonMap[4]}]},{title:prefix+".debugger.position-on-each-layer",properties:this._runtime.GetMainRunningLayout().GetLayers().map(layer=>({name:"$"+layer.GetName(),value:layer.CanvasCssToLayer(this._mouseXcanvas,this._mouseYcanvas).join(", ")}))}]}}}
+{const C3=self.C3;C3.Plugins.Mouse.Cnds={OnClick(button,type){return this._triggerButton===button&&this._triggerType===type},OnAnyClick(){return true},IsButtonDown(button){return this._buttonMap[button]},OnRelease(button){return this._triggerButton===button},IsOverObject(objectClass){const cnd=this._runtime.GetCurrentCondition();const isInverted=cnd.IsInverted();const ptsArr=[];if(this._IsMouseOverCanvas())ptsArr.push([this._mouseXcanvas,this._mouseYcanvas]);return C3.xor(this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(objectClass,
+ptsArr,isInverted),isInverted)},OnObjectClicked(button,type,objectClass){if(button!==this._triggerButton||type!==this._triggerType)return false;if(!this._IsMouseOverCanvas())return false;const mx=this._mouseXcanvas;const my=this._mouseYcanvas;return this._runtime.GetCollisionEngine().TestAndSelectCanvasPointOverlap(objectClass,[[mx,my]],false)},OnWheel(dir){return dir===2||this._triggerDir===dir},OnPointerLocked(){return true},OnPointerUnlocked(){return true},OnPointerLockError(){return true},HasPointerLock(){return this._hasPointerLock},
+OnMovement(){return true}}}{const C3=self.C3;const CURSOR_STYLES=["auto","pointer","text","crosshair","move","help","wait","none"];C3.Plugins.Mouse.Acts={SetCursor(c){this.SetCursorStyle(CURSOR_STYLES[c])},SetCursorSprite(objectClass){this.SetCursorObjectClass(objectClass)},RequestPointerLock(){this._PostToDOMMaybeSync("request-pointer-lock")},ReleasePointerLock(){this.PostToDOM("release-pointer-lock")}}}
+{const C3=self.C3;C3.Plugins.Mouse.Exps={X(layerParam){return this.GetMousePositionForLayer(layerParam)[0]},Y(layerParam){return this.GetMousePositionForLayer(layerParam)[1]},AbsoluteX(){return this._mouseXcanvas},AbsoluteY(){return this._mouseYcanvas},MovementX(){return this._movementX},MovementY(){return this._movementY},WheelDeltaX(){return this._wheelDeltaX},WheelDeltaY(){return this._wheelDeltaY},WheelDeltaZ(){return this._wheelDeltaZ}}};
 
 }
 
 {
-'use strict';const C3=self.C3;const GESTURE_HOLD_THRESHOLD=15;const GESTURE_HOLD_TIMEOUT=500;const GESTURE_TAP_TIMEOUT=333;const GESTURE_DOUBLETAP_THRESHOLD=25;let lastTapX=-1E3;let lastTapY=-1E3;let lastTapTime=-1E4;
-C3.Plugins.Touch.TouchInfo=class TouchInfo extends C3.DefendedBase{constructor(){super();this._pointerId=0;this._startIndex=0;this._startTime=0;this._time=0;this._lastTime=0;this._startX=0;this._startY=0;this._x=0;this._y=0;this._lastX=0;this._lastY=0;this._width=0;this._height=0;this._pressure=0;this._hasTriggeredHold=false;this._isTooFarForHold=false}Release(){}Init(nowTime,x,y,id,index){this._pointerId=id;this._startIndex=index;this._time=nowTime;this._lastTime=nowTime;this._startTime=nowTime;
-this._startX=x;this._startY=y;this._x=x;this._y=y;this._lastX=x;this._lastY=y}Update(nowTime,x,y,width,height,pressure){this._lastTime=this._time;this._time=nowTime;this._lastX=this._x;this._lastY=this._y;this._x=x;this._y=y;this._width=width;this._height=height;this._pressure=pressure;if(!this._isTooFarForHold&&C3.distanceTo(this._startX,this._startY,this._x,this._y)>=GESTURE_HOLD_THRESHOLD)this._isTooFarForHold=true}GetId(){return this._pointerId}GetStartIndex(){return this._startIndex}GetTime(){return this._time}_SetLastTime(t){this._lastTime=
-t}GetX(){return this._x}GetY(){return this._y}GetSpeed(){const dist=C3.distanceTo(this._x,this._y,this._lastX,this._lastY);const dt=(this._time-this._lastTime)/1E3;if(dt>0)return dist/dt;else return 0}GetAngle(){return C3.angleTo(this._lastX,this._lastY,this._x,this._y)}GetWidth(){return this._width}GetHeight(){return this._height}GetPressure(){return this._pressure}ShouldTriggerHold(nowTime){if(this._hasTriggeredHold)return false;if(nowTime-this._startTime>=GESTURE_HOLD_TIMEOUT&&!this._isTooFarForHold&&
-C3.distanceTo(this._startX,this._startY,this._x,this._y)<GESTURE_HOLD_THRESHOLD){this._hasTriggeredHold=true;return true}return false}ShouldTriggerTap(nowTime){if(this._hasTriggeredHold)return"";if(nowTime-this._startTime<=GESTURE_TAP_TIMEOUT&&!this._isTooFarForHold&&C3.distanceTo(this._startX,this._startY,this._x,this._y)<GESTURE_HOLD_THRESHOLD)if(nowTime-lastTapTime<=GESTURE_TAP_TIMEOUT*2&&C3.distanceTo(lastTapX,lastTapY,this._x,this._y)<GESTURE_DOUBLETAP_THRESHOLD){lastTapX=-1E3;lastTapY=-1E3;
-lastTapTime=-1E4;return"double-tap"}else{lastTapX=this._x;lastTapY=this._y;lastTapTime=nowTime;return"single-tap"}return""}GetPositionForLayer(layout,layerNameOrNumber,getx){if(typeof layerNameOrNumber==="undefined"){const layer=layout.GetLayerByIndex(0);return layer.CanvasCssToLayer_DefaultTransform(this._x,this._y)[getx?0:1]}else{const layer=layout.GetLayer(layerNameOrNumber);if(layer)return layer.CanvasCssToLayer(this._x,this._y)[getx?0:1];else return 0}}};
+'use strict';{const C3=self.C3;C3.Plugins.Multiplayer=class MultiplayerPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}
+{const C3=self.C3;const C3X=self.C3X;C3.Plugins.Multiplayer.Type=class MultiplayerType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}GetScriptInterfaceClass(){return self.IMultiplayerObjectType}};let multiplayerObjectType=null;function GetSdkInstance(){return multiplayerObjectType.GetSingleGlobalInstance().GetSdkInstance()}const VALID_ROOM_LIST_TYPES=new Set(["all","unlocked","available"]);class MultiplayerSignallingState{constructor(){}addEventListener(type,
+func){C3X.RequireString(type);C3X.RequireFunction(func);GetSdkInstance()._GetSignallingScriptDispatcher().addEventListener(type,func)}removeEventListener(type,func){C3X.RequireString(type);C3X.RequireFunction(func);GetSdkInstance()._GetSignallingScriptDispatcher().removeEventListener(type,func)}async connect(url="wss://multiplayer.construct.net"){C3X.RequireString(url);const sdkInst=GetSdkInstance();await sdkInst._SignallingConnect(url);return{myId:sdkInst._GetMyId(),serverVersion:sdkInst._GetSignallingVersion(),
+serverName:sdkInst._GetSignallingName(),serverOperator:sdkInst._GetSignallingOperator(),serverMOTD:sdkInst._GetSignallingMOTD()}}get isConnected(){return GetSdkInstance()._SignallingIsConnected()}disconnect(){GetSdkInstance()._SignallingDisconnect()}addICEServer(url,username,credential){C3X.RequireString(url);C3X.RequireOptionalString(username);C3X.RequireOptionalString(credential);GetSdkInstance()._AddICEServer(url,username,credential)}async login(alias){C3X.RequireString(alias);const sdkInst=GetSdkInstance();
+await sdkInst._SignallingLogin(alias);return{myAlias:sdkInst._GetMyAlias()}}get isLoggedIn(){return GetSdkInstance()._SignallingIsLoggedIn()}async joinRoom(game,instance,room,maxClients=0){C3X.RequireString(game);C3X.RequireString(instance);C3X.RequireString(room);C3X.RequireFiniteNumber(maxClients);const sdkInst=GetSdkInstance();await sdkInst._SignallingJoinRoom(game,instance,room,maxClients);return{isHost:sdkInst._SignallingIsHost(),hostId:sdkInst._GetHostId(),hostAlias:sdkInst._GetHostAlias()}}async autoJoinRoom(game,
+instance,room,maxClients=2,isLocking=true){C3X.RequireString(game);C3X.RequireString(instance);C3X.RequireString(room);C3X.RequireFiniteNumber(maxClients);const sdkInst=GetSdkInstance();await sdkInst._SignallingAutoJoinRoom(game,instance,room,maxClients,isLocking);return{isHost:sdkInst._SignallingIsHost(),hostId:sdkInst._GetHostId(),hostAlias:sdkInst._GetHostAlias(),room:sdkInst._GetCurrentRoom()}}async leaveRoom(){await GetSdkInstance()._SignallingLeaveRoom()}async requestGameInstanceList(game){C3X.RequireString(game);
+const sdkInst=GetSdkInstance();await sdkInst._SignallingRequestGameInstanceList(game);return sdkInst._GetGameInstanceList().map(o=>({name:o["name"],peerCount:o["peercount"]}))}async requestRoomList(game,instance,type="all"){C3X.RequireString(game);C3X.RequireString(instance);if(!VALID_ROOM_LIST_TYPES.has(type))throw new Error("invalid type");const sdkInst=GetSdkInstance();await sdkInst._SignallingRequestRoomList(game,instance,type);return sdkInst._GetRoomInstanceList().map(o=>({name:o["name"],peerCount:o["peercount"],
+maxPeerCount:o["maxpeercount"],state:o["state"]}))}}class MultiplayerStats{constructor(){}get outboundCount(){return GetSdkInstance()._StatOutboundCount()}get outboundBandwidth(){return GetSdkInstance()._StatOutboundBandwidth()}get outboundDecompressedBandwidth(){return GetSdkInstance()._StatOutboundDecompressedBandwidth()}get inboundCount(){return GetSdkInstance()._StatInboundCount()}get inboundBandwidth(){return GetSdkInstance()._StatInboundBandwidth()}get inboundDecompressedBandwidth(){return GetSdkInstance()._StatInboundDecompressedBandwidth()}}
+const VALID_TRANSMISSION_MODES=new Set(["o","r","u"]);self.IMultiplayerObjectType=class IMultiplayerObjectType extends self.IObjectClass{constructor(objectType){super(objectType);multiplayerObjectType=objectType;const descriptors={signalling:{value:new MultiplayerSignallingState,writable:false},stats:{value:new MultiplayerStats,writable:false}};Object.defineProperties(this,descriptors)}get isHost(){return GetSdkInstance()._SignallingIsHost()}get myAlias(){return GetSdkInstance()._GetMyAlias()}get myId(){return GetSdkInstance()._GetMyId()}get hostAlias(){return GetSdkInstance()._GetHostAlias()}get hostId(){return GetSdkInstance()._GetHostId()}get currentGame(){return GetSdkInstance()._GetCurrentGame()}get currentGameInstance(){return GetSdkInstance()._GetCurrentGameInstance()}get currentRoom(){return GetSdkInstance()._GetCurrentRoom()}get peerCount(){return GetSdkInstance()._GetAllPeers().length}getAllPeers(){return GetSdkInstance()._GetAllPeers().map(p=>
+p.GetScriptInterface())}getPeerById(id){C3X.RequireString(id);const ret=GetSdkInstance()._GetPeerById(id);return ret?ret.GetScriptInterface():null}sendPeerMessage(peerId,message,transmissionMode="o"){C3X.RequireString(peerId);if(typeof message!=="string"&&typeof message!=="object"&&!(message instanceof ArrayBuffer))throw new TypeError("invalid message");if(!VALID_TRANSMISSION_MODES.has(transmissionMode))throw new Error("invalid transmission mode");GetSdkInstance()._SendPeerMessage(peerId,null,message,
+transmissionMode,"s")}hostBroadcastMessage(fromId,message,transmissionMode="o"){C3X.RequireOptionalString(fromId);if(typeof message!=="string"&&typeof message!=="object"&&!(message instanceof ArrayBuffer))throw new TypeError("invalid message");if(!VALID_TRANSMISSION_MODES.has(transmissionMode))throw new Error("invalid transmission mode");GetSdkInstance()._HostBroadcastMessage(fromId,null,message,transmissionMode,"s")}disconnectRoom(){GetSdkInstance()._DisconnectRoom()}simulateLatency(latency,pdv,
+loss){GetSdkInstance()._SimulateLatency(latency,pdv,loss)}}}
+{const C3=self.C3;const DOM_COMPONENT_ID="multiplayer";C3.Plugins.Multiplayer.Instance=class MultiplayerInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._isSupported=false;this._errorMessage="";this._signallingUrl="";this._sigservInfo={"protocolrev":0,"version":0,"name":"","operator":"","motd":""};this._signallingIsConnected=false;this._signallingIsLoggedIn=false;this._signallingGameInstanceList=[];this._signallingRoomList=[];this._myId="";this._myAlias=
+"";this._isHost=false;this._hostId="";this._hostAlias="";this._game="";this._gameInstance="";this._room="";this._nextRoId=1;this._sidToRoId=new Map;this._roInfoById=new Map;this._allPeers=[];this._peersById=new Map;this._instToPeerId=new Map;this._peerIdToInst=new Map;this._trackObjects=[];this._inputPredictObjects=new Map;this._objectHistories=new Map;this._peerId="";this._peerAlias="";this._leaveReason="";this._msgTag="";this._msgFromId="";this._msgFromAlias="";this._msgContent="";this._isInBeforeClientUpdate=
+false;this._queuedClientUpdates=[];this._lastStats=null;this._simTime=0;this._hostInputArrivalTime=0;this._isReadyForInput=false;this._clientDelay=0;this._clientXerror=0;this._clientYerror=0;this._hostX=0;this._hostY=0;this._signallingScriptDispatcher=C3.New(C3.Event.Dispatcher);this._wakerWorker=null;this.AddDOMMessageHandler("signalling-error",err=>this._OnSignallingError(err));this.AddDOMMessageHandler("signalling-close",()=>this._OnSignallingClose());this.AddDOMMessageHandler("signalling-welcome",
+e=>this._OnSignallingWelcome(e));this.AddDOMMessageHandler("signalling-login-ok",e=>this._OnSignallingLoginOK(e));this.AddDOMMessageHandler("signalling-join-ok",e=>this._OnSignallingJoinOK(e));this.AddDOMMessageHandler("signalling-leave-ok",()=>this._OnSignallingLeaveOK());this.AddDOMMessageHandler("signalling-kicked",()=>this._OnSignallingKicked());this.AddDOMMessageHandler("signalling-instance-list",e=>this._OnSignallingInstanceList(e));this.AddDOMMessageHandler("signalling-room-list",e=>this._OnSignallingRoomList(e));
+this.AddDOMMessageHandler("peer-open",e=>this._OnPeerOpen(e));this.AddDOMMessageHandler("peer-message",e=>this._OnPeerMessage(e));this.AddDOMMessageHandler("peer-close",e=>this._OnPeerClose(e));this.AddDOMMessageHandler("peer-kicked",()=>this._OnPeerKicked());this.AddDOMMessageHandler("add-peer",e=>this._OnAddPeer(e));this.AddDOMMessageHandler("remove-peer",e=>this._OnRemovePeer(e));this.AddDOMMessageHandler("stats",e=>this._OnStats(e));this.AddDOMMessageHandler("before-client-update",()=>this._OnBeforeClientUpdate());
+this.AddDOMMessageHandler("instance-destroyed",e=>this._OnNotifyInstanceDestroyed(e));this.AddDOMMessageHandler("get-object-info",e=>this._OnGetObjectInfo(e));this._runtime.AddLoadPromise(this._InitWakerWorker());const rt=this._runtime.Dispatcher();this._disposables=new C3.CompositeDisposable(C3.Disposable.From(rt,"pretick",()=>this.PreTick()),C3.Disposable.From(rt,"instancedestroy",e=>this._OnInstanceDestroyed(e.instance)),C3.Disposable.From(rt,"suspend",()=>this._OnSuspend()),C3.Disposable.From(rt,
+"resume",()=>this._OnResume()));this._runtime.AddLoadPromise(this.PostToDOMAsync("get-supported").then(data=>{this._isSupported=data["isSupported"]}))}async _InitWakerWorker(){const workerUrl=await this._runtime.GetAssetManager().GetProjectFileUrl("waker.js");this._wakerWorker=new Worker(workerUrl,{name:"MultiplayerHostWaker"});this._wakerWorker.addEventListener("message",e=>{if(e.data==="tick"&&this._runtime.IsSuspended())this._runtime.Tick(null,false,"background-wake")});this._wakerWorker.postMessage("")}Release(){super.Release()}_OnSuspend(){if(!this._isSupported||
+!this.IsHost())return;this._wakerWorker.postMessage("start")}_OnResume(){this._wakerWorker.postMessage("stop")}IsHost(){return this.IsInRoom()&&this._myId&&this._myId===this._hostId}_DispatchScriptEvent(name,cancelable,additionalProperties){this.GetSdkType().DispatchScriptEvent(name,cancelable,additionalProperties)}_DispatchSignallingScriptEvent(name,cancelable,additionalProperties){const e=C3.New(C3.Event,name,cancelable);if(additionalProperties)Object.assign(e,additionalProperties);this._signallingScriptDispatcher.dispatchEvent(e)}_GetSignallingScriptDispatcher(){return this._signallingScriptDispatcher}async _SignallingConnect(url){if(this._signallingIsConnected)throw new Error("already connected");
+this._signallingUrl=url;await this.PostToDOMAsync("signalling-connect",{"url":url})}_SignallingDisconnect(){if(!this._signallingIsConnected)return;this.PostToDOM("signalling-disconnect")}_AddICEServer(url,username,credential){const o={"urls":url};if(username)o["username"]=username;if(credential)o["credential"]=credential;this.PostToDOM("add-ice-servers",{"list":[o]})}async _SignallingLogin(alias){if(!this._signallingIsConnected)throw new Error("not connected");if(this._signallingIsLoggedIn)throw new Error("already logged in");
+await this.PostToDOMAsync("signalling-login",{"alias":alias})}async _SignallingJoinRoom(game,instance,room,maxClients){if(!this._signallingIsLoggedIn)throw new Error("not logged in");if(this.IsInRoom())throw new Error("already in room");await this.PostToDOMAsync("signalling-join-room",{"game":game,"instance":instance,"room":room,"maxClients":maxClients})}async _SignallingAutoJoinRoom(game,instance,room,maxClients,isLocking){if(!this._signallingIsLoggedIn)throw new Error("not logged in");if(this.IsInRoom())throw new Error("already in room");
+await this.PostToDOMAsync("signalling-auto-join-room",{"game":game,"instance":instance,"room":room,"maxClients":maxClients,"lock":isLocking})}async _SignallingLeaveRoom(){if(!this.IsInRoom())throw new Error("not in room");await this.PostToDOMAsync("signalling-leave-room")}async _SignallingRequestGameInstanceList(game){if(!this._signallingIsConnected)throw new Error("not connected");await this.PostToDOMAsync("signalling-list-game-instances",{"game":game})}async _SignallingRequestRoomList(game,instance,
+which){if(!this._signallingIsConnected)throw new Error("not connected");await this.PostToDOMAsync("signalling-list-rooms",{"game":game,"instance":instance,"which":which})}_DisconnectRoom(){this.PostToDOM("disconnect-room")}_SendPeerMessage(peerId,tag,message,transmissionMode,contentMode){this.PostToDOM("peer-send-message",{"id":peerId||this._hostId,"tag":tag,"message":message,"transmissionMode":transmissionMode,"contentMode":contentMode})}_HostBroadcastMessage(fromId,tag,message,transmissionMode,
+contentMode){if(!this.IsHost())throw new Error("not host");this.PostToDOM("host-broadcast",{"fromId":fromId||this._hostId,"tag":tag,"message":message,"transmissionMode":transmissionMode,"contentMode":contentMode})}_SetBandwidthProfile(updateRate,delay){this.PostToDOM("set-bandwidth-profile",{"updateRate":updateRate,"delay":delay})}_SimulateLatency(latency,pdv,loss){this.PostToDOM("simulate-latency",{"latency":latency*1E3,"pdv":pdv*1E3,"loss":loss})}_KickPeer(peerId,reason){if(!this.IsHost())throw new Error("not host");
+if(peerId===this._myId)throw new Error("cannot kick self");this.PostToDOM("kick-peer",{"id":peerId,"reason":reason})}_SignallingIsConnected(){return this._signallingIsConnected}_SignallingIsLoggedIn(){return this._signallingIsLoggedIn}_SignallingIsHost(){return this._isHost}_GetSignallingURL(){return this._signallingUrl}_GetSignallingVersion(){return this._sigservInfo["version"]}_GetSignallingName(){return this._sigservInfo["name"]}_GetSignallingOperator(){return this._sigservInfo["operator"]}_GetSignallingMOTD(){return this._sigservInfo["motd"]}_GetMyId(){return this._myId}_GetMyAlias(){return this._myAlias}_GetHostId(){return this._hostId}_GetHostAlias(){return this._hostAlias}_GetCurrentGame(){return this._game}_GetCurrentGameInstance(){return this._gameInstance}_GetCurrentRoom(){return this._room}IsInRoom(){return!!this._room}_GetLastErrorMessage(){return this._errorMessage}_StatOutboundCount(){return this._lastStats?
+this._lastStats["outboundPerSec"]:0}_StatOutboundBandwidth(){return this._lastStats?this._lastStats["outboundBandwidthPerSec"]:0}_StatOutboundDecompressedBandwidth(){return this._lastStats?this._lastStats["outboundDecompressedBandwidthPerSec"]:0}_StatInboundCount(){return this._lastStats?this._lastStats["inboundPerSec"]:0}_StatInboundBandwidth(){return this._lastStats?this._lastStats["inboundBandwidthPerSec"]:0}_StatInboundDecompressedBandwidth(){return this._lastStats?this._lastStats["inboundDecompressedBandwidthPerSec"]:
+0}PreTick(){this._TrackObjectHistories();if(this._runtime.IsInWorker())return this._PreTick_Worker();else this._PreTick_DOM()}async _PreTick_Worker(){const domInfo=await this.PostToDOMAsync("tick",{"dt":this._runtime.GetDt1()});this._PreTick_ReadDomInfo(domInfo)}_PreTick_DOM(){const domInfo=this._PostToDOMMaybeSync("tick",{"dt":this._runtime.GetDt1()});this._PreTick_ReadDomInfo(domInfo)}_PreTick_ReadDomInfo(domInfo){if(!domInfo)return;this._simTime=domInfo["simulationTime"];this._hostInputArrivalTime=
+domInfo["hostInputArrivalTime"];this._clientDelay=domInfo["clientDelay"];this._isReadyForInput=domInfo["isReadyForInput"];for(const [peerId,data]of Object.entries(domInfo["peerData"])){const info=this._peersById.get(peerId);if(info){info.SetNid(data["nid"]);info.SetLatency(data["latency"]);info.SetPdv(data["pdv"]);C3.ObjectToMap(data["clientState"],info.GetClientState())}}const roData=domInfo["roData"];if(this.IsInRoom()&&!this.IsHost()){const instRemoveData={};for(const [roId,info]of this._roInfoById)if(roData.hasOwnProperty(roId)){const netInstToRemove=
+this._UpdateRegisteredObject(roId,info,roData[roId]);if(netInstToRemove.length)instRemoveData[roId]=netInstToRemove}this.PostToDOM("remove-net-insts",instRemoveData)}}async _OnSignallingError(err){this._errorMessage=err["message"];this._DispatchSignallingScriptEvent("error",false,{message:this._errorMessage});await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnSignallingError)}async _OnSignallingClose(){this._DispatchSignallingScriptEvent("disconnected");await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnSignallingDisconnected);
+this._signallingUrl="";this._signallingIsConnected=false;this._signallingIsLoggedIn=false}async _OnSignallingWelcome(e){this._signallingIsConnected=true;this._room="";this._myId=e["myid"];this._sigservInfo=e["sigservinfo"];this._DispatchSignallingScriptEvent("connected",false,{myId:this._GetMyId(),serverVersion:this._GetSignallingVersion(),serverName:this._GetSignallingName(),serverOperator:this._GetSignallingOperator(),serverMOTD:this._GetSignallingMOTD()});await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnSignallingConnected)}async _OnSignallingLoginOK(e){this._myAlias=
+e["myalias"];this._signallingIsLoggedIn=true;this._DispatchSignallingScriptEvent("login",false,{myAlias:this._myAlias});await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnSignallingLoggedIn)}async _OnSignallingJoinOK(e){this._isHost=e["isHost"];this._hostId=e["hostId"];this._hostAlias=e["hostAlias"];this._game=e["game"];this._gameInstance=e["gameInstance"];this._room=e["room"];if(this._runtime.IsSuspended()&&this._isHost)this._wakerWorker.postMessage("start");this._instToPeerId.clear();this._peerIdToInst.clear();
+this._objectHistories.clear();C3.clearArray(this._trackObjects);this._inputPredictObjects.clear();this._DispatchSignallingScriptEvent("join",false,{isHost:this._isHost,hostId:this._hostId,hostAlias:this._hostAlias,room:this._room});await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnSignallingJoinedRoom)}async _OnSignallingLeaveOK(){this._room="";this._DispatchSignallingScriptEvent("leave");await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnSignallingLeftRoom)}async _OnSignallingKicked(){this._room=
+"";this._DispatchSignallingScriptEvent("kicked");await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnSignallingKicked)}async _OnPeerKicked(){this._room="";this._DispatchScriptEvent("kicked");await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnSignallingKicked)}async _OnSignallingInstanceList(e){this._signallingGameInstanceList=e["list"];await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnGameInstanceList)}async _OnSignallingRoomList(e){this._signallingRoomList=e["list"];await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnRoomList)}_GetGameInstanceList(){return this._signallingGameInstanceList}_GetGameInstanceAt(i){i=
+Math.floor(i);if(i<0||i>=this._signallingGameInstanceList.length)return null;return this._signallingGameInstanceList[i]}_GetRoomInstanceList(){return this._signallingRoomList}_GetRoomInstanceAt(i){i=Math.floor(i);if(i<0||i>=this._signallingRoomList.length)return null;return this._signallingRoomList[i]}async _OnPeerOpen(e){this._peerId=e["id"];this._peerAlias=e["alias"];this._DispatchScriptEvent("peerconnect",false,{peerId:this._peerId,peerAlias:this._peerAlias});await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnPeerConnected)}async _OnPeerMessage(e){const fromId=
+e["fromId"];const fromAlias=e["fromAlias"];const transmissionMode=e["transmissionMode"];const messageContent=e["content"];const contentMode=e["contentMode"];if(contentMode==="e"){this._msgFromId=fromId;this._msgFromAlias=fromAlias;this._msgContent=messageContent;this._msgTag=e["tag"];await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnAnyPeerMessage);await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnPeerMessage)}else if(contentMode==="s")this._DispatchScriptEvent("message",false,{fromId,fromAlias,
+transmissionMode,message:messageContent})}async _OnPeerClose(e){this._peerId=e["id"];this._peerAlias=e["alias"];this._leaveReason=e["reason"];const peerInfo=this._peersById.get(this._peerId);const inst=this.GetAssociatedInstanceForPeer(this._peerId);if(inst){const roId=this._sidToRoId.get(inst.GetObjectClass().GetSID());if(peerInfo&&roId)this.PostToDOM("remove-object-nid",{"roId":roId,"nid":peerInfo.GetNid()});this._runtime.DestroyInstance(inst)}this._peerIdToInst.delete(this._peerId);if(peerInfo)peerInfo.MarkClosed();
+this._DispatchScriptEvent("peerdisconnect",false,{peerId:this._peerId,peerAlias:this._peerAlias,leaveReason:this._leaveReason});if(!this._isHost&&this._peerId===this._hostId){this._room="";await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnHostDisconnected)}if(this._isHost&&this._allPeers.length===1&&!this._signallingIsConnected)this._room="";await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnPeerDisconnected)}_OnAddPeer(e){const peerInfo=C3.New(C3.Plugins.Multiplayer.PeerInfo,this,e["id"],
+e["alias"]);this._allPeers.push(peerInfo);this._peersById.set(peerInfo.GetId(),peerInfo)}_OnRemovePeer(e){const removeId=e["id"];this._peersById.delete(removeId);for(let i=0,len=this._allPeers.length;i<len;++i){const p=this._allPeers[i];if(p.GetId()===removeId){this._allPeers.splice(i,1);return}}}_GetAllPeers(){return this._allPeers.filter(p=>!p.IsClosed())}_GetPeerById(id){return this._peersById.get(id)||null}GetPeerCount(){return this.IsInRoom()?this._allPeers.length:0}GetPeerInfoAt(i){i=Math.floor(i);
+if(i<0||i>=this._allPeers.length||!this.IsInRoom())return null;return this._allPeers[i]}GetPeerInfoByNid(nid){for(const info of this._allPeers)if(info.GetNid()===nid)return info;return null}PeerHasClientState(peerId,tag){const info=this._peersById.get(peerId);if(!info)return false;return info.GetClientState().has(tag)}GetPeerInterpClientState(peerId,tag){const info=this._peersById.get(peerId);if(!info)return 0;const ret=info.GetClientState().get(tag);if(typeof ret==="number")return ret;else return 0}_OnStats(e){this._lastStats=
+e["stats"]}_OnInstanceDestroyed(inst){const instUid=inst.GetUID();this._instToPeerId.delete(instUid);for(const [peerId,uid]of this._peerIdToInst)if(instUid===uid){this._peerIdToInst.delete(peerId);break}this._inputPredictObjects.delete(inst);const i=this._trackObjects.indexOf(inst);if(i!==-1)this._trackObjects.splice(i,1);this._objectHistories.delete(inst);this.PostToDOM("remove-object-id",{"uid":instUid})}GetAssociatedInstanceForPeer(peerId){const uid=this._peerIdToInst.get(peerId);if(typeof uid===
+"undefined")return null;return this._runtime.GetInstanceByUID(uid)}async _OnBeforeClientUpdate(){this._isInBeforeClientUpdate=true;await this.TriggerAsync(C3.Plugins.Multiplayer.Cnds.OnClientUpdate);this._isInBeforeClientUpdate=false;const clientStateUpdates=this._queuedClientUpdates.slice(0);C3.clearArray(this._queuedClientUpdates);return{"clientStateUpdates":clientStateUpdates}}GetInputPredicting(inst){return this._inputPredictObjects.get(inst)}_TrackObjectHistories(){const hostTime=this._hostInputArrivalTime;
+for(const trackInst of this._trackObjects)this._TrackObjectHistory(trackInst,hostTime)}_TrackObjectHistory(inst,hostTime){const wi=inst.GetWorldInfo();let oh=this._objectHistories.get(inst);if(!oh){oh=C3.New(C3.Plugins.Multiplayer.ObjectHistory,inst);this._objectHistories.set(inst,oh)}const he=C3.New(C3.Plugins.Multiplayer.ObjectHistoryEntry,oh);he.timestamp=hostTime;he.x=wi.GetX();he.y=wi.GetY();he.angle=wi.GetAngle();C3.shallowAssignArray(he.ivs,inst.GetAllInstanceVariableValues());oh.AddEntry(he);
+oh.ExpireOldEntries(hostTime)}_UpdateRegisteredObject(roId,info,domData){const roInfo=this._roInfoById.get(roId);const objectClass=this._runtime.GetObjectClassBySID(roInfo.sid);const instMap=roInfo.instMap;const deadMap=roInfo.deadMap;const simTime=this._simTime;const netValues=domData["netValues"];const netInstances=domData["netInstances"];for(const [nid,inst]of instMap)if(!this._runtime.GetInstanceByUID(inst.GetUID()))instMap.delete(nid);for(const [nid,timestamp]of deadMap)if(timestamp<simTime-
+3E3)deadMap.delete(nid);const netInstToRemove=[];for(const netInst of netInstances){const nid=netInst["nid"];if(deadMap.get(nid)>=simTime-3E3){netInstToRemove.push(nid);if(instMap.has(nid)){this._runtime.DestroyInstance(instMap.get(nid));instMap.delete(nid)}continue}let inst=null;let created=false;if(instMap.has(nid))inst=instMap.get(nid);else{const peerInfo=this.GetPeerInfoByNid(nid);if(peerInfo){this._peerId=peerInfo.GetId();this._peerAlias=peerInfo.GetAlias()}else{if(domData["hasOverriddenNids"])continue;
+this._peerId="";this._peerAlias=""}const layout=this._runtime.GetMainRunningLayout();inst=this._runtime.CreateInstance(objectClass,layout.GetLayerByIndex(objectClass.GetDefaultLayerIndex()),-1E3,-1E3);instMap.set(nid,inst);created=true}if(netInst["isTimedOut"]){netInstToRemove.push(nid);instMap.delete(nid);this._runtime.DestroyInstance(inst);continue}const inputPredictOpts=this.GetInputPredicting(inst);if(inputPredictOpts)this.CorrectInputPrediction(inst,netInst,netValues,this._simTime,inputPredictOpts);
+else{const wi=inst.GetWorldInfo();const instVars=inst.GetAllInstanceVariableValues();let iv=0;for(let i=0,len=netValues.length;i<len;++i){const value=netInst["interpValues"][i];const nv=netValues[i];switch(nv["tag"]){case "x":wi.SetX(value);wi.SetBboxChanged();break;case "y":wi.SetY(value);wi.SetBboxChanged();break;case "a":wi.SetAngle(value);wi.SetBboxChanged();break;case "iv":iv=nv["userData"];if(iv>instVars.length||typeof instVars[iv]!=="number")break;instVars[iv]=value;break}}}if(created)inst._TriggerOnCreated()}return netInstToRemove}static LinearCorrect(current,
+target,delta,position){const diff=target-current;if(diff===0)return 0;const absDiff=Math.abs(diff);if(absDiff<=Math.abs(delta/10)||position&&(absDiff<1||absDiff>=1E3))return diff;let minimumCorrection=absDiff/50;let deltaCorrection=Math.abs(delta/5);if(position&&absDiff>=10){minimumCorrection=absDiff/10;deltaCorrection=Math.abs(delta/2)}let absCorrection=Math.max(minimumCorrection,deltaCorrection);if(absCorrection>absDiff)absCorrection=absDiff;if(diff>0)return absCorrection;else return-absCorrection}CorrectInputPrediction(inst,
+netInst,netValues,simTime,inputPredictOpts){const wi=inst.GetWorldInfo();const oh=this._objectHistories.get(inst);if(!oh)return;const positionDelta=C3.distanceTo(0,0,oh.GetLastDelta("x"),oh.GetLastDelta("y"));const LinearCorrect=C3.Plugins.Multiplayer.Instance.LinearCorrect;const avoidSolids=inputPredictOpts.avoidSolids;const platformMode=inputPredictOpts.platformMode;let platformBehInst=null;if(platformMode)platformBehInst=inst.GetBehaviorSdkInstanceFromCtor(C3.Behaviors.Platform);for(let i=0,len=
+netValues.length;i<len;++i){const nv=netValues[i];const tag=nv["tag"];const userData=nv["userData"];const interp=nv["interp"];const latestUpdate=netInst["latestUpdate"];if(!latestUpdate)continue;const hostValue=latestUpdate["data"][i];const myValue=oh.GetInterp(tag,userData,latestUpdate["timestamp"],interp);if(typeof myValue==="undefined")continue;let correction=0;const instVars=inst.GetAllInstanceVariableValues();let iv=0;switch(tag){case "x":correction=LinearCorrect(myValue,hostValue,positionDelta,
+true);if(correction!==0){const startX=wi.GetX();wi.OffsetX(correction);wi.SetBboxChanged();if(avoidSolids&&this._runtime.GetCollisionEngine().TestOverlapSolid(inst)){wi.SetX(startX);wi.SetBboxChanged();correction=0}}this._clientXerror=hostValue-myValue+correction;this._hostX=hostValue;break;case "y":if(platformMode&&platformBehInst?._IsOnFloor())correction=0;else correction=LinearCorrect(myValue,hostValue,positionDelta,true);if(correction!==0){const startY=wi.GetY();wi.OffsetY(correction);wi.SetBboxChanged();
+if(avoidSolids&&this._runtime.GetCollisionEngine().TestOverlapSolid(inst)){wi.SetY(startY);wi.SetBboxChanged();correction=0}}this._clientYerror=hostValue-myValue+correction;this._hostY=hostValue;break;case "a":correction=C3.angleLerp(myValue,hostValue,.5)-myValue;if(correction!==0){wi.SetAngle(wi.GetAngle()+correction);wi.SetBboxChanged()}break;case "iv":iv=userData;if(iv>instVars.length||typeof instVars[iv]!=="number")break;if(!nv["cvt"])instVars[iv]=netInst["interpValues"][i];break}if(correction!==
+0)oh.ApplyCorrection(tag,userData,correction)}}_OnNotifyInstanceDestroyed(e){const roId=e["roId"];const nid=e["nid"];const timestamp=e["timestamp"];const info=this._roInfoById.get(roId);if(!info)return;const instMap=info.instMap;const deadMap=info.deadMap;deadMap.set(nid,timestamp);const inst=instMap.get(nid);if(inst){this._runtime.DestroyInstance(inst);instMap.delete(nid)}}_OnGetObjectInfo(e){const ret={};for(const roRequest of e["ros"]){const roId=roRequest["roId"];const sid=roRequest["sid"];const netValues=
+roRequest["netValues"];const objectClass=this._runtime.GetObjectClassBySID(sid);if(!objectClass)continue;ret[roId]=objectClass.GetInstances().map(inst=>this._GetInstNetValues(inst,netValues))}return ret}_GetInstNetValues(inst,netValues){return{"uid":inst.GetUID(),"netValues":netValues.map(nv=>this._GetInstNetValue(inst,nv))}}_GetInstNetValue(inst,nv){const wi=inst.GetWorldInfo();const tag=nv["tag"];switch(tag){case "x":return wi.GetX();case "y":return wi.GetY();case "a":return wi.GetAngle();case "iv":{const varIndex=
+nv["userData"];const clientValueTag=nv["cvt"];if(clientValueTag){const peerId=this._instToPeerId.get(inst.GetUID());if(peerId&&this._myId!==peerId&&this.PeerHasClientState(peerId,clientValueTag))return this.GetPeerInterpClientState(peerId,clientValueTag)}const value=inst.GetAllInstanceVariableValues()[varIndex];if(typeof value==="number")return value;else return 0}default:return 0}}LagCompensate(movingPeerId,fromPeerId,tag,interpType){if(!this._isSupported)return 0;if(!this.IsHost())return 0;const movePeerInfo=
+this._peersById.get(movingPeerId);if(!movePeerInfo)return 0;const moveInst=this.GetAssociatedInstanceForPeer(movingPeerId);if(!moveInst)return 0;let ret=0;const moveWi=moveInst.GetWorldInfo();switch(tag){case "x":ret=moveWi.GetX();break;case "y":ret=moveWi.GetY();break;case "a":ret=moveWi.GetAngle();break}const fromPeerInfo=this._peersById.get(fromPeerId);if(!fromPeerInfo||fromPeerId===movingPeerId)return ret;if(this._myId===fromPeerId)return ret;const delay=(fromPeerInfo.GetLatency()+this._clientDelay)*
+2;const oh=this._objectHistories.get(moveInst);if(!oh)return ret;const interpValue=oh.GetInterp(tag,0,performance.now()-delay,interpType);if(typeof interpValue==="undefined")return ret;else return interpValue}GetDebuggerProperties(){const prefix="plugins.multiplayer.debugger";const mpPrefix=prefix+".multiplayer";const statPrefix=prefix+".statistics";const sigPrefix=prefix+".signalling";const peerProperties=[];for(let i=0,len=this.GetPeerCount();i<len;++i){const info=this.GetPeerInfoAt(i);peerProperties.push({name:"$"+
+info.GetId(),value:info.GetAlias()})}return[{title:mpPrefix+".title",properties:[{name:mpPrefix+".my-id",value:this._GetMyId()},{name:mpPrefix+".my-alias",value:this._GetMyAlias()},{name:mpPrefix+".host-id",value:this._GetHostId()},{name:mpPrefix+".host-alias",value:this._GetHostAlias()},{name:mpPrefix+".game",value:this._GetCurrentGame()},{name:mpPrefix+".instance",value:this._GetCurrentGameInstance()},{name:mpPrefix+".room",value:this._GetCurrentRoom()}]},{title:prefix+".peers.title",properties:peerProperties},
+{title:statPrefix+".title",properties:[{name:statPrefix+".outbound-count",value:this._StatOutboundCount()},{name:statPrefix+".outbound-bandwidth",value:this._StatOutboundBandwidth()},{name:statPrefix+".outbound-decompressed-bandwidth",value:this._StatOutboundDecompressedBandwidth()},{name:statPrefix+".outbound-compression",value:C3.clamp(100-Math.round(100*this._StatOutboundBandwidth()/this._StatOutboundDecompressedBandwidth()),0,100)+"%"},{name:statPrefix+".inbound-count",value:this._StatInboundCount()},
+{name:statPrefix+".inbound-bandwidth",value:this._StatInboundBandwidth()},{name:statPrefix+".inbound-decompressed-bandwidth",value:this._StatInboundDecompressedBandwidth()},{name:statPrefix+".inbound-compression",value:C3.clamp(100-Math.round(100*this._StatInboundBandwidth()/this._StatInboundDecompressedBandwidth()),0,100)+"%"}]},{title:sigPrefix+".title",properties:[{name:sigPrefix+".url",value:this._GetSignallingURL()},{name:sigPrefix+".version",value:this._GetSignallingVersion()},{name:sigPrefix+
+".name",value:this._GetSignallingName()},{name:sigPrefix+".operator",value:this._GetSignallingOperator()},{name:sigPrefix+".motd",value:this._GetSignallingMOTD()}]}]}}}
+{const C3=self.C3;C3.Plugins.Multiplayer.Cnds={OnSignallingError(){return true},OnSignallingConnected(){return true},OnSignallingDisconnected(){return true},OnSignallingLoggedIn(){return true},OnSignallingJoinedRoom(){return true},OnSignallingLeftRoom(){return true},OnSignallingKicked(){return true},OnPeerConnected(){return true},OnPeerDisconnected(){return true},OnHostDisconnected(){return true},SignallingIsConnected(){return this._SignallingIsConnected()},SignallingIsLoggedIn(){return this._SignallingIsLoggedIn()},
+SignallingIsInRoom(){return this.IsInRoom()},IsHost(){return this._SignallingIsHost()},IsSupported(){return this._isSupported},OnPeerMessage(tag){return this._msgTag===tag},OnAnyPeerMessage(){return true},OnClientUpdate(){return true},OnGameInstanceList(){return true},OnRoomList(){return true},IsReadyForInput(){return this._isReadyForInput},ComparePeerCount(cmp,n){return C3.compare(this._allPeers.length,cmp,n)},OnServerList(){return false}}}
+{const C3=self.C3;function ModeToDCType(mode){switch(mode){case 0:return"o";case 1:return"r";case 2:return"u";default:return"o"}}let promptedBadSync=false;C3.Plugins.Multiplayer.Acts={async SignallingConnect(url){if(!this._isSupported||this._signallingIsConnected)return;await this._SignallingConnect(url)},SignallingDisconnect(){if(!this._isSupported)return;this._SignallingDisconnect()},AddICEServer(url,username,credential){if(!this._isSupported)return;this._AddICEServer(url,username,credential)},
+async SignallingLogin(alias){if(!this._isSupported||!this._signallingIsConnected||this._signallingIsLoggedIn)return;await this._SignallingLogin(alias)},async SignallingJoinRoom(game,instance,room,maxClients){if(!this._isSupported||!this._signallingIsLoggedIn||this.IsInRoom())return;await this._SignallingJoinRoom(game,instance,room,maxClients)},async SignallingAutoJoinRoom(game,instance,room,maxClients,locking){if(!this._isSupported||!this._signallingIsLoggedIn||this.IsInRoom())return;await this._SignallingAutoJoinRoom(game,
+instance,room,maxClients,locking===0)},async SignallingLeaveRoom(){if(!this._isSupported||!this.IsInRoom())return;await this._SignallingLeaveRoom()},DisconnectRoom(){if(!this._isSupported)return;this._DisconnectRoom()},SendPeerMessage(peerId,tag,message,mode){if(!this._isSupported)return;this._SendPeerMessage(peerId,tag,message,ModeToDCType(mode),"e")},HostBroadcastMessage(fromId,tag,message,mode){if(!this._isSupported||!this.IsHost())return;this._HostBroadcastMessage(fromId,tag,message,ModeToDCType(mode),
+"e")},SimulateLatency(latency,pdv,loss){if(!this._isSupported)return;this._SimulateLatency(latency,pdv,loss)},SyncObject(objectClass,data,precision,bandwidth){let x=false;let y=false;let angle=false;if(data===1){x=true;y=true}else if(data===2)angle=true;else if(data===3){x=true;y=true;angle=true}C3.Plugins.Multiplayer.Acts.SyncObject2.call(this,objectClass,x,y,angle,precision,bandwidth)},SyncObject2(objectClass,x,y,angle,precision,bandwidth){if(!this._isSupported)return;let objectClasses;if(objectClass.IsFamily())objectClasses=
+objectClass.GetFamilyMembers();else objectClasses=[objectClass];const objectClassesData=[];for(const oc of objectClasses){const sid=oc.GetSID();const roId=this._nextRoId++;this._roInfoById.set(roId,{sid,instMap:new Map,deadMap:new Map});this._sidToRoId.set(sid,roId);objectClassesData.push({"roId":roId,"sid":sid})}this.PostToDOM("sync-object",{"objectClasses":objectClassesData,"x":x,"y":y,"angle":angle,"precision":precision,"bandwidth":bandwidth})},SyncObjectInstanceVar(objectClass,instVar,precision,
+interp,clientValueTag){if(!this._isSupported)return;let objectClasses;if(objectClass.IsFamily())objectClasses=objectClass.GetFamilyMembers();else objectClasses=[objectClass];const syncData=[];for(const oc of objectClasses){const roId=this._sidToRoId.get(oc.GetSID());if(!roId){if(!promptedBadSync){promptedBadSync=true;this.PostToDOM("alert",{"message":`Multiplayer object: incorrect use of 'Sync instance variable' for object type '${oc.GetName()}'. You must use 'Sync object' before you can use 'Sync instance variable'. Please refer to the documentation for more information.`})}return}let varIndex=
+instVar;if(objectClass.IsFamily())varIndex+=oc.GetFamilyInstanceVariableOffset(objectClass.GetFamilyIndex());syncData.push({"roId":roId,"varIndex":varIndex})}this.PostToDOM("sync-inst-var",{"syncData":syncData,"precision":precision,"interp":interp,"cvt":clientValueTag})},AssociateObjectWithPeer(objectClass,peerId){if(!this._isSupported)return;if(!this._peersById.has(peerId))return;const inst=objectClass.GetFirstPicked();if(!inst)return;const roId=this._sidToRoId.get(objectClass.GetSID());if(!roId)return;
+if(this.IsHost())if(!this._trackObjects.includes(inst))this._trackObjects.push(inst);this._instToPeerId.set(inst.GetUID(),peerId);this._peerIdToInst.set(peerId,inst.GetUID());this.PostToDOM("associate-object",{"roId":roId,"peerId":peerId,"instUid":inst.GetUID()})},SetClientState(tag,x){if(!this._isSupported)return;const o={"tag":tag,"value":x};if(this._isInBeforeClientUpdate)this._queuedClientUpdates.push(o);else this.PostToDOM("set-client-state",o)},AddClientInputValue(tag,precision,interp){if(!this._isSupported)return;
+this.PostToDOM("add-client-input-value",{"tag":tag,"precision":precision,"interp":interp})},InputPredictObject(objectClass,avoidSolids,platformMode){if(!this._isSupported||!objectClass)return;if(this.IsHost())return;const inst=objectClass.GetFirstPicked();if(!inst)return;if(this._inputPredictObjects.has(inst))return;this._trackObjects.push(inst);this._inputPredictObjects.set(inst,{avoidSolids,platformMode})},async SignallingRequestGameInstanceList(game){if(!this._isSupported||!this._signallingIsConnected)return;
+await this._SignallingRequestGameInstanceList(game)},async SignallingRequestRoomList(game,instance,which){if(!this._isSupported||!this._signallingIsConnected)return;let whichStr="all";if(which===1)whichStr="unlocked";else if(which===2)whichStr="available";await this._SignallingRequestRoomList(game,instance,whichStr)},SetBandwidthProfile(profile){if(!this._isSupported)return;let updateRate,delay;if(profile===0){updateRate=30;delay=80}else{updateRate=60;delay=40}this._SetBandwidthProfile(updateRate,
+delay)},KickPeer(peerId,reason){if(!this._isSupported||!this.IsHost())return;if(peerId===this._myId)return;this._KickPeer(peerId,reason)},RequestServerList(url){}}}
+{const C3=self.C3;C3.Plugins.Multiplayer.Exps={SignallingURL(){return this._GetSignallingURL()},SignallingVersion(){return this._GetSignallingVersion()},SignallingName(){return this._GetSignallingName()},SignallingOperator(){return this._GetSignallingOperator()},SignallingMOTD(){return this._GetSignallingMOTD()},MyAlias(){return this._GetMyAlias()},CurrentGame(){return this._GetCurrentGame()},CurrentInstance(){return this._GetCurrentGameInstance()},CurrentRoom(){return this._GetCurrentRoom()},ErrorMessage(){return this._GetLastErrorMessage()},
+MyID(){return this._GetMyId()},PeerID(){return this._peerId},PeerAlias(){return this._peerAlias},HostID(){return this._GetHostId()},HostAlias(){return this._GetHostAlias()},Message(){return this._msgContent},Tag(){return this._msgTag},FromID(){return this._msgFromId},FromAlias(){return this._msgFromAlias},PeerAliasFromID(id){const info=this._peersById.get(id);return info?info.GetAlias():""},PeerLatency(id){const info=this._peersById.get(id);return info?info.GetLatency():0},PeerPDV(id){const info=
+this._peersById.get(id);return info?info.GetPdv():0},StatOutboundCount(){return this._StatOutboundCount()},StatOutboundBandwidth(){return this._StatOutboundBandwidth()},StatOutboundDecompressedBandwidth(){return this._StatOutboundDecompressedBandwidth()},StatInboundCount(){return this._StatInboundCount()},StatInboundBandwidth(){return this._StatInboundBandwidth()},StatInboundDecompressedBandwidth(){return this._StatInboundDecompressedBandwidth()},PeerState(id,tag){return this.GetPeerInterpClientState(id,
+tag)},ClientXError(){return this._clientXerror},ClientYError(){return this._clientYerror},HostX(){return this._hostX},HostY(){return this._hostY},PeerCount(){return this.GetPeerCount()},ListInstanceCount(){return this._signallingGameInstanceList.length},ListInstanceName(i){const data=this._GetGameInstanceAt(i);return data?data["name"]:""},ListInstancePeerCount(i){const data=this._GetGameInstanceAt(i);return data?data["peercount"]:0},ListRoomCount(){return this._signallingRoomList.length},ListRoomName(i){const data=
+this._GetRoomInstanceAt(i);return data?data["name"]:""},ListRoomPeerCount(i){const data=this._GetRoomInstanceAt(i);return data?data["peercount"]:0},ListRoomMaxPeerCount(i){const data=this._GetRoomInstanceAt(i);return data?data["maxpeercount"]:0},ListRoomState(i){const data=this._GetRoomInstanceAt(i);return data?data["state"]:""},LeaveReason(){return this._leaveReason},LagCompensateX(movingPeerId,fromPeerId){return this.LagCompensate(movingPeerId,fromPeerId,"x",1)},LagCompensateY(movingPeerId,fromPeerId){return this.LagCompensate(movingPeerId,
+fromPeerId,"y",1)},LagCompensateAngle(movingPeerId,fromPeerId){return C3.toDegrees(this.LagCompensate(movingPeerId,fromPeerId,"a",2))},PeerIDAt(i){const info=this.GetPeerInfoAt(i);return info?info.GetId():""},PeerAliasAt(i){const info=this.GetPeerInfoAt(i);return info?info.GetAlias():""},ServerListCount(){return 0},ServerListURLAt(i){return""},ServerListNameAt(i){return""},ServerListOperatorAt(i){return""},ServerListWebsiteAt(i){return""}}};
 
 }
 
 {
-'use strict';{const C3=self.C3;C3.Plugins.Arr=class ArrayPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.Arr.Type=class ArrayType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
-{const C3=self.C3;const C3X=self.C3X;const IInstance=self.IInstance;function ResizeArray(arr,len,data){if(len<arr.length)C3.truncateArray(arr,len);else if(len>arr.length)if(typeof data==="function")for(let i=arr.length;i<len;++i)arr.push(data());else for(let i=arr.length;i<len;++i)arr.push(data)}C3.Plugins.Arr.Instance=class ArrayInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst);this._cx=10;this._cy=1;this._cz=1;this._arr=null;this._forX=[];this._forY=[];this._forZ=[];this._forDepth=
--1;if(properties){this._cx=properties[0];this._cy=properties[1];this._cz=properties[2]}this._arr=C3.MakeFilledArray(this._cx,()=>C3.MakeFilledArray(this._cy,()=>C3.MakeFilledArray(this._cz,0)))}Release(){this._arr=null;super.Release()}At(x,y,z){x=Math.floor(x);y=Math.floor(y);z=Math.floor(z);if(x>=0&&x<this._cx&&y>=0&&y<this._cy&&z>=0&&z<this._cz)return this._arr[x][y][z];else return 0}Set(x,y,z,val){x=Math.floor(x);y=Math.floor(y);z=Math.floor(z);if(x>=0&&x<this._cx&&y>=0&&y<this._cy&&z>=0&&z<this._cz)this._arr[x][y][z]=
-val}SetSize(w,h,d){w=Math.floor(w);h=Math.floor(h);d=Math.floor(d);if(w<0)w=0;if(h<0)h=0;if(d<0)d=0;if(this._cx===w&&this._cy===h&&this._cz===d)return;this._cx=w;this._cy=h;this._cz=d;const arr=this._arr;ResizeArray(arr,w,()=>C3.MakeFilledArray(h,()=>C3.MakeFilledArray(d,0)));for(let x=0;x<w;++x){ResizeArray(arr[x],h,()=>C3.MakeFilledArray(d,0));for(let y=0;y<h;++y)ResizeArray(arr[x][y],d,0)}}GetWidth(){return this._cx}GetHeight(){return this._cy}GetDepth(){return this._cz}_ShuffleHelper(axis,len,
-x,y,z){while(len>0){const i=Math.floor(this._runtime.Random()*len);--len;if(axis===0){const v1=this.At(len,y,z);const v2=this.At(i,y,z);this.Set(len,y,z,v2);this.Set(i,y,z,v1)}else if(axis===1){const v1=this.At(x,len,z);const v2=this.At(x,i,z);this.Set(x,len,z,v2);this.Set(x,i,z,v1)}else if(axis===2){const v1=this.At(x,y,len);const v2=this.At(x,y,i);this.Set(x,y,len,v2);this.Set(x,y,i,v1)}}}GetDebuggerProperties(){const prefix="plugins.arr.debugger";const propsPrefix="plugins.arr.properties";const ret=
-[{title:prefix+".array-properties.title",properties:[{name:propsPrefix+".width.name",value:this._cx,onedit:v=>this.SetSize(v,this._cy,this._cz)},{name:propsPrefix+".height.name",value:this._cy,onedit:v=>this.SetSize(this._cx,v,this._cz)},{name:propsPrefix+".depth.name",value:this._cz,onedit:v=>this.SetSize(this._cx,this._cy,v)},{name:propsPrefix+".elements.name",value:this._cx*this._cy*this._cz}]}];const dataProps=[];if(this._cy===1&&this._cz===1)for(let x=0;x<this._cx;++x)dataProps.push({name:"$"+
-x,value:this._arr[x][0][0],onedit:v=>this._arr[x][0][0]=v});else for(let x=0;x<this._cx;++x)dataProps.push({name:"$"+x,value:this._arr[x].toString()});if(dataProps.length)ret.push({title:prefix+".array-data.title",properties:dataProps});return ret}GetAsJsonString(){return JSON.stringify({"c2array":true,"size":[this._cx,this._cy,this._cz],"data":this._arr})}SaveToJson(){return{"size":[this._cx,this._cy,this._cz],"data":this._arr}}LoadFromJson(o){const sz=o["size"];this._cx=sz[0];this._cy=sz[1];this._cz=
-sz[2];this._arr=o["data"]}_GetForX(){if(this._forDepth>=0&&this._forDepth<this._forX.length)return this._forX[this._forDepth];else return 0}_GetForY(){if(this._forDepth>=0&&this._forDepth<this._forY.length)return this._forY[this._forDepth];else return 0}_GetForZ(){if(this._forDepth>=0&&this._forDepth<this._forZ.length)return this._forZ[this._forDepth];else return 0}GetScriptInterfaceClass(){return self.IArrayInstance}};const map=new WeakMap;self.IArrayInstance=class IArrayInstance extends IInstance{constructor(){super();
-map.set(this,IInstance._GetInitInst().GetSdkInstance())}get width(){return map.get(this).GetWidth()}get height(){return map.get(this).GetHeight()}get depth(){return map.get(this).GetDepth()}setSize(w,h=1,d=1){C3X.RequireFiniteNumber(w);C3X.RequireFiniteNumber(h);C3X.RequireFiniteNumber(d);map.get(this).SetSize(w,h,d)}getAt(x,y=0,z=0){C3X.RequireFiniteNumber(x);C3X.RequireFiniteNumber(y);C3X.RequireFiniteNumber(z);return map.get(this).At(x,y,z)}setAt(val,x,y=0,z=0){C3X.RequireFiniteNumber(x);C3X.RequireFiniteNumber(y);
-C3X.RequireFiniteNumber(z);if(typeof val!=="number"&&typeof val!=="string")throw new TypeError("invalid type");map.get(this).Set(x,y,z,val)}}}
-{const C3=self.C3;function DoForEachTrigger(eventSheetManager,currentEvent,solModifiers,oldFrame,newFrame,sdkInst){eventSheetManager.PushCopySol(solModifiers);const sol=sdkInst.GetObjectClass().GetCurrentSol();sol.PickOne(sdkInst.GetInstance());currentEvent.Retrigger(oldFrame,newFrame);eventSheetManager.PopSol(solModifiers)}C3.Plugins.Arr.Cnds={CompareX(x,cmp,val){return C3.compare(this.At(x,0,0),cmp,val)},CompareXY(x,y,cmp,val){return C3.compare(this.At(x,y,0),cmp,val)},CompareXYZ(x,y,z,cmp,val){return C3.compare(this.At(x,
-y,z),cmp,val)},ArrForEach(dims){const runtime=this._runtime;const eventSheetManager=runtime.GetEventSheetManager();const currentEvent=runtime.GetCurrentEvent();const solModifiers=currentEvent.GetSolModifiers();const eventStack=runtime.GetEventStack();const oldFrame=eventStack.GetCurrentStackFrame();const newFrame=eventStack.Push(currentEvent);const forDepth=++this._forDepth;const forX=this._forX;const forY=this._forY;const forZ=this._forZ;const cx=this._cx;const cy=this._cy;const cz=this._cz;if(forDepth===
-this._forX.length){forX.push(0);forY.push(0);forZ.push(0)}else{forX[forDepth]=0;forY[forDepth]=0;forZ[forDepth]=0}runtime.SetDebuggingEnabled(false);if(dims===0)for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)for(let z=0;z<cz;++z){forX[forDepth]=x;forY[forDepth]=y;forZ[forDepth]=z;DoForEachTrigger(eventSheetManager,currentEvent,solModifiers,oldFrame,newFrame,this)}else if(dims===1)for(let x=0;x<cx;++x)for(let y=0;y<cy;++y){forX[forDepth]=x;forY[forDepth]=y;DoForEachTrigger(eventSheetManager,currentEvent,
-solModifiers,oldFrame,newFrame,this)}else for(let x=0;x<cx;++x){forX[forDepth]=x;DoForEachTrigger(eventSheetManager,currentEvent,solModifiers,oldFrame,newFrame,this)}runtime.SetDebuggingEnabled(true);this._forDepth--;eventStack.Pop();return false},CompareCurrent(cmp,val){return C3.compare(this.At(this._GetForX(),this._GetForY(),this._GetForZ()),cmp,val)},Contains(val){const cx=this._cx;const cy=this._cy;const cz=this._cz;const arr=this._arr;for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)for(let z=0;z<
-cz;++z)if(arr[x][y][z]===val)return true;return false},IsEmpty(){return this._cx===0||this._cy===0||this._cz===0},CompareSize(axis,cmp,val){let s=0;switch(axis){case 0:s=this._cx;break;case 1:s=this._cy;break;case 2:s=this._cz;break}return C3.compare(s,cmp,val)}}}
-{const C3=self.C3;function CompareValues(va,vb){if(typeof va==="number"&&typeof vb==="number")return va-vb;else{const sa=va.toString();const sb=vb.toString();if(sa<sb)return-1;else if(sa>sb)return 1;else return 0}}C3.Plugins.Arr.Acts={Clear(v){const cx=this._cx;const cy=this._cy;const cz=this._cz;const arr=this._arr;for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)for(let z=0;z<cz;++z)arr[x][y][z]=v},SetSize(w,h,d){this.SetSize(w,h,d)},SetX(x,val){this.Set(x,0,0,val)},SetXY(x,y,val){this.Set(x,y,0,val)},
-SetXYZ(x,y,z,val){this.Set(x,y,z,val)},Push(where,value,axis){const cx=this._cx;const cy=this._cy;const cz=this._cz;const arr=this._arr;if(axis===0){const add=C3.MakeFilledArray(cy,()=>C3.MakeFilledArray(cz,value));if(where===0)arr.push(add);else arr.unshift(add);this._cx++}else if(axis===1){for(let x=0;x<cx;++x){const add=C3.MakeFilledArray(cz,value);if(where===0)arr[x].push(add);else arr[x].unshift(add)}this._cy++}else{for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)if(where===0)arr[x][y].push(value);
-else arr[x][y].unshift(value);this._cz++}},Pop(where,axis){const cx=this._cx;const cy=this._cy;const cz=this._cz;const arr=this._arr;if(axis===0){if(cx===0)return;if(where===0)arr.pop();else arr.shift();this._cx--}else if(axis===1){if(cy===0)return;for(let x=0;x<cx;++x)if(where===0)arr[x].pop();else arr[x].shift();this._cy--}else{if(cz===0)return;for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)if(where===0)arr[x][y].pop();else arr[x][y].shift();this._cz--}},Reverse(axis){const cx=this._cx;const cy=this._cy;
-const cz=this._cz;const arr=this._arr;if(cx===0||cy===0||cz===0)return;if(axis===0)arr.reverse();else if(axis===1)for(let x=0;x<cx;++x)arr[x].reverse();else for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)arr[x][y].reverse()},Sort(axis){const cx=this._cx;const cy=this._cy;const cz=this._cz;const arr=this._arr;if(cx===0||cy===0||cz===0)return;if(axis===0)arr.sort((a,b)=>CompareValues(a[0][0],b[0][0]));else if(axis===1)for(let x=0;x<cx;++x)arr[x].sort((a,b)=>CompareValues(a[0],b[0]));else for(let x=0;x<cx;++x)for(let y=
-0;y<cy;++y)arr[x][y].sort(CompareValues)},Shuffle(axis){const cx=this._cx;const cy=this._cy;const cz=this._cz;if(cx===0||cy===0||cz===0)return;if(axis===0)for(let y=0;y<cy;++y)for(let z=0;z<cz;++z)this._ShuffleHelper(axis,cx,0,y,z);else if(axis===1)for(let x=0;x<cx;++x)for(let z=0;z<cz;++z)this._ShuffleHelper(axis,cy,x,0,z);else for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)this._ShuffleHelper(axis,cz,x,y,0)},Delete(index,axis){index=Math.floor(index);if(index<0)return;const cx=this._cx;const cy=this._cy;
-const cz=this._cz;const arr=this._arr;if(axis===0){if(index>=cx)return;arr.splice(index,1);this._cx--}else if(axis===1){if(index>=cy)return;for(let x=0;x<cx;++x)arr[x].splice(index,1);this._cy--}else{if(index>=cz)return;for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)arr[x][y].splice(index,1);this._cz--}},Insert(value,index,axis){index=Math.floor(index);if(index<0)return;const cx=this._cx;const cy=this._cy;const cz=this._cz;const arr=this._arr;if(axis===0){if(index>cx)return;arr.splice(index,0,C3.MakeFilledArray(cy,
-()=>C3.MakeFilledArray(cz,value)));this._cx++}else if(axis===1){if(index>cy)return;for(let x=0;x<cx;++x)arr[x].splice(index,0,C3.MakeFilledArray(cz,value));this._cy++}else{if(index>cz)return;for(let x=0;x<cx;++x)for(let y=0;y<cy;++y)arr[x][y].splice(index,0,value);this._cz++}},SplitString(str,sep,type){const parts=str.split(sep);this.SetSize(parts.length,1,1);for(let i=0,len=parts.length;i<len;++i){let v=parts[i];if(type===0){if(String(Number(v))===v)v=Number(v)}else if(type===2)v=Number(v);this.Set(i,
-0,0,v)}},JSONLoad(json){let o=null;try{o=JSON.parse(json)}catch(err){console.error("[Construct] Failed to parse JSON: ",err);return}if(!o["c2array"])return;const sz=o["size"];this._cx=sz[0];this._cy=sz[1];this._cz=sz[2];this._arr=o["data"]},JSONDownload(filename){const url=URL.createObjectURL(new Blob([this.GetAsJsonString()],{type:"application/json"}));this._runtime.InvokeDownload(url,filename)}}}
-{const C3=self.C3;C3.Plugins.Arr.Exps={At(x,y,z){return this.At(x,y||0,z||0)},Width(){return this._cx},Height(){return this._cy},Depth(){return this._cz},CurX(){return this._GetForX()},CurY(){return this._GetForY()},CurZ(){return this._GetForZ()},CurValue(){return this.At(this._GetForX(),this._GetForY(),this._GetForZ())},Front(){return this.At(0,0,0)},Back(){return this.At(this._cx-1,0,0)},IndexOf(v){const arr=this._arr;for(let x=0,len=this._cx;x<len;++x)if(arr[x][0][0]===v)return x;return-1},LastIndexOf(v){const arr=
-this._arr;for(let x=this._cx-1;x>=0;--x)if(arr[x][0][0]===v)return x;return-1},JoinString(sep){let arr=[];for(let x=0;x<this._cx;++x)arr.push(this.At(x,0,0));return arr.join(sep)},AsJSON(){return this.GetAsJsonString()}}};
+'use strict';const C3=self.C3;function InterpNetValue(interp,fromVal,toVal,x,extrapolating){switch(interp){case 0:return extrapolating?toVal:fromVal;case 1:return C3.lerp(fromVal,toVal,x);case 2:return C3.angleLerp(fromVal,toVal,x);default:return extrapolating?toVal:fromVal}}C3.Plugins.Multiplayer.ObjectHistoryEntry=class ObjectHistoryEntry extends C3.DefendedBase{constructor(oh){super();this.oh=oh;this.timestamp=0;this.x=0;this.y=0;this.angle=0;this.ivs=[]}};
+C3.Plugins.Multiplayer.ObjectHistory=class ObjectHistory extends C3.DefendedBase{constructor(inst){super();this._inst=inst;this._history=[]}AddEntry(he){this._history.push(he)}ExpireOldEntries(hostTime){while(this._history.length>0&&this._history[0].timestamp<=hostTime-2E3)this._history.shift()}GetLastDelta(tag,i){if(this._history.length<2)return 0;const from=this._history.at(-2);const to=this._history.at(-1);switch(tag){case "x":return to.x-from.x;case "y":return to.y-from.y;case "a":return to.angle-
+from.angle;case "iv":return to.ivs[i]-from.ivs[i]}return 0}GetInterp(tag,index,time,interp){let prev=null;let next=null;for(let i=0,len=this._history.length;i<len;++i){const h=this._history[i];if(h.timestamp<time)prev=h;else{if(i+1<this._history.length)next=this._history[i+1];break}}if(!prev)return void 0;let prevValue=0;switch(tag){case "x":prevValue=prev.x;break;case "y":prevValue=prev.y;break;case "a":prevValue=prev.angle;break;case "iv":prevValue=prev.ivs[index];break}if(!next)return prevValue;
+let nextValue=prevValue;switch(tag){case "x":nextValue=next.x;break;case "y":nextValue=next.y;break;case "a":nextValue=next.angle;break;case "iv":nextValue=next.ivs[index];break}const x=C3.unlerp(prev.timestamp,next.timestamp,time);return InterpNetValue(interp,prevValue,nextValue,x,false)}ApplyCorrection(tag,index,correction){for(const h of this._history)switch(tag){case "x":h.x+=correction;break;case "y":h.y+=correction;break;case "a":h.angle+=correction;break;case "iv":h.ivs[index]+=correction;
+break}}};
 
 }
 
 {
-'use strict';{const C3=self.C3;C3.Plugins.AJAX=class AJAXPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.AJAX.Type=class AJAXType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}
-{const C3=self.C3;C3.Plugins.AJAX.Instance=class AJAXInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst);this._lastData="";this._lastStatusCode=0;this._curTag="";this._progress=0;this._timeout=-1;this._nextRequestHeaders=new Map;this._nextReponseBinaryData=null;this._nextRequestOverrideMimeType="";this._nextRequestWithCredentials=false;this._nwjsFs=null;this._nwjsPath=null;this._nwjsAppFolder=null;this._isNWjs=this._runtime.GetExportType()==="nwjs";if(this._isNWjs){this._nwjsFs=
-require("fs");this._nwjsPath=require("path");const process=self["process"]||nw["process"];this._nwjsAppFolder=this._nwjsPath["dirname"](process["execPath"])+"\\"}}Release(){super.Release()}async _TriggerError(tag,url,err){console.error(`[Construct] AJAX request to '${url}' (tag '${tag}') failed: `,err);this._curTag=tag;await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnAnyError);this._curTag=tag;await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnError)}async _TriggerComplete(tag){this._curTag=tag;await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnAnyComplete);
-this._curTag=tag;await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnComplete)}async _OnProgress(tag,e){if(!e["lengthComputable"])return;this._progress=e["loaded"]/e["total"];this._curTag=tag;await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnProgress)}_OnError(tag,url,err){if(!this._isNWjs){this._TriggerError(tag,url,err);return}const fs=this._nwjsFs;const filePath=this._nwjsAppFolder+url;if(fs["existsSync"](filePath))fs["readFile"](filePath,{"encoding":"utf8"},(err2,data)=>{if(err2)this._TriggerError(tag,
-url,err2);else{this._lastData=data.replace(/\r\n/g,"\n");this._TriggerComplete(tag)}});else this._TriggerError(tag,url,err)}async _DoCordovaRequest(tag,file){const assetManager=this._runtime.GetAssetManager();const binaryData=this._nextReponseBinaryData;this._nextReponseBinaryData=null;try{if(binaryData){const buffer=await assetManager.CordovaFetchLocalFileAsArrayBuffer(file);binaryData.SetArrayBufferTransfer(buffer);this._lastData="";this._lastStatusCode=0;this._TriggerComplete(tag)}else{const data=
-await assetManager.CordovaFetchLocalFileAsText(file);this._lastData=data.replace(/\r\n/g,"\n");this._lastStatusCode=0;this._TriggerComplete(tag)}}catch(err){this._TriggerError(tag,file,err)}}_DoRequest(tag,url,method,data){return new Promise(resolve=>{const errorFunc=err=>{this._OnError(tag,url,err);resolve()};const binaryData=this._nextReponseBinaryData;this._nextReponseBinaryData=null;try{const request=new XMLHttpRequest;request.onreadystatechange=()=>{if(request.readyState===4){if(binaryData)this._lastData=
-"";else this._lastData=(request.responseText||"").replace(/\r\n/g,"\n");this._lastStatusCode=request.status;if(request.status>=400)this._TriggerError(tag,url,request.status+request.statusText);else{const hasData=this._lastData.length||binaryData&&request.response instanceof ArrayBuffer;if((!this._isNWjs||hasData)&&!(!this._isNWjs&&request.status===0&&!hasData)){if(binaryData)binaryData.SetArrayBufferTransfer(request.response);this._TriggerComplete(tag)}}resolve()}};request.onerror=errorFunc;request.ontimeout=
-errorFunc;request.onabort=errorFunc;request["onprogress"]=e=>this._OnProgress(tag,e);request.open(method,url);if(this._timeout>=0&&typeof request["timeout"]!=="undefined")request["timeout"]=this._timeout;request.responseType=binaryData?"arraybuffer":"text";if(data&&!this._nextRequestHeaders.has("Content-Type"))if(typeof data!=="string")request["setRequestHeader"]("Content-Type","application/octet-stream");else request["setRequestHeader"]("Content-Type","application/x-www-form-urlencoded");for(const [header,
-value]of this._nextRequestHeaders)try{request["setRequestHeader"](header,value)}catch(err){console.error(`[Construct] AJAX: Failed to set header '${header}: ${value}': `,err)}this._nextRequestHeaders.clear();if(this._nextRequestOverrideMimeType){try{request["overrideMimeType"](this._nextRequestOverrideMimeType)}catch(err){console.error(`[Construct] AJAX: failed to override MIME type: `,err)}this._nextRequestOverrideMimeType=""}if(this._nextRequestWithCredentials){request.withCredentials=true;this._nextRequestWithCredentials=
-false}if(data)request.send(data);else request.send()}catch(err){errorFunc(err)}})}GetDebuggerProperties(){const prefix="plugins.ajax.debugger";return[{title:prefix+".title",properties:[{name:prefix+".last-status-code",value:this._lastStatusCode},{name:prefix+".last-data",value:this._lastData}]}]}SaveToJson(){return{"lastData":this._lastData,"lastStatusCode":this._lastStatusCode}}LoadFromJson(o){this._lastData=o["lastData"];this._lastStatusCode=o.hasOwnProperty("lastStatusCode")?o["lastStatusCode"]:
-0;this._curTag="";this._progress=0}}}{const C3=self.C3;C3.Plugins.AJAX.Cnds={OnComplete(tag){return C3.equalsNoCase(this._curTag,tag)},OnAnyComplete(){return true},OnError(tag){return C3.equalsNoCase(this._curTag,tag)},OnAnyError(){return true},OnProgress(tag){return C3.equalsNoCase(this._curTag,tag)}}}
-{const C3=self.C3;C3.Plugins.AJAX.Acts={async Request(tag,url){if(this._runtime.IsCordova()&&C3.IsRelativeURL(url)&&this._runtime.GetAssetManager().IsFileProtocol())await this._DoCordovaRequest(tag,url);else if(this._runtime.IsPreview()&&C3.IsRelativeURL(url)){const localurl=this._runtime.GetAssetManager().GetLocalUrlAsBlobUrl(url);await this._DoRequest(tag,localurl,"GET",null)}else await this._DoRequest(tag,url,"GET",null)},async RequestFile(tag,file){if(this._runtime.IsCordova()&&this._runtime.GetAssetManager().IsFileProtocol())await this._DoCordovaRequest(tag,
-file);else await this._DoRequest(tag,this._runtime.GetAssetManager().GetLocalUrlAsBlobUrl(file),"GET",null)},async Post(tag,url,data,method){await this._DoRequest(tag,url,method,data)},async PostBinary(tag,url,objectClass,method){if(!objectClass)return;const target=objectClass.GetFirstPicked(this._inst);if(!target)return;const sdkInst=target.GetSdkInstance();const buffer=sdkInst.GetArrayBufferReadOnly();await this._DoRequest(tag,url,method,buffer)},SetTimeout(t){this._timeout=t*1E3},SetHeader(n,v){this._nextRequestHeaders.set(n,
-v)},SetResponseBinary(objectClass){if(!objectClass)return;const inst=objectClass.GetFirstPicked(this._inst);if(!inst)return;this._nextReponseBinaryData=inst.GetSdkInstance()},OverrideMIMEType(m){this._nextRequestOverrideMimeType=m},SetWithCredentials(w){this._nextRequestWithCredentials=!!w}}}{const C3=self.C3;C3.Plugins.AJAX.Exps={LastData(){return this._lastData},LastStatusCode(){return this._lastStatusCode},Progress(){return this._progress},Tag(){return this._curTag}}};
+'use strict';const C3=self.C3;const C3X=self.C3X;
+C3.Plugins.Multiplayer.PeerInfo=class PeerInfo{constructor(mpInst,id,alias){this._mpInst=mpInst;this._id=id;this._alias=alias;this._nid=-1;this._latency=0;this._pdv=0;this._clientState=new Map;this._isClosed=false;this._iPeer=null}_GetInst(){return this._mpInst}GetId(){return this._id}GetAlias(){return this._alias}SetNid(nid){C3X.RequireFiniteNumber(nid);this._nid=nid}GetNid(){return this._nid}SetLatency(l){this._latency=l}GetLatency(){return this._latency}SetPdv(pdv){this._pdv=pdv}GetPdv(){return this._pdv}GetClientState(){return this._clientState}MarkClosed(){this._isClosed=
+true}IsClosed(){return this._isClosed}GetScriptInterface(){if(!this._iPeer)this._iPeer=C3.New(self.IMultiplayerPeer,this);return this._iPeer}};const map=new WeakMap;
+self.IMultiplayerPeer=class IMultiplayerPeer{constructor(peerInfo){const descriptors={id:{value:peerInfo.GetId(),writable:false},alias:{value:peerInfo.GetAlias(),writable:false},isHost:{value:peerInfo.GetId()===peerInfo._GetInst()._GetHostId(),writable:false},isMe:{value:peerInfo.GetId()===peerInfo._GetInst()._GetMyId(),writable:false}};Object.defineProperties(this,descriptors);map.set(this,peerInfo)}get latency(){return map.get(this).GetLatency()}get pdv(){return map.get(this).GetPdv()}send(message,
+transmissionMode="o"){map.get(this)._GetInst().GetObjectClass().GetIObjectClass().sendPeerMessage(this.id,message,transmissionMode)}};
+
+}
+
+{
+'use strict';{const C3=self.C3;C3.Behaviors.Bullet=class BulletBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.Bullet.Type=class BulletType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const C3X=self.C3X;const IBehaviorInstance=self.IBehaviorInstance;const SPEED=0;const ACCELERATION=1;const GRAVITY=2;const BOUNCE_OFF_SOLIDS=3;const SET_ANGLE=4;const STEPPING=5;const ENABLE=6;C3.Behaviors.Bullet.Instance=class BulletInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);const wi=this.GetWorldInfo();this._speed=0;this._acc=0;this._g=0;this._bounceOffSolid=false;this._setAngle=false;this._isStepping=false;this._isEnabled=true;this._dx=
+0;this._dy=0;this._lastX=wi.GetX();this._lastY=wi.GetY();this._lastKnownAngle=wi.GetAngle();this._travelled=0;this._stepSize=Math.min(Math.abs(wi.GetWidth()),Math.abs(wi.GetHeight())/2);this._stopStepping=false;if(properties){this._speed=properties[SPEED];this._acc=properties[ACCELERATION];this._g=properties[GRAVITY];this._bounceOffSolid=!!properties[BOUNCE_OFF_SOLIDS];this._setAngle=!!properties[SET_ANGLE];this._isStepping=!!properties[STEPPING];this._isEnabled=!!properties[ENABLE]}const a=wi.GetAngle();
+this._dx=Math.cos(a)*this._speed;this._dy=Math.sin(a)*this._speed;if(this._isEnabled){this._StartTicking();if(this._bounceOffSolid)this._StartPostTicking()}}Release(){super.Release()}SaveToJson(){const o={"dx":this._dx,"dy":this._dy,"lx":this._lastX,"ly":this._lastY,"lka":this._lastKnownAngle,"t":this._travelled};if(this._acc!==0)o["acc"]=this._acc;if(this._g!==0)o["g"]=this._g;if(this._isStepping)o["st"]=this._isStepping;if(!this._isEnabled)o["e"]=this._isEnabled;if(this._bounceOffSolid)o["bos"]=
+this._bounceOffSolid;if(this._setAngle)o["sa"]=this._setAngle;return o}LoadFromJson(o){this._dx=o["dx"];this._dy=o["dy"];this._lastX=o["lx"];this._lastY=o["ly"];this._lastKnownAngle=o["lka"];this._travelled=o["t"];this._acc=o.hasOwnProperty("acc")?o["acc"]:0;this._g=o.hasOwnProperty("g")?o["g"]:0;this._isStepping=o.hasOwnProperty("st")?o["st"]:false;this._bounceOffSolid=o.hasOwnProperty("bos")?o["bos"]:false;this._setAngle=o.hasOwnProperty("sa")?o["sa"]:false;this._SetEnabled(o.hasOwnProperty("e")?
+o["e"]:true)}Tick(){if(!this._isEnabled)return;const dt=this._runtime.GetDt(this._inst);const wi=this._inst.GetWorldInfo();if(wi.GetAngle()!==this._lastKnownAngle){const angle=wi.GetAngle();if(this._setAngle){const s=C3.distanceTo(0,0,this._dx,this._dy);this._dx=Math.cos(angle)*s;this._dy=Math.sin(angle)*s}this._lastKnownAngle=angle}let xacc=0;let yacc=0;if(this._acc!==0){let s=C3.distanceTo(0,0,this._dx,this._dy);let a=0;if(this._dx===0&&this._dy===0)a=wi.GetAngle();else a=C3.angleTo(0,0,this._dx,
+this._dy);s+=this._acc*dt;xacc=Math.cos(a)*this._acc;yacc=Math.sin(a)*this._acc;if(s<0){s=0;xacc=0;yacc=0}this._dx=Math.cos(a)*s;this._dy=Math.sin(a)*s}if(this._g!==0){this._dy+=this._g*dt;yacc+=this._g}this._lastX=wi.GetX();this._lastY=wi.GetY();if(this._dx!==0||this._dy!==0){const mx=this._dx*dt+.5*xacc*dt*dt;const my=this._dy*dt+.5*yacc*dt*dt;const stepDist=C3.distanceTo(0,0,mx,my);this._MoveBy(mx,my,stepDist);this._travelled+=stepDist;if(this._setAngle&&(mx!==0||my!==0)){const a=C3.angleTo(0,
+0,mx,my);wi.SetAngle(a);this._lastKnownAngle=wi.GetAngle()}wi.SetBboxChanged()}}_MoveBy(mx,my,stepDist){const wi=this.GetWorldInfo();if(!this._isStepping||stepDist<=this._stepSize){wi.OffsetXY(mx,my);wi.SetBboxChanged();if(this._isStepping)this.Trigger(C3.Behaviors.Bullet.Cnds.OnStep);return}this._stopStepping=false;const startX=wi.GetX();const startY=wi.GetY();const endX=startX+mx;const endY=startY+my;const a=C3.angleTo(0,0,mx,my);const stepX=Math.cos(a)*this._stepSize;const stepY=Math.sin(a)*this._stepSize;
+const stepCount=Math.floor(stepDist/this._stepSize);for(let i=1;i<=stepCount;++i){wi.SetXY(startX+stepX*i,startY+stepY*i);wi.SetBboxChanged();this.Trigger(C3.Behaviors.Bullet.Cnds.OnStep);if(this._inst.IsDestroyed()||this._stopStepping)return}wi.SetXY(endX,endY);wi.SetBboxChanged();this.Trigger(C3.Behaviors.Bullet.Cnds.OnStep)}PostTick(){if(!this._isEnabled||!this._bounceOffSolid||this._dx===0&&this._dy===0)return;const dt=this._runtime.GetDt(this._inst);const wi=this._inst.GetWorldInfo();const collisionEngine=
+this._runtime.GetCollisionEngine();const bounceSolid=collisionEngine.TestOverlapSolid(this._inst);if(bounceSolid){collisionEngine.RegisterCollision(this._inst,bounceSolid);const s=C3.distanceTo(0,0,this._dx,this._dy);const bounceAngle=collisionEngine.CalculateBounceAngle(this._inst,this._lastX,this._lastY);this._dx=Math.cos(bounceAngle)*s;this._dy=Math.sin(bounceAngle)*s;wi.OffsetXY(this._dx*dt,this._dy*dt);wi.SetBboxChanged();if(this._setAngle){wi.SetAngle(bounceAngle);this._lastKnownAngle=wi.GetAngle();
+wi.SetBboxChanged()}if(!collisionEngine.PushOutSolid(this._inst,this._dx/s,this._dy/s,Math.max(s*2.5*dt,30)))collisionEngine.PushOutSolidNearest(this._inst,100)}}GetPropertyValueByIndex(index){switch(index){case SPEED:return this._GetSpeed();case ACCELERATION:return this._GetAcceleration();case GRAVITY:return this._GetGravity();case SET_ANGLE:return this._setAngle;case STEPPING:return this._isStepping;case ENABLE:return this._IsEnabled()}}SetPropertyValueByIndex(index,value){switch(index){case SPEED:this._SetSpeed(value);
+break;case ACCELERATION:this._acc=value;break;case GRAVITY:this._g=value;break;case SET_ANGLE:this._setAngle=!!value;break;case STEPPING:this._isStepping=!!value;break;case ENABLE:this._SetEnabled(!!value);break}}_SetSpeed(s){const a=C3.angleTo(0,0,this._dx,this._dy);this._dx=Math.cos(a)*s;this._dy=Math.sin(a)*s}_GetSpeed(){return C3.roundToDp(C3.distanceTo(0,0,this._dx,this._dy),6)}_SetAcceleration(a){this._acc=a}_GetAcceleration(){return this._acc}_SetGravity(g){this._g=g}_GetGravity(){return this._g}_SetAngleOfMotion(a){const s=
+C3.distanceTo(0,0,this._dx,this._dy);this._dx=Math.cos(a)*s;this._dy=Math.sin(a)*s}_GetAngleOfMotion(){return C3.angleTo(0,0,this._dx,this._dy)}_SetBounceOffSolids(b){b=!!b;if(this._bounceOffSolid===b)return;this._bounceOffSolid=b;if(this._isEnabled)if(this._bounceOffSolid)this._StartPostTicking();else this._StopPostTicking()}_IsBounceOffSolids(){return this._bounceOffSolid}_SetDistanceTravelled(d){this._travelled=d}_GetDistanceTravelled(){return this._travelled}_SetEnabled(e){this._isEnabled=!!e;
+if(this._isEnabled){this._StartTicking();if(this._bounceOffSolid)this._StartPostTicking()}else{this._StopTicking();this._StopPostTicking()}}_IsEnabled(){return this._isEnabled}GetDebuggerProperties(){const prefix="behaviors.bullet";return[{title:"$"+this.GetBehaviorType().GetName(),properties:[{name:prefix+".debugger.vector-x",value:this._dx,onedit:v=>this._dx=v},{name:prefix+".debugger.vector-y",value:this._dy,onedit:v=>this._dy=v},{name:prefix+".properties.speed.name",value:this._GetSpeed(),onedit:v=>
+this._SetSpeed(v)},{name:prefix+".debugger.angle-of-motion",value:C3.toDegrees(this._GetAngleOfMotion())},{name:prefix+".properties.gravity.name",value:this._GetGravity(),onedit:v=>this._SetGravity(v)},{name:prefix+".properties.acceleration.name",value:this._GetAcceleration(),onedit:v=>this._SetAcceleration(v)},{name:prefix+".debugger.distance-travelled",value:this._GetDistanceTravelled()},{name:prefix+".properties.enabled.name",value:this._IsEnabled(),onedit:v=>this._SetEnabled(v)}]}]}GetScriptInterfaceClass(){return self.IBulletBehaviorInstance}};
+const map=new WeakMap;self.IBulletBehaviorInstance=class IBulletBehaviorInstance extends IBehaviorInstance{constructor(){super();map.set(this,IBehaviorInstance._GetInitInst().GetSdkInstance())}get speed(){return map.get(this)._GetSpeed()}set speed(s){C3X.RequireFiniteNumber(s);map.get(this)._SetSpeed(s)}get acceleration(){return map.get(this)._GetAcceleration()}set acceleration(a){C3X.RequireFiniteNumber(a);map.get(this)._SetAcceleration(a)}get gravity(){return map.get(this)._GetGravity()}set gravity(g){C3X.RequireFiniteNumber(g);
+map.get(this)._SetGravity(g)}get angleOfMotion(){return map.get(this)._GetAngleOfMotion()}set angleOfMotion(a){C3X.RequireFiniteNumber(a);map.get(this)._SetAngleOfMotion(a)}get bounceOffSolids(){return map.get(this)._IsBounceOffSolids()}set bounceOffSolids(b){map.get(this)._SetBounceOffSolids(!!b)}get distanceTravelled(){return map.get(this)._GetDistanceTravelled()}set distanceTravelled(d){C3X.RequireFiniteNumber(d);map.get(this)._SetDistanceTravelled(d)}get isEnabled(){return map.get(this)._IsEnabled()}set isEnabled(e){map.get(this)._SetEnabled(e)}}}
+{const C3=self.C3;C3.Behaviors.Bullet.Cnds={CompareSpeed(cmp,s){const speed=Math.hypot(this._dx,this._dy);return C3.compare(speed,cmp,s)},CompareTravelled(cmp,d){return C3.compare(this._GetDistanceTravelled(),cmp,d)},OnStep(){return true},IsEnabled(){return this._IsEnabled()}}}
+{const C3=self.C3;C3.Behaviors.Bullet.Acts={SetSpeed(s){this._SetSpeed(s)},SetAcceleration(a){this._SetAcceleration(a)},SetGravity(g){this._SetGravity(g)},SetAngleOfMotion(a){this._SetAngleOfMotion(C3.toRadians(a))},Bounce(objectClass){if(!objectClass)return;const otherInst=objectClass.GetFirstPicked(this._inst);if(!otherInst)return;const wi=this._inst.GetWorldInfo();const collisionEngine=this._runtime.GetCollisionEngine();const dt=this._runtime.GetDt(this._inst);const s=C3.distanceTo(0,0,this._dx,
+this._dy);const bounceAngle=collisionEngine.CalculateBounceAngle(this._inst,this._lastX,this._lastY,otherInst);this._dx=Math.cos(bounceAngle)*s;this._dy=Math.sin(bounceAngle)*s;wi.OffsetXY(this._dx*dt,this._dy*dt);wi.SetBboxChanged();if(this._setAngle){wi.SetAngle(bounceAngle);this._lastKnownAngle=wi.GetAngle();wi.SetBboxChanged()}if(s!==0)if(this._bounceOffSolid){if(!collisionEngine.PushOutSolid(this._inst,this._dx/s,this._dy/s,Math.max(s*2.5*dt,30)))collisionEngine.PushOutSolidNearest(this._inst,
+100)}else collisionEngine.PushOut(this._inst,this._dx/s,this._dy/s,Math.max(s*2.5*dt,30),otherInst)},SetBounceOffSolids(b){this._SetBounceOffSolids(b)},SetDistanceTravelled(d){this._SetDistanceTravelled(d)},SetEnabled(e){this._SetEnabled(e)},StopStepping(){this._stopStepping=true}}}
+{const C3=self.C3;C3.Behaviors.Bullet.Exps={Speed(){return this._GetSpeed()},Acceleration(){return this._GetAcceleration()},AngleOfMotion(){return C3.toDegrees(this._GetAngleOfMotion())},DistanceTravelled(){return this._GetDistanceTravelled()},Gravity(){return this._GetGravity()}}};
+
+}
+
+{
+'use strict';{const C3=self.C3;C3.Behaviors.solid=class SolidBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.solid.Type=class SolidType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const C3X=self.C3X;const IBehaviorInstance=self.IBehaviorInstance;const ENABLE=0;const TAGS=1;const EMPTY_SET=new Set;C3.Behaviors.solid.Instance=class SolidInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this.SetEnabled(true);if(properties){this.SetEnabled(properties[ENABLE]);this.SetTags(properties[TAGS])}}Release(){super.Release()}SetEnabled(e){this._inst._SetSolidEnabled(!!e)}IsEnabled(){return this._inst._IsSolidEnabled()}SetTags(tagList){const savedDataMap=
+this._inst.GetSavedDataMap();if(!tagList.trim()){savedDataMap.delete("solidTags");return}let solidTags=savedDataMap.get("solidTags");if(!solidTags){solidTags=new Set;savedDataMap.set("solidTags",solidTags)}solidTags.clear();for(const tag of tagList.split(" "))if(tag)solidTags.add(tag.toLowerCase())}GetTags(){return this._inst.GetSavedDataMap().get("solidTags")||EMPTY_SET}_GetTagsString(){return[...this.GetTags()].join(" ")}SaveToJson(){return{"e":this.IsEnabled()}}LoadFromJson(o){this.SetEnabled(o["e"])}GetPropertyValueByIndex(index){switch(index){case ENABLE:return this.IsEnabled()}}SetPropertyValueByIndex(index,
+value){switch(index){case ENABLE:this.SetEnabled(value);break}}GetDebuggerProperties(){return[{title:"$"+this.GetBehaviorType().GetName(),properties:[{name:"behaviors.solid.properties.enabled.name",value:this.IsEnabled(),onedit:v=>this.SetEnabled(v)},{name:"behaviors.solid.properties.tags.name",value:this._GetTagsString(),onedit:v=>this.SetTags(v)}]}]}GetScriptInterfaceClass(){return self.ISolidBehaviorInstance}};const map=new WeakMap;self.ISolidBehaviorInstance=class ISolidBehaviorInstance extends IBehaviorInstance{constructor(){super();
+map.set(this,IBehaviorInstance._GetInitInst().GetSdkInstance())}set isEnabled(e){map.get(this).SetEnabled(!!e)}get isEnabled(){return map.get(this).IsEnabled()}set tags(str){C3X.RequireString(str);map.get(this).SetTags(str)}get tags(){return map.get(this)._GetTagsString()}}}{const C3=self.C3;C3.Behaviors.solid.Cnds={IsEnabled(){return this.IsEnabled()}}}{const C3=self.C3;C3.Behaviors.solid.Acts={SetEnabled(e){this.SetEnabled(e)},SetTags(tagList){this.SetTags(tagList)}}}
+{const C3=self.C3;C3.Behaviors.solid.Exps={}};
 
 }
 
@@ -4472,272 +4531,101 @@ const C3 = self.C3;
 self.C3_GetObjectRefTable = function () {
 	return [
 		C3.Plugins.Text,
+		C3.Plugins.Button,
+		C3.Plugins.TextBox,
 		C3.Plugins.Sprite,
-		C3.Plugins.Touch,
-		C3.Plugins.Arr,
-		C3.Plugins.AJAX,
+		C3.Behaviors.Bullet,
+		C3.Behaviors.solid,
+		C3.Plugins.Mouse,
+		C3.Plugins.Multiplayer,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.System.Cnds.OnLayoutStart,
-		C3.Plugins.AJAX.Acts.RequestFile,
-		C3.Plugins.System.Acts.WaitForPreviousActions,
-		C3.Plugins.Arr.Acts.JSONLoad,
-		C3.Plugins.AJAX.Exps.LastData,
-		C3.Plugins.Arr.Acts.Shuffle,
-		C3.Plugins.Touch.Cnds.OnTapGestureObject,
-		C3.Plugins.Sprite.Cnds.IsVisible,
-		C3.Plugins.Sprite.Cnds.CompareFrame,
-		C3.Plugins.System.Cnds.CompareBoolVar,
-		C3.Plugins.Sprite.Acts.SetVisible,
-		C3.Plugins.Sprite.Acts.SetAnimFrame,
-		C3.Plugins.Arr.Exps.At,
-		C3.Plugins.System.Acts.SubVar,
-		C3.Plugins.Arr.Acts.Pop,
-		C3.Plugins.System.Cnds.CompareVar,
-		C3.Plugins.Text.Acts.SetText,
-		C3.Plugins.Arr.Cnds.ArrForEach,
-		C3.Plugins.Arr.Cnds.CompareXY,
-		C3.Plugins.Arr.Exps.CurX,
-		C3.Plugins.Arr.Exps.CurY,
-		C3.Plugins.System.Acts.CreateObject,
+		C3.Plugins.Multiplayer.Acts.AddClientInputValue,
+		C3.Plugins.Multiplayer.Acts.SyncObject2,
+		C3.Plugins.Multiplayer.Acts.SyncObjectInstanceVar,
+		C3.Plugins.Multiplayer.Acts.SignallingConnect,
+		C3.Plugins.Multiplayer.Cnds.OnSignallingConnected,
+		C3.Plugins.Multiplayer.Acts.SignallingLogin,
+		C3.Plugins.Multiplayer.Cnds.SignallingIsLoggedIn,
+		C3.Plugins.Multiplayer.Acts.SignallingAutoJoinRoom,
+		C3.Plugins.Multiplayer.Cnds.OnSignallingJoinedRoom,
+		C3.Plugins.Multiplayer.Cnds.IsHost,
+		C3.Plugins.System.Acts.SetGroupActive,
 		C3.Plugins.Sprite.Acts.SetInstanceVar,
-		C3.Plugins.Sprite.Cnds.IsOverlappingOffset,
-		C3.Plugins.Sprite.Acts.Destroy,
-		C3.Plugins.Sprite.Cnds.IsOnScreen,
-		C3.Plugins.Sprite.Exps.X,
-		C3.Plugins.Sprite.Exps.Y,
-		C3.Plugins.System.Cnds.ForEach,
-		C3.Plugins.Sprite.Cnds.IsOverlapping,
-		C3.Plugins.System.Cnds.ForEachOrdered,
-		C3.Plugins.Sprite.Acts.SetSize,
-		C3.Plugins.Sprite.Exps.AnimationFrame,
-		C3.Plugins.System.Acts.AddVar,
-		C3.Plugins.System.Cnds.Compare,
+		C3.Plugins.Multiplayer.Exps.MyID,
+		C3.Plugins.Multiplayer.Acts.AssociateObjectWithPeer,
 		C3.Plugins.System.Cnds.Else,
+		C3.Plugins.Sprite.Acts.Destroy,
+		C3.Plugins.Multiplayer.Cnds.OnPeerConnected,
+		C3.Plugins.System.Acts.CreateObject,
+		C3.Plugins.System.Exps.layoutwidth,
+		C3.Plugins.System.Exps.layoutheight,
+		C3.Plugins.System.Acts.WaitForPreviousActions,
+		C3.Plugins.Multiplayer.Exps.PeerID,
 		C3.Plugins.System.Acts.Wait,
-		C3.Plugins.System.Acts.SetVar,
-		C3.Plugins.Touch.Cnds.IsTouchingObject,
-		C3.Plugins.Sprite.Cnds.PickByUID,
-		C3.Plugins.Sprite.Acts.SetPos,
-		C3.Plugins.System.Acts.SetBoolVar,
+		C3.Behaviors.Bullet.Acts.SetEnabled,
+		C3.Behaviors.Bullet.Acts.SetAngleOfMotion,
+		C3.Plugins.System.Exps.choose,
+		C3.Plugins.System.Exps.random,
 		C3.Plugins.Sprite.Cnds.CompareInstanceVar,
-		C3.Plugins.Sprite.Exps.Width,
-		C3.Plugins.Sprite.Exps.Height,
-		C3.Plugins.Sprite.Exps.UID,
-		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
-		C3.Plugins.Sprite.Cnds.CompareX,
-		C3.Plugins.Sprite.Cnds.CompareY,
-		C3.Plugins.Text.Acts.SetVisible,
-		C3.Plugins.Sprite.Cnds.IsBoolInstanceVarSet,
-		C3.Plugins.System.Cnds.LayerVisible,
-		C3.Plugins.Sprite.Exps.Count,
-		C3.Plugins.Sprite.Cnds.OnCreated,
+		C3.Plugins.Sprite.Acts.SetY,
+		C3.Plugins.Multiplayer.Exps.PeerState,
 		C3.Plugins.Sprite.Cnds.OnCollision,
-		C3.Plugins.Text.Acts.SetFontColor,
-		C3.Plugins.Text.Acts.SetY,
-		C3.Plugins.Touch.Cnds.HasNthTouch,
-		C3.Plugins.Sprite.Acts.SetOpacity,
+		C3.Behaviors.Bullet.Acts.SetSpeed,
+		C3.Behaviors.Bullet.Exps.Speed,
+		C3.Plugins.Sprite.Cnds.CompareX,
 		C3.Plugins.System.Cnds.TriggerOnce,
-		C3.Plugins.Text.Acts.SetPos,
-		C3.Plugins.Touch.Cnds.OnTapGesture,
-		C3.Plugins.Arr.Acts.SetXY,
-		C3.Plugins.Touch.Cnds.OnDoubleTapGestureObject,
-		C3.Plugins.System.Cnds.Every,
-		C3.Plugins.Text.Acts.Destroy,
-		C3.Plugins.Arr.Exps.CurValue,
-		C3.Plugins.System.Acts.SetLayerVisible,
-		C3.Plugins.System.Acts.RestartLayout,
-		C3.Plugins.System.Acts.ResetGlobals,
-		C3.Plugins.Sprite.Exps.IID,
-		C3.Plugins.System.Acts.SetFunctionReturnValue
+		C3.Plugins.Sprite.Acts.AddInstanceVar,
+		C3.Plugins.Sprite.Acts.SetPos,
+		C3.Plugins.Multiplayer.Acts.HostBroadcastMessage,
+		C3.Plugins.Sprite.Cnds.OnCreated,
+		C3.Plugins.Multiplayer.Cnds.OnClientUpdate,
+		C3.Plugins.Multiplayer.Acts.SetClientState,
+		C3.Plugins.Mouse.Exps.Y,
+		C3.Plugins.Multiplayer.Cnds.OnPeerMessage,
+		C3.Plugins.System.Cnds.Compare,
+		C3.Plugins.Multiplayer.Exps.Message,
+		C3.Plugins.Multiplayer.Exps.HostID,
+		C3.Plugins.Text.Acts.SetText,
+		C3.Plugins.Text.Acts.AppendText,
+		C3.Plugins.Button.Cnds.OnClicked,
+		C3.Plugins.TextBox.Cnds.CompareText,
+		C3.Plugins.System.Acts.SetVar,
+		C3.Plugins.TextBox.Exps.Text,
+		C3.Plugins.System.Acts.GoToLayout
 	];
 };
 self.C3_JsPropNameTable = [
-	{TextMassiv: 0},
-	{TextVersia: 0},
-	{o_sButtonPrizivVragTest: 0},
-	{deltaX: 0},
-	{deltaY: 0},
-	{o_MassivTest: 0},
-	{o_sButtonVragEndHod: 0},
-	{o_sBackground: 0},
-	{o_sPlayerNickButt: 0},
-	{o_sPlayerImageHost: 0},
-	{o_sMap: 0},
-	{o_tNameLeft: 0},
-	{o_tNameRight: 0},
-	{o_tPlen: 0},
-	{o_tSbros: 0},
-	{o_sButtonPriziv: 0},
-	{o_sPriziv: 0},
-	{Touch: 0},
-	{o_sShetoniGame: 0},
-	{o_Massiv: 0},
-	{o_ArrayHost: 0},
-	{AJAX: 0},
-	{o_ArrayPeer: 0},
-	{o_sButtonEndHod: 0},
-	{Sheton: 0},
-	{o_sButtonOtmena: 0},
-	{s_FiguraDvisn: 0},
-	{s_FiguraDeistv: 0},
-	{object: 0},
-	{id: 0},
-	{o_ShetonSveshenie: 0},
-	{idShit: 0},
-	{deltaShitX: 0},
-	{deltaShitY: 0},
-	{ShetonShit: 0},
-	{vrag: 0},
-	{o_sButtonOtmena2: 0},
-	{o_sCardLittle: 0},
-	{o_sCardBig: 0},
-	{o_FakeBackground: 0},
-	{s_visual: 0},
-	{o_sCount: 0},
-	{o_tCountFigurHost: 0},
-	{o_tCountFigurPeer: 0},
-	{o_sPlayerImagePeer: 0},
-	{s_zahvat: 0},
-	{o_sZahvat: 0},
-	{o_sCardCrest: 0},
-	{o_sPlenHost: 0},
-	{s_okrushen: 0},
-	{s_zahvats_okrushen: 0},
-	{o_sPlenPeer: 0},
-	{o_tCountMeshok: 0},
-	{o_tCountMeshokSecond: 0},
-	{o_ListFigurHost: 0},
-	{o_ListFigurPeer: 0},
-	{GameOver: 0},
-	{o_FakeBackgroundEndGame: 0},
-	{o_sButtonRestart: 0},
-	{o_sInvisibleFugr: 0},
-	{s_Glaz: 0},
-	{o_MassivDvishenie: 0},
-	{o_ArrayMassivLuch: 0},
-	{o_sButtonNazad: 0},
-	{s_priziv: 0},
-	{s_dviglo: 0},
-	{s_dvigloZahvat: 0},
-	{s_dvigloZahvatOcrushen: 0},
-	{o_MassivSposobnosti: 0},
-	{s_sbroshen: 0},
-	{o_sSbrosPeer: 0},
-	{o_sSbrosHost: 0},
-	{o_ShetonSveshenieFake: 0},
-	{s_dviglo_sbroshen: 0},
-	{objectShit: 0},
-	{o_ShetonChoose: 0},
-	{o_MassivSposobnostiShitonosecFake: 0},
-	{o_sShetoniGameVrag: 0},
-	{o_sZahvatVrag: 0},
-	{o_sInvisibleFugrVrag: 0},
-	{s_VosklZnak: 0},
-	{s_VosklZnakChoose: 0},
-	{s_VosklZnakChooseen: 0},
-	{o_sPrizivVrag: 0},
-	{ButtonWork: 0},
-	{FigurHost: 0},
-	{Map: 0},
-	{FigurPeer: 0},
-	{plenHost: 0},
-	{plenPeer: 0},
-	{sbrosHost: 0},
-	{sbrosPeer: 0},
-	{MeshokPeer: 0},
-	{MeshokHost: 0},
-	{figuraCanMove: 0},
-	{figuraCanUseSkill: 0},
-	{Test: 0},
-	{TestPriziv: 0},
-	{delX: 0},
-	{delY: 0},
-	{IndexKletki: 0},
-	{Host: 0},
-	{ArrayX: 0},
-	{ArrayY: 0},
-	{StartX: 0},
-	{StartY: 0},
-	{can: 0},
-	{objX: 0},
-	{objY: 0},
-	{vid: 0}
+	{Label: 0},
+	{LoginButton: 0},
+	{LoginInput: 0},
+	{Пуля: 0},
+	{Ball: 0},
+	{ID: 0},
+	{Points: 0},
+	{Твёрдый: 0},
+	{Paddle: 0},
+	{wall: 0},
+	{Score: 0},
+	{Мышь: 0},
+	{Multiplayer: 0},
+	{Game: 0},
+	{Instance: 0},
+	{Room: 0},
+	{BallSpeed: 0},
+	{Login: 0}
 ];
 
 self.InstanceType = {
-	TextMassiv: class extends self.ITextInstance {},
-	TextVersia: class extends self.ITextInstance {},
-	o_sButtonPrizivVragTest: class extends self.ISpriteInstance {},
-	o_MassivTest: class extends self.ISpriteInstance {},
-	o_sButtonVragEndHod: class extends self.ISpriteInstance {},
-	o_sBackground: class extends self.ISpriteInstance {},
-	o_sPlayerNickButt: class extends self.ISpriteInstance {},
-	o_sPlayerImageHost: class extends self.ISpriteInstance {},
-	o_sMap: class extends self.ISpriteInstance {},
-	o_tNameLeft: class extends self.ITextInstance {},
-	o_tNameRight: class extends self.ITextInstance {},
-	o_tPlen: class extends self.ITextInstance {},
-	o_tSbros: class extends self.ITextInstance {},
-	o_sButtonPriziv: class extends self.ISpriteInstance {},
-	o_sPriziv: class extends self.ISpriteInstance {},
-	Touch: class extends self.IInstance {},
-	o_sShetoniGame: class extends self.ISpriteInstance {},
-	o_Massiv: class extends self.ISpriteInstance {},
-	o_ArrayHost: class extends self.IArrayInstance {},
-	AJAX: class extends self.IInstance {},
-	o_ArrayPeer: class extends self.IArrayInstance {},
-	o_sButtonEndHod: class extends self.ISpriteInstance {},
-	o_sButtonOtmena: class extends self.ISpriteInstance {},
-	s_FiguraDvisn: class extends self.ISpriteInstance {},
-	s_FiguraDeistv: class extends self.ISpriteInstance {},
-	o_ShetonSveshenie: class extends self.ISpriteInstance {},
-	o_sButtonOtmena2: class extends self.ISpriteInstance {},
-	o_sCardLittle: class extends self.ISpriteInstance {},
-	o_sCardBig: class extends self.ISpriteInstance {},
-	o_FakeBackground: class extends self.ISpriteInstance {},
-	s_visual: class extends self.ISpriteInstance {},
-	o_sCount: class extends self.ISpriteInstance {},
-	o_tCountFigurHost: class extends self.ITextInstance {},
-	o_tCountFigurPeer: class extends self.ITextInstance {},
-	o_sPlayerImagePeer: class extends self.ISpriteInstance {},
-	s_zahvat: class extends self.ISpriteInstance {},
-	o_sZahvat: class extends self.ISpriteInstance {},
-	o_sCardCrest: class extends self.ISpriteInstance {},
-	o_sPlenHost: class extends self.ISpriteInstance {},
-	s_okrushen: class extends self.ISpriteInstance {},
-	s_zahvats_okrushen: class extends self.ISpriteInstance {},
-	o_sPlenPeer: class extends self.ISpriteInstance {},
-	o_tCountMeshok: class extends self.ITextInstance {},
-	o_tCountMeshokSecond: class extends self.ITextInstance {},
-	o_ListFigurHost: class extends self.IArrayInstance {},
-	o_ListFigurPeer: class extends self.IArrayInstance {},
-	GameOver: class extends self.ISpriteInstance {},
-	o_FakeBackgroundEndGame: class extends self.ISpriteInstance {},
-	o_sButtonRestart: class extends self.ISpriteInstance {},
-	o_sInvisibleFugr: class extends self.ISpriteInstance {},
-	s_Glaz: class extends self.ISpriteInstance {},
-	o_MassivDvishenie: class extends self.ISpriteInstance {},
-	o_ArrayMassivLuch: class extends self.IArrayInstance {},
-	o_sButtonNazad: class extends self.ISpriteInstance {},
-	s_priziv: class extends self.ISpriteInstance {},
-	s_dviglo: class extends self.ISpriteInstance {},
-	s_dvigloZahvat: class extends self.ISpriteInstance {},
-	s_dvigloZahvatOcrushen: class extends self.ISpriteInstance {},
-	o_MassivSposobnosti: class extends self.ISpriteInstance {},
-	s_sbroshen: class extends self.ISpriteInstance {},
-	o_sSbrosPeer: class extends self.ISpriteInstance {},
-	o_sSbrosHost: class extends self.ISpriteInstance {},
-	o_ShetonSveshenieFake: class extends self.ISpriteInstance {},
-	s_dviglo_sbroshen: class extends self.ISpriteInstance {},
-	o_ShetonChoose: class extends self.ISpriteInstance {},
-	o_MassivSposobnostiShitonosecFake: class extends self.ISpriteInstance {},
-	o_sShetoniGameVrag: class extends self.ISpriteInstance {},
-	o_sZahvatVrag: class extends self.ISpriteInstance {},
-	o_sInvisibleFugrVrag: class extends self.ISpriteInstance {},
-	s_VosklZnak: class extends self.ISpriteInstance {},
-	s_VosklZnakChoose: class extends self.ISpriteInstance {},
-	s_VosklZnakChooseen: class extends self.ISpriteInstance {},
-	o_sPrizivVrag: class extends self.ISpriteInstance {}
+	Label: class extends self.ITextInstance {},
+	LoginButton: class extends self.IButtonInstance {},
+	LoginInput: class extends self.ITextInputInstance {},
+	Ball: class extends self.ISpriteInstance {},
+	Paddle: class extends self.ISpriteInstance {},
+	wall: class extends self.ISpriteInstance {},
+	Score: class extends self.ITextInstance {},
+	Мышь: class extends self.IInstance {},
+	Multiplayer: class extends self.IInstance {}
 }
 }
 
@@ -4838,303 +4726,65 @@ function or(l, r)
 }
 
 self.C3_ExpressionFuncs = [
-		() => "Старт Игры",
-		() => "ArrayHos",
+		() => "Signaling",
+		() => "y",
+		() => "",
+		() => "wss://multiplayer.construct.net",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => v0.GetValue();
+		},
+		() => "Pong",
+		() => "MainBranch",
+		() => "UniUniRoom",
+		() => 2,
+		() => "Host",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
 		},
-		() => "ArrayPer",
-		() => "ListFigurHost",
-		() => "ListFigurPeer",
-		() => "MassivLuch",
+		() => "Peer",
 		() => 0,
 		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => (f0() - 30);
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => (f0() / 2);
+		},
+		() => 3,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => f0(f1(1, 30), f2(135, 180));
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => f0(n1.ExpInstVar(), "y");
+		},
+		p => {
 			const n0 = p._GetNode(0);
-			const v1 = p._GetNode(1).GetVar();
-			return () => n0.ExpObject((v1.GetValue() - 1));
+			return () => (n0.ExpBehavior() + 30);
 		},
 		() => 1,
-		() => "ПРИЗЫВ ФИГУР ВРАГА ТЕСТ",
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => and(v0.GetValue(), "/20");
-		},
+		() => "system",
+		() => "score-update",
+		() => "Common",
 		p => {
 			const n0 = p._GetNode(0);
-			return () => n0.ExpObject();
-		},
-		() => -1,
-		() => "Shetony",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (106 + (n0.ExpObject() * 124));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (486 + (n0.ExpObject() * 124));
-		},
-		() => "",
-		() => 3,
-		() => 478,
-		() => 858,
-		() => 4,
-		() => 602,
-		() => 2,
-		() => -10,
-		() => 5,
-		() => 982,
-		() => 10,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => ((n0.ExpObject() - 106) / 124);
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => ((n0.ExpObject() - 486) / 124);
+			return () => and(n0.ExpInstVar(), " : ");
 		},
 		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpInstVar();
 		},
-		() => 1000,
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (840 + ((v0.GetValue() * 56.8) * (-1)));
-		},
-		() => 76.8,
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => v0.GetValue();
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (1000 + (v0.GetValue() * 56.8));
-		},
-		() => 80,
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			return () => f0(0);
-		},
-		() => 115.2,
 		p => {
 			const n0 = p._GetNode(0);
-			return () => ((n0.ExpObject() + 10) * (-1));
-		},
-		() => "СОЗДАНИЕ",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpObject() + 10);
-		},
-		() => "ДВИЖЕНИЕ",
-		() => "ShetonyPodsvetka",
-		() => 400,
-		() => 1723,
-		() => 251.52,
-		() => "ДЕЙСТВИЕ",
-		p => {
-			const n0 = p._GetNode(0);
-			const n1 = p._GetNode(1);
-			const n2 = p._GetNode(2);
-			return () => n0.ExpObject(((n1.ExpObject() - 106) / 124), ((n2.ExpObject() - 486) / 124));
-		},
-		() => "КНОПКИ",
-		() => 540,
-		() => 1806,
-		() => 366.8,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (106 + (n0.ExpInstVar() * 124));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (486 + (n0.ExpInstVar() * 124));
-		},
-		() => "EndGame",
-		() => -717750023016447,
-		() => 1805.194816,
-		() => -422238236443647,
-		() => 1835.194816,
-		() => "Выбор фигуры для действия или движения",
-		() => 680,
-		() => 270,
-		() => "РАБОТА С ЗАХВАТИВШИМИ",
-		() => 30,
-		() => 10349.9437,
-		() => 100,
-		() => 349.9437,
-		() => "РАБОТА С КНОПКАМИ ОТМЕНА И ДЕЙСТВИЯ",
-		() => "Создание большой карты",
-		() => 0.1,
-		() => "Card",
-		() => 900,
-		() => 1008,
-		() => 1408,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpObject() - 500);
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpObject() - 700);
-		},
-		() => 140,
-		() => 126.75,
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (7 - v0.GetValue());
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (v0.GetValue() * (-1));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpObject() - 1);
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpObject() + 1);
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (106 + (v0.GetValue() * 124));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (486 + (v0.GetValue() * 124));
-		},
-		() => "Тест",
-		() => "Удаление Жетона С Поля",
-		() => "Какие айди у клеток поля",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (95 + (n0.ExpObject() * 124));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (457 + (n0.ExpObject() * 124));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (487 + (n0.ExpObject() * 124));
-		},
-		() => "Какие фигуры в мешке",
-		() => -50,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (530 + (n0.ExpObject() * 40));
-		},
-		() => -717706215031807,
-		() => 1130,
-		() => -43805311999,
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (v0.GetValue() - 1);
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (106 + ((v0.GetValue() - 1) * 124));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (486 + ((v0.GetValue() - 1) * 124));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (v0.GetValue() + 1);
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (106 + ((v0.GetValue() + 1) * 124));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (486 + ((v0.GetValue() + 1) * 124));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (v0.GetValue() - 2);
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (v0.GetValue() + 2);
-		},
-		() => "Рисование Движения Лучника",
-		() => 124,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpInstVar() + 1);
-		},
-		() => -124,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpInstVar() - 1);
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpInstVar() - 2);
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpInstVar() + 2);
-		},
-		() => 6,
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (106 + ((v0.GetValue() - 2) * 124));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (106 + ((v0.GetValue() + 2) * 124));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (486 + ((v0.GetValue() - 2) * 124));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (486 + ((v0.GetValue() + 2) * 124));
-		},
-		() => "ВЫРАВНИВАНИЕ СБРОСОВ и ПЛЕНОВ",
-		() => 120,
-		() => 1056.8,
-		() => 1113.6,
-		() => 1170.4,
-		() => 1227.2,
-		() => 40,
-		() => 7,
-		() => 8,
-		() => 9,
-		() => 1284,
-		() => 11,
-		() => 12,
-		() => 1340.8,
-		() => 13,
-		() => 14,
-		() => 1397.6,
-		() => 15,
-		() => 16,
-		() => 1454.4,
-		() => 17,
-		() => 18,
-		() => 1511.2,
-		() => 19,
-		() => 840,
-		() => 783.2,
-		() => 726.4,
-		() => 669.6,
-		() => 612.8,
-		() => 556,
-		() => 499.20000000000005,
-		() => 442.40000000000003,
-		() => 385.6,
-		() => 328.8,
-		() => 960,
-		() => 1040,
-		() => "ИЗМЕНЕНИЕ ВИДИМОСТИ ИКОНОК СОСТОЯНИЯ",
-		() => "ПРИЗЫВ ФИГУРЫ",
-		() => "ВЫБРАТЬ ФИГУРУ КОТОРАЯ ОТПРАВИТСЯ В ПЛЕН СО СТОЛА"
+			return () => n0.ExpObject();
+		}
 ];
 
 
