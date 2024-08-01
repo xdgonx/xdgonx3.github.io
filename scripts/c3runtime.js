@@ -4556,19 +4556,29 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Multiplayer.Acts.AssociateObjectWithPeer,
 		C3.Plugins.System.Cnds.Else,
 		C3.Plugins.Sprite.Acts.Destroy,
+		C3.Plugins.Sprite.Cnds.OnCreated,
+		C3.Plugins.Multiplayer.Exps.PeerID,
+		C3.Plugins.Multiplayer.Cnds.OnClientUpdate,
+		C3.Plugins.Multiplayer.Acts.SetClientState,
+		C3.Plugins.Mouse.Exps.Y,
+		C3.Plugins.Sprite.Cnds.CompareInstanceVar,
+		C3.Plugins.Sprite.Acts.SetY,
+		C3.Plugins.Multiplayer.Cnds.OnPeerMessage,
+		C3.Plugins.System.Cnds.Compare,
+		C3.Plugins.Multiplayer.Exps.Message,
+		C3.Plugins.Multiplayer.Exps.HostID,
+		C3.Plugins.Text.Acts.SetText,
+		C3.Plugins.Text.Acts.AppendText,
 		C3.Plugins.Multiplayer.Cnds.OnPeerConnected,
 		C3.Plugins.System.Acts.CreateObject,
 		C3.Plugins.System.Exps.layoutwidth,
 		C3.Plugins.System.Exps.layoutheight,
 		C3.Plugins.System.Acts.WaitForPreviousActions,
-		C3.Plugins.Multiplayer.Exps.PeerID,
 		C3.Plugins.System.Acts.Wait,
 		C3.Behaviors.Bullet.Acts.SetEnabled,
 		C3.Behaviors.Bullet.Acts.SetAngleOfMotion,
 		C3.Plugins.System.Exps.choose,
 		C3.Plugins.System.Exps.random,
-		C3.Plugins.Sprite.Cnds.CompareInstanceVar,
-		C3.Plugins.Sprite.Acts.SetY,
 		C3.Plugins.Multiplayer.Exps.PeerState,
 		C3.Plugins.Sprite.Cnds.OnCollision,
 		C3.Behaviors.Bullet.Acts.SetSpeed,
@@ -4578,16 +4588,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.AddInstanceVar,
 		C3.Plugins.Sprite.Acts.SetPos,
 		C3.Plugins.Multiplayer.Acts.HostBroadcastMessage,
-		C3.Plugins.Sprite.Cnds.OnCreated,
-		C3.Plugins.Multiplayer.Cnds.OnClientUpdate,
-		C3.Plugins.Multiplayer.Acts.SetClientState,
-		C3.Plugins.Mouse.Exps.Y,
-		C3.Plugins.Multiplayer.Cnds.OnPeerMessage,
-		C3.Plugins.System.Cnds.Compare,
-		C3.Plugins.Multiplayer.Exps.Message,
-		C3.Plugins.Multiplayer.Exps.HostID,
-		C3.Plugins.Text.Acts.SetText,
-		C3.Plugins.Text.Acts.AppendText,
 		C3.Plugins.Button.Cnds.OnClicked,
 		C3.Plugins.TextBox.Cnds.CompareText,
 		C3.Plugins.System.Acts.SetVar,
@@ -4608,6 +4608,7 @@ self.C3_JsPropNameTable = [
 	{wall: 0},
 	{Score: 0},
 	{Мышь: 0},
+	{Score2: 0},
 	{Multiplayer: 0},
 	{Game: 0},
 	{Instance: 0},
@@ -4625,6 +4626,7 @@ self.InstanceType = {
 	wall: class extends self.ISpriteInstance {},
 	Score: class extends self.ITextInstance {},
 	Мышь: class extends self.IInstance {},
+	Score2: class extends self.ITextInstance {},
 	Multiplayer: class extends self.IInstance {}
 }
 }
@@ -4744,6 +4746,17 @@ self.C3_ExpressionFuncs = [
 			return () => f0();
 		},
 		() => "Peer",
+		() => "Common",
+		() => "system",
+		() => "score-update",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => and(n0.ExpInstVar(), " : ");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpInstVar();
+		},
 		() => 0,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -4771,17 +4784,6 @@ self.C3_ExpressionFuncs = [
 		},
 		() => 1,
 		() => 300,
-		() => "system",
-		() => "score-update",
-		() => "Common",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => and(n0.ExpInstVar(), " : ");
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpInstVar();
-		},
 		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject();
