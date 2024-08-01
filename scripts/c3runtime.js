@@ -4770,6 +4770,7 @@ self.C3_ExpressionFuncs = [
 			return () => (n0.ExpBehavior() + 30);
 		},
 		() => 1,
+		() => 300,
 		() => "system",
 		() => "score-update",
 		() => "Common",
