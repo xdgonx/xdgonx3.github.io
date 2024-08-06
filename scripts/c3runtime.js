@@ -4701,7 +4701,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Touch.Cnds.HasNthTouch,
 		C3.Plugins.Sprite.Acts.SetOpacity,
 		C3.Plugins.Text.Acts.SetPos,
-		C3.Plugins.Multiplayer.Acts.SyncObject2,
 		C3.Plugins.Touch.Cnds.OnTapGesture,
 		C3.Plugins.Arr.Acts.SetXY,
 		C3.Plugins.Touch.Cnds.OnDoubleTapGestureObject,
@@ -4728,6 +4727,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Multiplayer.Exps.Message,
 		C3.Plugins.System.Exps.int,
 		C3.Plugins.Multiplayer.Cnds.OnPeerDisconnected,
+		C3.Plugins.Sprite.Acts.SetX,
 		C3.Plugins.LocalStorage.Acts.GetItem,
 		C3.Plugins.LocalStorage.Cnds.OnItemGet,
 		C3.Plugins.LocalStorage.Exps.ItemValue,
@@ -5208,6 +5208,12 @@ self.C3_ExpressionFuncs = [
 		() => 100,
 		() => 349.9437,
 		() => "РАБОТА С КНОПКАМИ ОТМЕНА И ДЕЙСТВИЯ",
+		() => "KrestX",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject()).toString();
+		},
+		() => "KrestY",
 		() => "Создание большой карты",
 		() => 0.1,
 		() => "Card",
