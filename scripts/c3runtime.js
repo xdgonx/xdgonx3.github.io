@@ -5159,6 +5159,7 @@ self.C3_ExpressionFuncs = [
 		() => 540,
 		() => 1806,
 		() => 366.8,
+		() => -100,
 		() => 1000,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
