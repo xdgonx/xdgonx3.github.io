@@ -5145,18 +5145,10 @@ self.C3_ExpressionFuncs = [
 		() => "KrestNewPositionX",
 		p => {
 			const n0 = p._GetNode(0);
-			return () => (n0.ExpObject()).toString();
+			return () => (n0.ExpInstVar()).toString();
 		},
 		() => "KrestNewPositionY",
 		() => 3,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (540 - n0.ExpInstVar());
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (920 - n0.ExpInstVar());
-		},
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
@@ -5226,6 +5218,10 @@ self.C3_ExpressionFuncs = [
 		() => 349.9437,
 		() => "РАБОТА С КНОПКАМИ ОТМЕНА И ДЕЙСТВИЯ",
 		() => "KrestX",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject()).toString();
+		},
 		() => "KrestY",
 		() => "Создание большой карты",
 		() => 0.1,
