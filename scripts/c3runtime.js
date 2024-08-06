@@ -4727,9 +4727,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Multiplayer.Exps.Message,
 		C3.Plugins.System.Exps.int,
 		C3.Plugins.Sprite.Acts.SetX,
-		C3.Plugins.System.Exps.layoutwidth,
 		C3.Plugins.Sprite.Acts.SetY,
-		C3.Plugins.System.Exps.layoutheight,
 		C3.Plugins.Multiplayer.Cnds.OnPeerDisconnected,
 		C3.Plugins.LocalStorage.Acts.GetItem,
 		C3.Plugins.LocalStorage.Cnds.OnItemGet,
@@ -5429,8 +5427,12 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
-			const f2 = p._GetNode(2).GetBoundMethod();
-			return () => (f0() - f1(f2()));
+			return () => (1080 - f0(f1()));
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => (1920 - f0(f1()));
 		},
 		() => "Name",
 		() => "AvatarChoose",
