@@ -4727,7 +4727,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Multiplayer.Exps.Message,
 		C3.Plugins.System.Exps.int,
 		C3.Plugins.Sprite.Acts.SetX,
+		C3.Plugins.System.Exps.layoutwidth,
 		C3.Plugins.Sprite.Acts.SetY,
+		C3.Plugins.System.Exps.layoutheight,
 		C3.Plugins.Multiplayer.Cnds.OnPeerDisconnected,
 		C3.Plugins.LocalStorage.Acts.GetItem,
 		C3.Plugins.LocalStorage.Cnds.OnItemGet,
@@ -4832,6 +4834,8 @@ self.C3_JsPropNameTable = [
 	{o_sPrizivVrag: 0},
 	{Multiplayer: 0},
 	{LocalData: 0},
+	{newPositionX: 0},
+	{newPositionY: 0},
 	{s_Krest: 0},
 	{s_KrestOpponent: 0},
 	{ButtonWork: 0},
@@ -5140,6 +5144,12 @@ self.C3_ExpressionFuncs = [
 		() => 1723,
 		() => 251.52,
 		() => "ДЕЙСТВИЕ",
+		() => "KrestNewPositionX",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpInstVar()).toString();
+		},
+		() => "KrestNewPositionY",
 		() => 3,
 		p => {
 			const n0 = p._GetNode(0);
@@ -5415,6 +5425,12 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			const n2 = p._GetNode(2);
 			return () => n0.ExpObject(n1.ExpObject(), n2.ExpObject());
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => (f0() - f1(f2()));
 		},
 		() => "Name",
 		() => "AvatarChoose",
