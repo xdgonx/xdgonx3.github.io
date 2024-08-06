@@ -5427,12 +5427,12 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => (1080 - f0(f1()));
+			return () => (540 + (540 - f0(f1())));
 		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => (1920 - f0(f1()));
+			return () => (920 + (920 - f0(f1())));
 		},
 		() => "Name",
 		() => "AvatarChoose",
