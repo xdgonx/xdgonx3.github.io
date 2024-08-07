@@ -4734,6 +4734,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Text.Acts.SetPos,
 		C3.Plugins.Touch.Cnds.OnTapGesture,
 		C3.Plugins.Arr.Acts.SetXY,
+		C3.Plugins.Touch.Cnds.OnDoubleTapGestureObject,
+		C3.Plugins.Text.Acts.Destroy,
+		C3.Plugins.Arr.Exps.CurValue,
 		C3.Plugins.System.Acts.ResetGlobals,
 		C3.Plugins.Multiplayer.Acts.SignallingLeaveRoom,
 		C3.Plugins.Multiplayer.Acts.DisconnectRoom,
@@ -5323,6 +5326,25 @@ self.C3_ExpressionFuncs = [
 		() => "ZahvatOpponent",
 		() => "zahvat",
 		() => "ZahvatMy",
+		() => "Тест",
+		() => "Удаление Жетона С Поля",
+		() => "Какие айди у клеток поля",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (95 + (n0.ExpObject() * 124));
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (487 + (n0.ExpObject() * 124));
+		},
+		() => "Какие фигуры в мешке",
+		() => -50,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (530 + (n0.ExpObject() * 40));
+		},
+		() => 1130,
+		() => -43805311999,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() - 1);
@@ -5351,6 +5373,7 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() - 2);
 		},
+		() => 14,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() + 2);
@@ -5401,7 +5424,6 @@ self.C3_ExpressionFuncs = [
 		() => 12,
 		() => 1340.8,
 		() => 13,
-		() => 14,
 		() => 1397.6,
 		() => 15,
 		() => 16,
