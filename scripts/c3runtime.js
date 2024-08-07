@@ -4703,10 +4703,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Text.Acts.SetPos,
 		C3.Plugins.Touch.Cnds.OnTapGesture,
 		C3.Plugins.Arr.Acts.SetXY,
-		C3.Plugins.Touch.Cnds.OnDoubleTapGestureObject,
-		C3.Plugins.System.Cnds.Every,
-		C3.Plugins.Text.Acts.Destroy,
-		C3.Plugins.Arr.Exps.CurValue,
 		C3.Plugins.System.Acts.ResetGlobals,
 		C3.Plugins.Multiplayer.Acts.SignallingLeaveRoom,
 		C3.Plugins.Multiplayer.Acts.DisconnectRoom,
@@ -4726,6 +4722,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Multiplayer.Cnds.OnPeerMessage,
 		C3.Plugins.Multiplayer.Exps.Message,
 		C3.Plugins.System.Exps.int,
+		C3.Plugins.System.Exps.choose,
 		C3.Plugins.Sprite.Acts.SetX,
 		C3.Plugins.Sprite.Acts.SetY,
 		C3.Plugins.Multiplayer.Cnds.OnPeerDisconnected,
@@ -4873,6 +4870,7 @@ self.C3_JsPropNameTable = [
 	{Instance: 0},
 	{Room: 0},
 	{PirSendMessageFirstTime: 0},
+	{Chance: 0},
 	{Login: 0},
 	{isMultiplayerOn: 0},
 	{Avatarka: 0}
@@ -5271,30 +5269,6 @@ self.C3_ExpressionFuncs = [
 		() => "ZahvatOpponent",
 		() => "zahvat",
 		() => "ZahvatMy",
-		() => "Тест",
-		() => "Удаление Жетона С Поля",
-		() => "Какие айди у клеток поля",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (95 + (n0.ExpObject() * 124));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (457 + (n0.ExpObject() * 124));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (487 + (n0.ExpObject() * 124));
-		},
-		() => "Какие фигуры в мешке",
-		() => -50,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (530 + (n0.ExpObject() * 40));
-		},
-		() => -717706215031807,
-		() => 1130,
-		() => -43805311999,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() - 1);
@@ -5421,6 +5395,10 @@ self.C3_ExpressionFuncs = [
 			return () => f0(f1());
 		},
 		() => "LoadFigurOpponent",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => f0(1, 2);
+		},
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
