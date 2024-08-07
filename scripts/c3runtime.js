@@ -4622,6 +4622,32 @@ await this._storage.keys();await this.ScheduleTriggers(async()=>{this._keyNamesL
 }
 
 {
+'use strict';{const C3=self.C3;C3.Plugins.Date=class DatePlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Plugins.Date.Type=class DateType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}}}{const C3=self.C3;C3.Plugins.Date.Instance=class DateInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst)}}}
+{const C3=self.C3;const getters=[];getters[0]=[ts=>C3.Plugins.Date.Exps.GetYear(ts),ts=>C3.Plugins.Date.Exps.GetMonth(ts),ts=>C3.Plugins.Date.Exps.GetDate(ts),ts=>C3.Plugins.Date.Exps.GetDay(ts),ts=>C3.Plugins.Date.Exps.GetHours(ts),ts=>C3.Plugins.Date.Exps.GetMinutes(ts),ts=>C3.Plugins.Date.Exps.GetSeconds(ts),ts=>C3.Plugins.Date.Exps.GetMilliseconds(ts)];getters[1]=[ts=>C3.Plugins.Date.Exps.GetUTCYear(ts),ts=>C3.Plugins.Date.Exps.GetUTCMonth(ts),ts=>C3.Plugins.Date.Exps.GetUTCDate(ts),ts=>C3.Plugins.Date.Exps.GetUTCDay(ts),
+ts=>C3.Plugins.Date.Exps.GetUTCHours(ts),ts=>C3.Plugins.Date.Exps.GetUTCMinutes(ts),ts=>C3.Plugins.Date.Exps.GetUTCSeconds(ts),ts=>C3.Plugins.Date.Exps.GetUTCMilliseconds(ts)];const parse=dateString=>C3.Plugins.Date.Exps.Parse(dateString);C3.Plugins.Date.Cnds={CompareTimeStamps(first,cmp,second){return C3.compare(first,cmp,second)},CompareDateStrings(first,cmp,second){return C3.compare(parse(first),cmp,parse(second))},CompareTimestampParts(first,cmp,second,part){return C3.compare(getters[1][part](first),
+cmp,getters[1][part](second))},CompareDateStringParts(first,cmp,second,part,mode){return C3.compare(getters[mode][part](parse(first)),cmp,getters[mode][part](parse(second)))}}}{const C3=self.C3;C3.Plugins.Date.Acts={}}
+{const C3=self.C3;const Intl=self.Intl;const getters=new Map;getters.set("local",new Map([["year",ts=>(new Date(ts)).getFullYear()],["month",ts=>(new Date(ts)).getMonth()],["date",ts=>(new Date(ts)).getDate()],["day",ts=>(new Date(ts)).getDay()],["hours",ts=>(new Date(ts)).getHours()],["minutes",ts=>(new Date(ts)).getMinutes()],["seconds",ts=>(new Date(ts)).getSeconds()],["milliseconds",ts=>(new Date(ts)).getMilliseconds()]]));getters.set("universal",new Map([["year",ts=>(new Date(ts)).getUTCFullYear()],
+["month",ts=>(new Date(ts)).getUTCMonth()],["date",ts=>(new Date(ts)).getUTCDate()],["day",ts=>(new Date(ts)).getUTCDay()],["hours",ts=>(new Date(ts)).getUTCHours()],["minutes",ts=>(new Date(ts)).getUTCMinutes()],["seconds",ts=>(new Date(ts)).getUTCSeconds()],["milliseconds",ts=>(new Date(ts)).getUTCMilliseconds()]]));const setters=new Map;setters.set("local",new Map([["year",(ts,year)=>(new Date(ts)).setFullYear(year)],["month",(ts,month)=>(new Date(ts)).setMonth(month)],["date",(ts,date)=>(new Date(ts)).setDate(date)],
+["hours",(ts,hours)=>(new Date(ts)).setHours(hours)],["minutes",(ts,minutes)=>(new Date(ts)).setMinutes(minutes)],["seconds",(ts,seconds)=>(new Date(ts)).setSeconds(seconds)],["milliseconds",(ts,milliseconds)=>(new Date(ts)).setMilliseconds(milliseconds)]]));setters.set("universal",new Map([["year",(ts,year)=>(new Date(ts)).setUTCFullYear(year)],["month",(ts,month)=>(new Date(ts)).setUTCMonth(month)],["date",(ts,date)=>(new Date(ts)).setUTCDate(date)],["hours",(ts,hours)=>(new Date(ts)).setUTCHours(hours)],
+["minutes",(ts,minutes)=>(new Date(ts)).setUTCMinutes(minutes)],["seconds",(ts,seconds)=>(new Date(ts)).setUTCSeconds(seconds)],["milliseconds",(ts,milliseconds)=>(new Date(ts)).setUTCMilliseconds(milliseconds)]]));const validate_date_format_option=function(chosenOption,optionName,validOptions,optionsObject){if(validOptions.includes(chosenOption))optionsObject[optionName]=chosenOption};const validate_hour_format_option=function(hourFormat,optionsObject){if(!hourFormat)return;if(hourFormat==="12")optionsObject["hour12"]=
+true;else if(hourFormat==="24")optionsObject["hour12"]=false};const validate_locale=function(locale){try{return Intl.getCanonicalLocales(locale)}catch(err){return self.navigator.language}};const DATE_STYLES=["full","long","medium","short"];const TIME_STYLES=["full","long","medium","short"];const WEEK_DAY_FORMATS=["long","short","narrow"];const YEAR_FORMATS=["numeric","2-digit"];const MONTH_FORMATS=["numeric","2-digit","long","short","narrow"];const DAY_FORMATS=["numeric","2-digit"];const HOUR_FORMATS=
+["numeric","2-digit"];const MINUTE_FORMATS=["numeric","2-digit"];const SECOND_FORMATS=["numeric","2-digit"];C3.Plugins.Date.Exps={ToString(timeStamp){return(new Date(timeStamp)).toString()},ToDateString(timeStamp){return(new Date(timeStamp)).toDateString()},ToTimeString(timeStamp){return(new Date(timeStamp)).toTimeString()},ToLocaleString(timeStamp){return(new Date(timeStamp)).toLocaleString()},ToLocaleDateString(timeStamp){return(new Date(timeStamp)).toLocaleDateString()},ToLocaleTimeString(timeStamp){return(new Date(timeStamp)).toLocaleTimeString()},
+ToUTCString(timeStamp){return(new Date(timeStamp)).toUTCString()},Parse(dateString){return Date.parse(dateString)},Get(year,month,day,hours,minutes,seconds,milliseconds){return Date.UTC(year,month,day,hours,minutes,seconds,milliseconds)},Now(){return Date.now()},TimezoneOffset(){return(new Date(Date.now())).getTimezoneOffset()},GetYear(timeStamp){return getters.get("local").get("year")(timeStamp)},GetUTCYear(timeStamp){return getters.get("universal").get("year")(timeStamp)},GetMonth(timeStamp){return getters.get("local").get("month")(timeStamp)},
+GetUTCMonth(timeStamp){return getters.get("universal").get("month")(timeStamp)},GetDate(timeStamp){return getters.get("local").get("date")(timeStamp)},GetUTCDate(timeStamp){return getters.get("universal").get("date")(timeStamp)},GetDay(timeStamp){return getters.get("local").get("day")(timeStamp)},GetUTCDay(timeStamp){return getters.get("universal").get("day")(timeStamp)},GetHours(timeStamp){return getters.get("local").get("hours")(timeStamp)},GetUTCHours(timeStamp){return getters.get("universal").get("hours")(timeStamp)},
+GetMinutes(timeStamp){return getters.get("local").get("minutes")(timeStamp)},GetUTCMinutes(timeStamp){return getters.get("universal").get("minutes")(timeStamp)},GetSeconds(timeStamp){return getters.get("local").get("seconds")(timeStamp)},GetUTCSeconds(timeStamp){return getters.get("universal").get("seconds")(timeStamp)},GetMilliseconds(timeStamp){return getters.get("local").get("milliseconds")(timeStamp)},GetUTCMilliseconds(timeStamp){return getters.get("universal").get("milliseconds")(timeStamp)},
+ChangeYear(timeStamp,year){return setters.get("local").get("year")(timeStamp,year)},ChangeUTCYear(timeStamp,year){return setters.get("universal").get("year")(timeStamp,year)},ChangeMonth(timeStamp,month){return setters.get("local").get("month")(timeStamp,month)},ChangeUTCMonth(timeStamp,month){return setters.get("universal").get("month")(timeStamp,month)},ChangeDate(timeStamp,date){return setters.get("local").get("date")(timeStamp,date)},ChangeUTCDate(timeStamp,date){return setters.get("universal").get("date")(timeStamp,
+date)},ChangeDay(timeStamp,targetDay){const year=C3.Plugins.Date.Exps.GetYear(timeStamp);const month=C3.Plugins.Date.Exps.GetMonth(timeStamp);const date=C3.Plugins.Date.Exps.GetDate(timeStamp);const hours=C3.Plugins.Date.Exps.GetHours(timeStamp);const minutes=C3.Plugins.Date.Exps.GetMinutes(timeStamp);const seconds=C3.Plugins.Date.Exps.GetSeconds(timeStamp);const milliseconds=C3.Plugins.Date.Exps.GetMilliseconds(timeStamp);const currentDay=C3.Plugins.Date.Exps.GetDay(timeStamp);const distance=targetDay-
+currentDay;return(new Date(year,month,date+distance,hours,minutes,seconds,milliseconds)).getTime()},ChangeUTCDay(timeStamp,targetDay){const year=C3.Plugins.Date.Exps.GetUTCYear(timeStamp);const month=C3.Plugins.Date.Exps.GetUTCMonth(timeStamp);const date=C3.Plugins.Date.Exps.GetUTCDate(timeStamp);const hours=C3.Plugins.Date.Exps.GetUTCHours(timeStamp);const minutes=C3.Plugins.Date.Exps.GetUTCMinutes(timeStamp);const seconds=C3.Plugins.Date.Exps.GetUTCSeconds(timeStamp);const milliseconds=C3.Plugins.Date.Exps.GetUTCMilliseconds(timeStamp);
+const currentDay=C3.Plugins.Date.Exps.GetUTCDay(timeStamp);const distance=targetDay-currentDay;return C3.Plugins.Date.Exps.Get(year,month,date+distance,hours,minutes,seconds,milliseconds)},ChangeHours(timeStamp,hours){return setters.get("local").get("hours")(timeStamp,hours)},ChangeUTCHours(timeStamp,hours){return setters.get("universal").get("hours")(timeStamp,hours)},ChangeMinutes(timeStamp,minutes){return setters.get("local").get("minutes")(timeStamp,minutes)},ChangeUTCMinutes(timeStamp,minutes){return setters.get("universal").get("minutes")(timeStamp,
+minutes)},ChangeSeconds(timeStamp,seconds){return setters.get("local").get("seconds")(timeStamp,seconds)},ChangeUTCSeconds(timeStamp,seconds){return setters.get("universal").get("seconds")(timeStamp,seconds)},ChangeMilliseconds(timeStamp,milliseconds){return setters.get("local").get("milliseconds")(timeStamp,milliseconds)},ChangeUTCMilliseconds(timeStamp,milliseconds){return setters.get("universal").get("milliseconds")(timeStamp,milliseconds)},Difference(firstTimeStamp,secondTimeStamp){return secondTimeStamp-
+firstTimeStamp},ToTimerHours(milliseconds){return Math.trunc(C3.Plugins.Date.Exps.ToTotalHours(milliseconds))},ToTimerMinutes(milliseconds){return Math.trunc(C3.Plugins.Date.Exps.ToTotalMinutes(milliseconds))%60},ToTimerSeconds(milliseconds){return Math.trunc(C3.Plugins.Date.Exps.ToTotalSeconds(milliseconds))%60},ToTimerMilliseconds(milliseconds){return milliseconds%1E3},ToTotalHours(milliseconds){return milliseconds/(1E3*60*60)},ToTotalMinutes(milliseconds){return milliseconds/(1E3*60)},ToTotalSeconds(milliseconds){return milliseconds/
+1E3},FormatDateWithStyles(locale,timestamp,dateStyle,timeStyle,hourFormat){const l=validate_locale(locale);if(!l)return;let options={};validate_date_format_option.call(this,dateStyle,"dateStyle",DATE_STYLES,options);validate_date_format_option.call(this,timeStyle,"timeStyle",TIME_STYLES,options);validate_hour_format_option.call(this,hourFormat,options);return(new Intl.DateTimeFormat(l,options)).format(timestamp)},FormatDateWithComponents(locale,timestamp,weekday,year,month,day,hour,minute,second,
+hourFormat){const l=validate_locale(locale);if(!l)return;const options={};validate_date_format_option.call(this,weekday,"weekday",WEEK_DAY_FORMATS,options);validate_date_format_option.call(this,year,"year",YEAR_FORMATS,options);validate_date_format_option.call(this,month,"month",MONTH_FORMATS,options);validate_date_format_option.call(this,day,"day",DAY_FORMATS,options);validate_date_format_option.call(this,hour,"hour",HOUR_FORMATS,options);validate_date_format_option.call(this,minute,"minute",MINUTE_FORMATS,
+options);validate_date_format_option.call(this,second,"second",SECOND_FORMATS,options);validate_hour_format_option.call(this,hourFormat,options);return(new Intl.DateTimeFormat(l,options)).format(timestamp)}}};
+
+}
+
+{
 const C3 = self.C3;
 self.C3_GetObjectRefTable = function () {
 	return [
@@ -4634,6 +4660,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.AJAX,
 		C3.Plugins.Multiplayer,
 		C3.Plugins.LocalStorage,
+		C3.Plugins.Date,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.AJAX.Acts.RequestFile,
@@ -4660,35 +4687,39 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.Sprite.Exps.Y,
 		C3.Plugins.Sprite.Exps.X,
+		C3.Plugins.System.Cnds.EveryTick,
+		C3.Plugins.Text.Cnds.CompareText,
+		C3.Plugins.System.Acts.SetVar,
+		C3.Plugins.Date.Exps.GetUTCSeconds,
+		C3.Plugins.Date.Exps.Now,
+		C3.Plugins.System.Cnds.Else,
+		C3.Plugins.Text.Acts.SetText,
+		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
+		C3.Plugins.Sprite.Acts.SetVisible,
+		C3.Plugins.System.Acts.SetBoolVar,
+		C3.Plugins.Sprite.Acts.SetPos,
+		C3.Plugins.Sprite.Cnds.IsOnScreen,
+		C3.Plugins.Sprite.Cnds.IsOverlapping,
+		C3.Plugins.System.Cnds.ForEachOrdered,
+		C3.Plugins.Sprite.Exps.AnimationFrame,
+		C3.Plugins.System.Acts.SubVar,
+		C3.Plugins.System.Acts.AddVar,
+		C3.Plugins.Multiplayer.Acts.HostBroadcastMessage,
+		C3.Plugins.Multiplayer.Acts.SendPeerMessage,
+		C3.Plugins.System.Acts.Wait,
+		C3.Plugins.Arr.Exps.AsJSON,
+		C3.Plugins.Text.Acts.SetVisible,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.Sprite.Cnds.IsVisible,
 		C3.Plugins.Sprite.Cnds.CompareFrame,
-		C3.Plugins.Sprite.Acts.SetVisible,
-		C3.Plugins.System.Acts.SubVar,
 		C3.Plugins.Arr.Acts.Pop,
-		C3.Plugins.System.Acts.SetVar,
-		C3.Plugins.Multiplayer.Acts.HostBroadcastMessage,
-		C3.Plugins.Multiplayer.Acts.SendPeerMessage,
 		C3.Plugins.Touch.Cnds.IsTouchingObject,
-		C3.Plugins.Sprite.Exps.AnimationFrame,
-		C3.Plugins.System.Acts.AddVar,
-		C3.Plugins.Text.Acts.SetText,
 		C3.Plugins.Sprite.Cnds.PickByUID,
-		C3.Plugins.Sprite.Acts.SetPos,
-		C3.Plugins.System.Acts.SetBoolVar,
 		C3.Plugins.Sprite.Cnds.CompareInstanceVar,
 		C3.Plugins.Sprite.Exps.Width,
 		C3.Plugins.Sprite.Exps.Height,
 		C3.Plugins.Sprite.Cnds.IsOverlappingOffset,
 		C3.Plugins.Sprite.Exps.UID,
-		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
-		C3.Plugins.Sprite.Cnds.IsOnScreen,
-		C3.Plugins.Sprite.Cnds.IsOverlapping,
-		C3.Plugins.System.Cnds.ForEachOrdered,
-		C3.Plugins.System.Cnds.Else,
-		C3.Plugins.System.Acts.Wait,
-		C3.Plugins.Arr.Exps.AsJSON,
-		C3.Plugins.Text.Acts.SetVisible,
 		C3.Plugins.Sprite.Cnds.CompareX,
 		C3.Plugins.Sprite.Cnds.CompareY,
 		C3.Plugins.Sprite.Cnds.IsBoolInstanceVarSet,
@@ -4834,6 +4865,8 @@ self.C3_JsPropNameTable = [
 	{s_Krest: 0},
 	{s_KrestOpponent: 0},
 	{o_sButtonZacicliv: 0},
+	{o_tTime: 0},
+	{Date: 0},
 	{ButtonWork: 0},
 	{FigurHost: 0},
 	{Map: 0},
@@ -4853,6 +4886,8 @@ self.C3_JsPropNameTable = [
 	{NowPlayPlayer: 0},
 	{CreateFigur: 0},
 	{gameRestart: 0},
+	{currentTime: 0},
+	{countDownTime: 0},
 	{Load: 0},
 	{delX: 0},
 	{delY: 0},
@@ -4958,7 +4993,9 @@ self.InstanceType = {
 	LocalData: class extends self.IInstance {},
 	s_Krest: class extends self.ISpriteInstance {},
 	s_KrestOpponent: class extends self.ISpriteInstance {},
-	o_sButtonZacicliv: class extends self.ISpriteInstance {}
+	o_sButtonZacicliv: class extends self.ISpriteInstance {},
+	o_tTime: class extends self.ITextInstance {},
+	Date: class extends self.IInstance {}
 }
 }
 
@@ -5107,27 +5144,30 @@ self.C3_ExpressionFuncs = [
 		() => 850,
 		() => 1230,
 		() => 0,
+		() => "Opponent",
 		p => {
-			const n0 = p._GetNode(0);
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => (f0(f1()) + 10);
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => f0(f1());
+		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
 			const v1 = p._GetNode(1).GetVar();
-			return () => n0.ExpObject((v1.GetValue() - 1));
-		},
-		() => "OpponentPriziv",
-		() => "priziv",
-		() => "СОЗДАНИЕ",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpInstVar();
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpObject() + 10);
+			return () => (v0.GetValue() - v1.GetValue());
 		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
-		() => "ДВИЖЕНИЕ",
+		() => 540,
+		() => 1806,
+		() => 366.8,
+		() => -100,
 		p => {
 			const n0 = p._GetNode(0);
 			return () => ((n0.ExpObject() - 106) / 124);
@@ -5136,36 +5176,10 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => ((n0.ExpObject() - 486) / 124);
 		},
-		() => 2,
-		() => "ShetonyPodsvetka",
-		() => 400,
-		() => 1723,
-		() => 251.52,
-		() => "ДЕЙСТВИЕ",
-		() => "KrestNewPositionX",
 		p => {
 			const n0 = p._GetNode(0);
-			return () => (n0.ExpInstVar()).toString();
+			return () => n0.ExpInstVar();
 		},
-		() => "KrestNewPositionY",
-		() => 3,
-		() => "KrestX",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => (n0.ExpObject()).toString();
-		},
-		() => "KrestY",
-		p => {
-			const n0 = p._GetNode(0);
-			const n1 = p._GetNode(1);
-			const n2 = p._GetNode(2);
-			return () => n0.ExpObject(((n1.ExpObject() - 106) / 124), ((n2.ExpObject() - 486) / 124));
-		},
-		() => "КНОПКИ",
-		() => 540,
-		() => 1806,
-		() => 366.8,
-		() => -100,
 		() => 1000,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -5186,6 +5200,8 @@ self.C3_ExpressionFuncs = [
 		() => 80,
 		() => "SbrosMy",
 		() => "SbrosOpponent",
+		() => 2,
+		() => 3,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(0);
@@ -5193,6 +5209,43 @@ self.C3_ExpressionFuncs = [
 		() => "Array",
 		() => "Create",
 		() => "create",
+		p => {
+			const n0 = p._GetNode(0);
+			const v1 = p._GetNode(1).GetVar();
+			return () => n0.ExpObject((v1.GetValue() - 1));
+		},
+		() => "OpponentPriziv",
+		() => "priziv",
+		() => "СОЗДАНИЕ",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject() + 10);
+		},
+		() => "ДВИЖЕНИЕ",
+		() => "ShetonyPodsvetka",
+		() => 400,
+		() => 1723,
+		() => 251.52,
+		() => "ДЕЙСТВИЕ",
+		() => "KrestNewPositionX",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpInstVar()).toString();
+		},
+		() => "KrestNewPositionY",
+		() => "KrestX",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject()).toString();
+		},
+		() => "KrestY",
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			const n2 = p._GetNode(2);
+			return () => n0.ExpObject(((n1.ExpObject() - 106) / 124), ((n2.ExpObject() - 486) / 124));
+		},
+		() => "КНОПКИ",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (106 + (n0.ExpInstVar() * 124));
@@ -5389,11 +5442,6 @@ self.C3_ExpressionFuncs = [
 		() => 180,
 		() => "loadName",
 		() => "loadIcon",
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => f0(f1());
-		},
 		() => "LoadFigurOpponent",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
