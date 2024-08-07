@@ -4694,8 +4694,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Date.Exps.Now,
 		C3.Plugins.System.Cnds.Else,
 		C3.Plugins.Text.Acts.SetText,
-		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Plugins.Sprite.Acts.SetVisible,
+		C3.Plugins.Text.Acts.SetVisible,
+		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Plugins.System.Acts.SetBoolVar,
 		C3.Plugins.Sprite.Acts.SetPos,
 		C3.Plugins.Sprite.Cnds.IsOnScreen,
@@ -4708,7 +4709,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Multiplayer.Acts.SendPeerMessage,
 		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.Arr.Exps.AsJSON,
-		C3.Plugins.Text.Acts.SetVisible,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
 		C3.Plugins.Sprite.Cnds.IsVisible,
 		C3.Plugins.Sprite.Cnds.CompareFrame,
@@ -5164,6 +5164,7 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
+		() => 3,
 		() => 540,
 		() => 1806,
 		() => 366.8,
@@ -5201,7 +5202,6 @@ self.C3_ExpressionFuncs = [
 		() => "SbrosMy",
 		() => "SbrosOpponent",
 		() => 2,
-		() => 3,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(0);
