@@ -4836,6 +4836,7 @@ self.C3_JsPropNameTable = [
 	{newPositionY: 0},
 	{s_Krest: 0},
 	{s_KrestOpponent: 0},
+	{o_sButtonZacicliv: 0},
 	{ButtonWork: 0},
 	{FigurHost: 0},
 	{Map: 0},
@@ -4958,7 +4959,8 @@ self.InstanceType = {
 	Multiplayer: class extends self.IInstance {},
 	LocalData: class extends self.IInstance {},
 	s_Krest: class extends self.ISpriteInstance {},
-	s_KrestOpponent: class extends self.ISpriteInstance {}
+	s_KrestOpponent: class extends self.ISpriteInstance {},
+	o_sButtonZacicliv: class extends self.ISpriteInstance {}
 }
 }
 
