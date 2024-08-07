@@ -4690,9 +4690,15 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.Every,
 		C3.Plugins.Text.Cnds.CompareText,
 		C3.Plugins.System.Acts.SetVar,
-		C3.Plugins.System.Cnds.Else,
+		C3.Plugins.Sprite.Cnds.IsVisible,
+		C3.Plugins.Sprite.Exps.AnimationFrame,
 		C3.Plugins.System.Acts.SubVar,
 		C3.Plugins.Text.Acts.SetText,
+		C3.Plugins.System.Acts.AddVar,
+		C3.Plugins.Multiplayer.Acts.HostBroadcastMessage,
+		C3.Plugins.Multiplayer.Acts.SendPeerMessage,
+		C3.Plugins.System.Cnds.Else,
+		C3.Plugins.System.Cnds.EveryTick,
 		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Plugins.Sprite.Acts.SetVisible,
 		C3.Plugins.System.Acts.SetBoolVar,
@@ -4700,15 +4706,10 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Cnds.IsOnScreen,
 		C3.Plugins.Sprite.Cnds.IsOverlapping,
 		C3.Plugins.System.Cnds.ForEachOrdered,
-		C3.Plugins.Sprite.Exps.AnimationFrame,
-		C3.Plugins.System.Acts.AddVar,
-		C3.Plugins.Multiplayer.Acts.HostBroadcastMessage,
-		C3.Plugins.Multiplayer.Acts.SendPeerMessage,
 		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.Arr.Exps.AsJSON,
 		C3.Plugins.Text.Acts.SetVisible,
 		C3.Plugins.Touch.Cnds.OnTapGestureObject,
-		C3.Plugins.Sprite.Cnds.IsVisible,
 		C3.Plugins.Sprite.Cnds.CompareFrame,
 		C3.Plugins.Arr.Acts.Pop,
 		C3.Plugins.Touch.Cnds.IsTouchingObject,
@@ -5147,6 +5148,18 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
+		() => 80,
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (1000 + (v0.GetValue() * 56.8));
+		},
+		() => 76.8,
+		() => 5,
+		() => "SbrosMy",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (v0.GetValue()).toString();
+		},
 		() => 540,
 		() => 1806,
 		() => 366.8,
@@ -5168,20 +5181,8 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (840 + ((v0.GetValue() * 56.8) * (-1)));
 		},
-		() => 76.8,
-		() => 5,
 		() => "PlenMy",
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (v0.GetValue()).toString();
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => (1000 + (v0.GetValue() * 56.8));
-		},
 		() => "PlenOpponent",
-		() => 80,
-		() => "SbrosMy",
 		() => "SbrosOpponent",
 		() => 2,
 		() => 3,
