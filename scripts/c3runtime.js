@@ -4699,6 +4699,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.Else,
 		C3.Plugins.System.Acts.SubVar,
 		C3.Plugins.System.Cnds.EveryTick,
+		C3.Plugins.Text.Acts.SetFontColor,
+		C3.Plugins.Text.Acts.SetFontSize,
 		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Plugins.Sprite.Acts.SetVisible,
 		C3.Plugins.System.Acts.SetBoolVar,
@@ -4726,7 +4728,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Exps.Count,
 		C3.Plugins.Sprite.Cnds.OnCreated,
 		C3.Plugins.Sprite.Cnds.OnCollision,
-		C3.Plugins.Text.Acts.SetFontColor,
 		C3.Plugins.Text.Acts.SetY,
 		C3.Plugins.Touch.Cnds.HasNthTouch,
 		C3.Plugins.Sprite.Acts.SetOpacity,
@@ -5148,6 +5149,7 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
+		() => 30,
 		() => 80,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -5160,6 +5162,27 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue()).toString();
 		},
+		() => -717750023016447,
+		() => 100,
+		() => 9,
+		() => -717745207661567,
+		() => 8,
+		() => -717740392306687,
+		() => 7,
+		() => -717735593730047,
+		() => 6,
+		() => -717730778375167,
+		() => -717725963020287,
+		() => 4,
+		() => -717721147665407,
+		() => 3,
+		() => -717716349088767,
+		() => 110,
+		() => 2,
+		() => -717711533733887,
+		() => 120,
+		() => -717706215031807,
+		() => 130,
 		() => 540,
 		() => 1806,
 		() => 366.8,
@@ -5184,8 +5207,6 @@ self.C3_ExpressionFuncs = [
 		() => "PlenMy",
 		() => "PlenOpponent",
 		() => "SbrosOpponent",
-		() => 2,
-		() => 3,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(0);
@@ -5243,7 +5264,6 @@ self.C3_ExpressionFuncs = [
 			return () => ((n0.ExpObject() + 10) * (-1));
 		},
 		() => "EndGame",
-		() => -717750023016447,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => and(v0.GetValue(), "/20");
@@ -5254,11 +5274,8 @@ self.C3_ExpressionFuncs = [
 		() => "Выбор фигуры для действия или движения",
 		() => 680,
 		() => 270,
-		() => 4,
 		() => "РАБОТА С ЗАХВАТИВШИМИ",
-		() => 30,
 		() => 10349.9437,
-		() => 100,
 		() => 349.9437,
 		() => "РАБОТА С КНОПКАМИ ОТМЕНА И ДЕЙСТВИЯ",
 		() => "Создание большой карты",
@@ -5357,7 +5374,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpInstVar() + 2);
 		},
-		() => 6,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (106 + ((v0.GetValue() - 2) * 124));
@@ -5375,15 +5391,11 @@ self.C3_ExpressionFuncs = [
 			return () => (486 + ((v0.GetValue() + 2) * 124));
 		},
 		() => "ВЫРАВНИВАНИЕ СБРОСОВ и ПЛЕНОВ",
-		() => 120,
 		() => 1056.8,
 		() => 1113.6,
 		() => 1170.4,
 		() => 1227.2,
 		() => 40,
-		() => 7,
-		() => 8,
-		() => 9,
 		() => 1284,
 		() => 11,
 		() => 12,
