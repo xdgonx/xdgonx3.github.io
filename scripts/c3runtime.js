@@ -4668,11 +4668,12 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Arr.Acts.JSONLoad,
 		C3.Plugins.AJAX.Exps.LastData,
 		C3.Plugins.Arr.Acts.Shuffle,
-		C3.Plugins.System.Cnds.CompareBoolVar,
 		C3.Plugins.System.Acts.SetLayerVisible,
+		C3.Plugins.System.Cnds.CompareBoolVar,
+		C3.Plugins.Text.Cnds.CompareText,
+		C3.Plugins.System.Cnds.TriggerOnce,
 		C3.Plugins.System.Acts.GoToLayout,
 		C3.Plugins.System.Cnds.CompareVar,
-		C3.Plugins.System.Cnds.TriggerOnce,
 		C3.Plugins.Arr.Cnds.ArrForEach,
 		C3.Plugins.Sprite.Acts.Destroy,
 		C3.Plugins.Arr.Cnds.CompareXY,
@@ -4688,7 +4689,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Exps.Y,
 		C3.Plugins.Sprite.Exps.X,
 		C3.Plugins.System.Cnds.Every,
-		C3.Plugins.Text.Cnds.CompareText,
 		C3.Plugins.System.Acts.SetVar,
 		C3.Plugins.Sprite.Cnds.IsVisible,
 		C3.Plugins.Sprite.Exps.AnimationFrame,
@@ -4757,6 +4757,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetX,
 		C3.Plugins.Sprite.Acts.SetY,
 		C3.Plugins.Multiplayer.Cnds.OnPeerDisconnected,
+		C3.Plugins.Sprite.Exps.Opacity,
 		C3.Plugins.LocalStorage.Acts.GetItem,
 		C3.Plugins.LocalStorage.Cnds.OnItemGet,
 		C3.Plugins.LocalStorage.Exps.ItemValue,
@@ -4867,6 +4868,8 @@ self.C3_JsPropNameTable = [
 	{o_sButtonZacicliv: 0},
 	{o_tTime: 0},
 	{Date: 0},
+	{s_smailik: 0},
+	{s_smailikCreate: 0},
 	{ButtonWork: 0},
 	{FigurHost: 0},
 	{Map: 0},
@@ -4888,6 +4891,7 @@ self.C3_JsPropNameTable = [
 	{gameRestart: 0},
 	{currentTime: 0},
 	{countDownTime: 0},
+	{TimerSmailik: 0},
 	{Load: 0},
 	{delX: 0},
 	{delY: 0},
@@ -4906,6 +4910,7 @@ self.C3_JsPropNameTable = [
 	{Room: 0},
 	{PirSendMessageFirstTime: 0},
 	{Chance: 0},
+	{Chance2: 0},
 	{Login: 0},
 	{isMultiplayerOn: 0},
 	{Avatarka: 0}
@@ -4995,7 +5000,9 @@ self.InstanceType = {
 	s_KrestOpponent: class extends self.ISpriteInstance {},
 	o_sButtonZacicliv: class extends self.ISpriteInstance {},
 	o_tTime: class extends self.ITextInstance {},
-	Date: class extends self.IInstance {}
+	Date: class extends self.IInstance {},
+	s_smailik: class extends self.ISpriteInstance {},
+	s_smailikCreate: class extends self.ISpriteInstance {}
 }
 }
 
@@ -5105,8 +5112,9 @@ self.C3_ExpressionFuncs = [
 		() => "ArrayPer",
 		() => "ListFigurHost",
 		() => "MassivLuch",
-		() => "ListFigurPeer",
 		() => "FoundOpponent",
+		() => "ListFigurPeer",
+		() => "Opponent",
 		() => 1,
 		p => {
 			const n0 = p._GetNode(0);
@@ -5143,13 +5151,15 @@ self.C3_ExpressionFuncs = [
 		() => 602,
 		() => 850,
 		() => 1230,
+		() => 2,
+		() => 354,
+		() => 726,
 		() => 0,
-		() => "Opponent",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
-		() => 30,
+		() => 40,
 		() => 80,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -5178,7 +5188,6 @@ self.C3_ExpressionFuncs = [
 		() => 3,
 		() => -717716349088767,
 		() => 110,
-		() => 2,
 		() => -717711533733887,
 		() => 120,
 		() => -717706215031807,
@@ -5207,6 +5216,8 @@ self.C3_ExpressionFuncs = [
 		() => "PlenMy",
 		() => "PlenOpponent",
 		() => "SbrosOpponent",
+		() => "GameEnd",
+		() => "end",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(0);
@@ -5275,6 +5286,7 @@ self.C3_ExpressionFuncs = [
 		() => 680,
 		() => 270,
 		() => "РАБОТА С ЗАХВАТИВШИМИ",
+		() => 30,
 		() => 10349.9437,
 		() => 349.9437,
 		() => "РАБОТА С КНОПКАМИ ОТМЕНА И ДЕЙСТВИЯ",
@@ -5396,7 +5408,6 @@ self.C3_ExpressionFuncs = [
 		() => 1113.6,
 		() => 1170.4,
 		() => 1227.2,
-		() => 40,
 		() => 1284,
 		() => 11,
 		() => 12,
@@ -5430,7 +5441,7 @@ self.C3_ExpressionFuncs = [
 		() => "МУЛЬТИПЛЕЕР",
 		() => "Signaling",
 		() => "wss://multiplayer.construct.net",
-		() => "UniqueUnitsBattleBotGame",
+		() => "UniqueUnitsBattleBot",
 		() => "MainBranch",
 		() => "UniUniRoom",
 		() => "Host",
@@ -5444,10 +5455,13 @@ self.C3_ExpressionFuncs = [
 			return () => f0(f1());
 		},
 		() => "LoadFigurOpponent",
+		() => "Change",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(1, 2);
 		},
+		() => "ChangeMap",
+		() => "Smile",
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
@@ -5463,6 +5477,12 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
 			return () => (920 + (920 - f0(f1())));
+		},
+		() => "choose",
+		() => "СМАЙЛИКИ",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject() - 0.5);
 		},
 		() => "Name",
 		() => "AvatarChoose",
